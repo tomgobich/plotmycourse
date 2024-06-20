@@ -1,0 +1,81 @@
+import { DateTime } from 'luxon'
+import { BaseModel, column, hasMany, manyToMany } from '@adonisjs/lucid/orm'
+import Course from './course.js'
+import Module from './module.js'
+import Lesson from './lesson.js'
+import AccessLevel from './access_level.js'
+import Difficulty from './difficulty.js'
+import Status from './status.js'
+import User from './user.js'
+import type { ExtractModelRelations, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
+
+export default class Organization extends BaseModel {
+  @column({ isPrimary: true })
+  declare id: number
+
+  @column()
+  declare name: string
+
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+
+  @hasMany(() => Course)
+  declare courses: HasMany<typeof Course>
+
+  @hasMany(() => Module)
+  declare modules: HasMany<typeof Module>
+
+  @hasMany(() => Lesson)
+  declare lessons: HasMany<typeof Lesson>
+
+  @hasMany(() => AccessLevel)
+  declare accessLevels: HasMany<typeof AccessLevel>
+
+  @hasMany(() => Difficulty)
+  declare difficulties: HasMany<typeof Difficulty>
+
+  @hasMany(() => Status)
+  declare statuses: HasMany<typeof Status>
+
+  @manyToMany(() => User, {
+    pivotColumns: ['role_id'],
+    pivotTable: 'organization_users',
+  })
+  declare users: ManyToMany<typeof User>
+
+  async findNextSort(type: ExtractModelRelations<Organization> = 'courses') {
+    switch (type) {
+      case 'courses':
+        const lastCourse = await (<Organization>this)
+          .related('courses')
+          .query()
+          .orderBy('order', 'desc')
+          .first()
+
+        return lastCourse ? lastCourse.order + 1 : 1
+      default:
+        const lastest = await (<Organization>this)
+          .related(type)
+          .query()
+          .orderBy('order', 'desc')
+          .first()
+
+        return lastest ? lastest.order + 1 : 0
+    }
+  }
+
+  async findCourse(courseId: number) {
+    return (<Organization>this).related('courses').query().where('id', courseId).firstOrFail()
+  }
+
+  async findModule(moduleId: number) {
+    return (<Organization>this).related('modules').query().where('id', moduleId).firstOrFail()
+  }
+
+  async findLesson(lessonId: number) {
+    return (<Organization>this).related('lessons').query().where('id', lessonId).firstOrFail()
+  }
+}

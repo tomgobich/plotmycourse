@@ -1,0 +1,89 @@
+<script setup lang="ts">
+import { Menu, ChevronsUpDown, Slash, Route } from 'lucide-vue-next'
+import OrganizationDto from '#dtos/organization'
+import { ref } from 'vue'
+import { router } from '@inertiajs/vue3'
+
+const props = defineProps<{
+  organization: OrganizationDto
+  organizations: OrganizationDto[]
+}>()
+
+const organizationId = ref(props.organization.id.toString())
+
+function onOrganizationChange(activeId: string) {
+  router.get(`/organizations/${activeId}`)
+}
+</script>
+
+<template>
+  <nav
+    class="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6"
+  >
+    <a href="#" class="flex items-center gap-2 text-lg font-semibold md:text-base">
+      <Route class="h-6 w-6" />
+      <span class="sr-only">PlotMyCourse</span>
+    </a>
+    <div class="flex items-center">
+      <Slash class="text-slate-300 w-4 h-4 -rotate-12" />
+      <DropdownMenu>
+        <DropdownMenuTrigger as-child>
+          <Button variant="ghost">
+            {{ organization.name }}
+            <ChevronsUpDown class="w-4 h-4 ml-2" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent class="w-56">
+          <DropdownMenuLabel>Your Organizations ({{ organizations.length }})</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuRadioGroup
+            v-model="organizationId"
+            @update:modelValue="onOrganizationChange"
+          >
+            <DropdownMenuRadioItem
+              v-for="org in organizations"
+              :key="org.id"
+              :value="org.id.toString()"
+            >
+              {{ org.name }}
+            </DropdownMenuRadioItem>
+          </DropdownMenuRadioGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem> Edit {{ organization.name }} </DropdownMenuItem>
+          <DropdownMenuItem>Add Organization</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <Slash class="text-slate-300 w-4 h-4 -rotate-12" />
+    </div>
+    <a href="#" class="text-muted-foreground transition-colors hover:text-foreground">
+      Dashboard
+    </a>
+    <a href="#" class="text-muted-foreground transition-colors hover:text-foreground"> Courses </a>
+    <a href="#" class="text-muted-foreground transition-colors hover:text-foreground">
+      Difficulties
+    </a>
+    <a href="#" class="text-muted-foreground transition-colors hover:text-foreground"> Statuses </a>
+    <a href="#" class="text-muted-foreground transition-colors hover:text-foreground"> Accesses </a>
+  </nav>
+  <Sheet>
+    <SheetTrigger as-child>
+      <Button variant="outline" size="icon" class="shrink-0 md:hidden">
+        <Menu class="h-5 w-5" />
+        <span class="sr-only">Toggle navigation menu</span>
+      </Button>
+    </SheetTrigger>
+    <SheetContent side="left">
+      <nav class="grid gap-6 text-lg font-medium">
+        <a href="#" class="flex items-center gap-2 text-lg font-semibold">
+          <Route class="h-6 w-6" />
+          <span class="sr-only">PlotMyCourse</span>
+        </a>
+        <a href="#" class="text-muted-foreground hover:text-foreground"> Dashboard </a>
+        <a href="#" class="text-muted-foreground hover:text-foreground"> Courses </a>
+        <a href="#" class="text-muted-foreground hover:text-foreground"> Difficulties </a>
+        <a href="#" class="text-muted-foreground hover:text-foreground"> Statuses </a>
+        <a href="#" class="hover:text-foreground"> Accesses </a>
+      </nav>
+    </SheetContent>
+  </Sheet>
+</template>
