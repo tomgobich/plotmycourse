@@ -10,20 +10,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
-import { ref } from 'vue'
 import OrganizationDto from '#dtos/organization'
 
 const props = defineProps<{
   organization: OrganizationDto
   organizations: OrganizationDto[]
 }>()
-
-const organizationId = ref('1')
-
-function onOrganizationChange(newId: string) {
-  console.log('TODO: switch active organization id to', newId)
-}
 </script>
 
 <template>

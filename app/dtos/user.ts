@@ -4,7 +4,6 @@ export default class UserDto {
   declare id: number
   declare fullName: string | null
   declare email: string
-  declare password: string
   declare createdAt: string
   declare updatedAt: string | null
 
@@ -13,7 +12,6 @@ export default class UserDto {
     this.id = user.id
     this.fullName = user.fullName
     this.email = user.email
-    this.password = user.password
     this.createdAt = user.createdAt.toISO()!
     this.updatedAt = user.updatedAt?.toISO()!
   }

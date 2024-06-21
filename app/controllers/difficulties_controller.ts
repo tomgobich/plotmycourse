@@ -1,11 +1,15 @@
+import DifficultyDto from '#dtos/difficulty'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class DifficultiesController {
   /**
    * Display a list of resource
    */
-  async index({ inertia }: HttpContext) {
-    return inertia.render('difficulties/index')
+  async index({ inertia, organization }: HttpContext) {
+    const difficulties = await organization.related('difficulties').query().orderBy('order')
+    return inertia.render('difficulties/index', {
+      difficulties: DifficultyDto.fromArray(difficulties),
+    })
   }
 
   /**

@@ -55,13 +55,16 @@ function onOrganizationChange(activeId: string) {
       </DropdownMenu>
       <Slash class="text-slate-300 w-4 h-4 -rotate-12" />
     </div>
-    <a href="#" class="text-muted-foreground transition-colors hover:text-foreground">
+    <Link href="/" class="text-muted-foreground transition-colors hover:text-foreground">
       Dashboard
-    </a>
+    </Link>
     <a href="#" class="text-muted-foreground transition-colors hover:text-foreground"> Courses </a>
-    <a href="#" class="text-muted-foreground transition-colors hover:text-foreground">
+    <Link
+      href="/difficulties"
+      class="text-muted-foreground transition-colors hover:text-foreground"
+    >
       Difficulties
-    </a>
+    </Link>
     <a href="#" class="text-muted-foreground transition-colors hover:text-foreground"> Statuses </a>
     <a href="#" class="text-muted-foreground transition-colors hover:text-foreground"> Accesses </a>
   </nav>
