@@ -7,35 +7,38 @@
 </template>
 
 <script setup>
-import { VueDraggableNext as Sortable } from "vue-draggable-next";
-import { computed, ref } from "vue";
+import { VueDraggableNext as Sortable } from 'vue-draggable-next'
+import { computed, ref } from 'vue'
 
 const props = defineProps({
   modelValue: Array,
   group: [Object, String],
   tag: {
     type: String,
-    default: 'ul'
+    default: 'ul',
   },
   itemKey: {
     type: String,
-    default: 'id'
-  }
+    default: 'id',
+  },
 })
 
-const emit = defineEmits(['update:modelValue', 'end'])
+const emits = defineEmits(['update:modelValue', 'end'])
 
 const internalValue = computed({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value)
+  set: (value) => {
+    console.log({ value: value.map((r) => ({ ...r })) })
+    emits('update:modelValue', value)
+  },
 })
 
 const sortableOptions = ref({
-  handle: ".handle",
-  draggable: ".draggable",
+  handle: '.handle',
+  draggable: '.draggable',
   animation: 200,
-  group: "description",
+  group: 'description',
   disabled: false,
-  ghostClass: "ghost"
+  ghostClass: 'ghost',
 })
 </script>

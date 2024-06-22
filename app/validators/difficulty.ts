@@ -6,3 +6,9 @@ export const difficultyValidator = vine.compile(
     color: vine.string().maxLength(20),
   })
 )
+
+export const difficultyOrderValidator = vine.compile(
+  vine.object({
+    ids: vine.array(vine.number()),
+  })
+)

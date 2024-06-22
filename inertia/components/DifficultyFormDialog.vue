@@ -52,21 +52,8 @@ function onSuccess() {
         <DialogTitle v-else>Add Difficulty</DialogTitle>
       </DialogHeader>
       <form id="difficultyForm" class="grid gap-4 py-4" @submit.prevent="onSubmit">
-        <div class="grid gap-1">
-          <Label for="name"> Name </Label>
-          <Input id="name" v-model="form.name" />
-        </div>
-        <div class="grid gap-1">
-          <Label for="color"> Color </Label>
-          <div class="relative w-full items-center">
-            <Input id="color" class="pl-10" v-model="form.color" />
-            <input
-              type="color"
-              v-model="form.color"
-              class="absolute start-2 inset-y-2 w-6 h-6 rounded"
-            />
-          </div>
-        </div>
+        <FormInput label="Name" v-model="form.name" :errors="form.errors.name" />
+        <FormInput type="color" label="Color" v-model="form.color" :errors="form.errors.color" />
       </form>
       <DialogFooter>
         <Button type="submit" form="difficultyForm" :disabled="form.processing">

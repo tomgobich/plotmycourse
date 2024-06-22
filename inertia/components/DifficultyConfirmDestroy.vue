@@ -27,7 +27,9 @@ const internalOpen = computed({
       </AlertDialogHeader>
       <AlertDialogFooter>
         <AlertDialogCancel>Cancel</AlertDialogCancel>
-        <AlertDialogAction>Delete</AlertDialogAction>
+        <AlertDialogAction as-child>
+          <Link :href="`/difficulties/${difficulty.id}`" method="delete" as="button"> Delete </Link>
+        </AlertDialogAction>
       </AlertDialogFooter>
     </AlertDialogContent>
   </AlertDialog>

@@ -1,7 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, belongsTo, column, computed } from '@adonisjs/lucid/orm'
+import { BaseModel, belongsTo, column, computed, hasMany } from "@adonisjs/lucid/orm"
 import Organization from './organization.js'
-import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import type { BelongsTo, HasMany } from "@adonisjs/lucid/types/relations"
+import Course from "#models/course"
 
 export default class Difficulty extends BaseModel {
   @column({ isPrimary: true })
@@ -30,6 +31,9 @@ export default class Difficulty extends BaseModel {
 
   @belongsTo(() => Organization)
   declare organization: BelongsTo<typeof Organization>
+
+  @hasMany(() => Course)
+  declare courses: HasMany<typeof Course>
 
   @computed()
   get hex() {

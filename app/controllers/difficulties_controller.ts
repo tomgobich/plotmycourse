@@ -1,7 +1,9 @@
 import CreateDifficulty from '#actions/difficulties/create_difficulty'
+import DestroyDifficulty from '#actions/difficulties/destroy_difficulty'
 import UpdateDifficulty from '#actions/difficulties/update_difficulty'
+import UpdateDifficultyOrder from '#actions/difficulties/update_difficulty_order'
 import DifficultyDto from '#dtos/difficulty'
-import { difficultyValidator } from '#validators/difficulty'
+import { difficultyOrderValidator, difficultyValidator } from '#validators/difficulty'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class DifficultiesController {
@@ -44,10 +46,26 @@ export default class DifficultiesController {
   /**
    * Handle reordering of difficulties
    */
-  async order({ request, response }: HttpContext) {}
+  async order({ request, response, organization }: HttpContext) {
+    const { ids } = await request.validateUsing(difficultyOrderValidator)
+
+    await UpdateDifficultyOrder.handle({
+      organization,
+      ids,
+    })
+
+    return response.redirect().back()
+  }
 
   /**
    * Delete record
    */
-  async destroy({ params }: HttpContext) {}
+  async destroy({ params, response, organization }: HttpContext) {
+    await DestroyDifficulty.handle({
+      id: params.id,
+      organization,
+    })
+
+    return response.redirect().back()
+  }
 }

@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import DifficultyDto from '#dtos/difficulty'
 import { GripVertical, Pencil, Trash2, Plus } from 'lucide-vue-next'
-import { ref, toRef } from 'vue'
+import { watch, ref } from 'vue'
+import { router } from '@inertiajs/vue3'
 
 const props = defineProps<{
   difficulties: DifficultyDto[]
 }>()
 
-const difficulties = toRef(props, 'difficulties')
+const difficulties = ref(props.difficulties)
 const confirmations = ref<Record<number, boolean>>({})
 
 const form = ref<{ open: boolean; difficulty?: DifficultyDto }>({
@@ -20,9 +21,14 @@ const destroy = ref<{ open: boolean; difficulty?: DifficultyDto }>({
   difficulty: undefined,
 })
 
+watch(
+  () => props.difficulties,
+  (diffs) => (difficulties.value = diffs)
+)
+
 function onOrderUpdate() {
   const ids = difficulties.value.map((difficulty) => difficulty.id)
-  console.log({ ids })
+  router.put('/difficulties/order', { ids })
 }
 
 function onCreate() {
@@ -52,7 +58,12 @@ function onDestroy(difficulty: DifficultyDto) {
       </Button>
     </div>
 
-    <Sortable v-model="difficulties" class="flex flex-col" @end="onOrderUpdate">
+    <Sortable
+      v-model="difficulties"
+      class="flex flex-col"
+      @end="onOrderUpdate"
+      @update:model-value="console.log({ e: $event })"
+    >
       <template #item="{ element }">
         <li
           class="flex items-center justify-between rounded-md px-3 py-1.5 hover:bg-slate-100 duration-300 group draggable"
