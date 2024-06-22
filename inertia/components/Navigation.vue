@@ -65,8 +65,15 @@ function onOrganizationChange(activeId: string) {
     >
       Difficulties
     </Link>
-    <a href="#" class="text-muted-foreground transition-colors hover:text-foreground"> Statuses </a>
-    <a href="#" class="text-muted-foreground transition-colors hover:text-foreground"> Accesses </a>
+    <Link href="/statuses" class="text-muted-foreground transition-colors hover:text-foreground">
+      Statuses
+    </Link>
+    <Link
+      href="/access-levels"
+      class="text-muted-foreground transition-colors hover:text-foreground"
+    >
+      Access
+    </Link>
   </nav>
   <Sheet>
     <SheetTrigger as-child>
@@ -85,7 +92,7 @@ function onOrganizationChange(activeId: string) {
         <a href="#" class="text-muted-foreground hover:text-foreground"> Courses </a>
         <a href="#" class="text-muted-foreground hover:text-foreground"> Difficulties </a>
         <a href="#" class="text-muted-foreground hover:text-foreground"> Statuses </a>
-        <a href="#" class="hover:text-foreground"> Accesses </a>
+        <a href="#" class="hover:text-foreground"> Access </a>
       </nav>
     </SheetContent>
   </Sheet>

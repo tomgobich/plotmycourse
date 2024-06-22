@@ -14,5 +14,7 @@ export default class DestroyDifficulty {
       .firstOrFail()
 
     await difficulty.delete()
+
+    return difficulty
   }
 }

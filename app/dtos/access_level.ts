@@ -15,7 +15,6 @@ export default class AccessLevelDto {
   declare organization: OrganizationDto | null
   declare courses: CourseDto[]
   declare lessons: LessonDto[]
-  declare hex: string
 
   constructor(accessLevel?: AccessLevel) {
     if (!accessLevel) return
@@ -30,7 +29,6 @@ export default class AccessLevelDto {
     this.organization = accessLevel.organization && new OrganizationDto(accessLevel.organization)
     this.courses = CourseDto.fromArray(accessLevel.courses)
     this.lessons = LessonDto.fromArray(accessLevel.lessons)
-    this.hex = accessLevel.hex
   }
 
   static fromArray(accessLevels: AccessLevel[]) {

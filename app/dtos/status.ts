@@ -17,7 +17,6 @@ export default class StatusDto {
   declare course: CourseDto[]
   declare module: ModuleDto[]
   declare lessons: LessonDto[]
-  declare hex: string
 
   constructor(status?: Status) {
     if (!status) return
@@ -33,7 +32,6 @@ export default class StatusDto {
     this.course = CourseDto.fromArray(status.course)
     this.module = ModuleDto.fromArray(status.module)
     this.lessons = LessonDto.fromArray(status.lessons)
-    this.hex = status.hex
   }
 
   static fromArray(statuses: Status[]) {

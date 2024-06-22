@@ -42,9 +42,4 @@ export default class Status extends BaseModel {
 
   @hasMany(() => Lesson)
   declare lessons: HasMany<typeof Lesson>
-
-  @computed()
-  get hex() {
-    return this.color.startsWith('#') ? this.color : `#${this.color}`
-  }
 }

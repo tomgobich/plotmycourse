@@ -78,4 +78,16 @@ export default class Organization extends BaseModel {
   async findLesson(lessonId: number) {
     return (<Organization>this).related('lessons').query().where('id', lessonId).firstOrFail()
   }
+
+  async getDifficulties() {
+    return (<Organization>this).related('difficulties').query().orderBy('order')
+  }
+
+  async getStatuses() {
+    return (<Organization>this).related('statuses').query().orderBy('order')
+  }
+
+  async getAccessLevels() {
+    return (<Organization>this).related('accessLevels').query().orderBy('order')
+  }
 }

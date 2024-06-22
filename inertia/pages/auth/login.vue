@@ -9,30 +9,20 @@
   <div class="grid gap-6">
     <form @submit.prevent="form.post('/login')">
       <div class="grid gap-3">
-        <div class="grid gap-1">
-          <Label for="email"> Email </Label>
-          <Input
-            id="email"
-            v-model="form.email"
-            placeholder="name@example.com"
-            type="email"
-            auto-capitalize="none"
-            auto-complete="email"
-            auto-correct="off"
-            :disabled="form.processing"
-          />
-        </div>
-        <div class="grid gap-1">
-          <Label for="password"> Password </Label>
-          <Input
-            id="password"
-            v-model="form.password"
-            type="password"
-            auto-capitalize="none"
-            auto-correct="off"
-            :disabled="form.processing"
-          />
-        </div>
+        <FormInput
+          label="Email"
+          type="email"
+          v-model="form.email"
+          :errors="form.errors.email"
+          :disabled="form.processing"
+        />
+        <FormInput
+          label="Password"
+          type="password"
+          v-model="form.password"
+          :errors="form.errors.password"
+          :disabled="form.processing"
+        />
         <Button :disabled="form.processing">
           <Loader v-if="form.processing" class="mr-2 h-4 w-4 animate-spin" />
           Login

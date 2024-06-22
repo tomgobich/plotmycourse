@@ -38,9 +38,4 @@ export default class AccessLevel extends BaseModel {
 
   @hasMany(() => Lesson)
   declare lessons: HasMany<typeof Lesson>
-
-  @computed()
-  get hex() {
-    return this.color.startsWith('#') ? this.color : `#${this.color}`
-  }
 }

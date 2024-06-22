@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, withDefaults } from 'vue'
+import { computed } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -7,6 +7,7 @@ const props = withDefaults(
     modelValue: string | number
     label: string
     errors?: string[]
+    disabled: boolean
   }>(),
   {
     type: 'string',
@@ -31,7 +32,7 @@ const internalValue = computed({
           :type="type"
           :class="{ 'absolute start-2 inset-y-2 w-6 h-6 rounded': type === 'color' }"
         />
-        <Input v-if="type === 'color'" v-model="internalValue" class="pl-10" />
+        <Input v-if="type === 'color'" v-model="internalValue" class="pl-10" :disabled="disabled" />
       </div>
       <Input v-else v-model="internalValue" :type="type" />
     </Label>

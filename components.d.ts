@@ -25,6 +25,8 @@ declare module 'vue' {
     CardHeader: typeof import('./inertia/components/ui/card/CardHeader.vue')['default']
     CardTitle: typeof import('./inertia/components/ui/card/CardTitle.vue')['default']
     Checkbox: typeof import('./inertia/components/ui/checkbox/Checkbox.vue')['default']
+    ConfirmDestroyDialog: typeof import('./inertia/components/ConfirmDestroyDialog.vue')['default']
+    copy: typeof import('./inertia/components/DifficultyFormDialog copy.vue')['default']
     Dialog: typeof import('./inertia/components/ui/dialog/Dialog.vue')['default']
     DialogClose: typeof import('./inertia/components/ui/dialog/DialogClose.vue')['default']
     DialogContent: typeof import('./inertia/components/ui/dialog/DialogContent.vue')['default']
@@ -69,5 +71,6 @@ declare module 'vue' {
     SheetTrigger: typeof import('./inertia/components/ui/sheet/SheetTrigger.vue')['default']
     Sortable: typeof import('./inertia/components/Sortable.vue')['default']
     SortHandle: typeof import('./inertia/components/SortHandle.vue')['default']
+    StatusFormDialog: typeof import('./inertia/components/StatusFormDialog.vue')['default']
   }
 }

@@ -1,47 +1,47 @@
 <script setup lang="ts">
-import DifficultyDto from '#dtos/difficulty'
+import StatusDto from '#dtos/status'
 import { GripVertical, Pencil, Trash2, Plus } from 'lucide-vue-next'
 import { watch, ref } from 'vue'
 import { router } from '@inertiajs/vue3'
 
 const props = defineProps<{
-  difficulties: DifficultyDto[]
+  statuses: StatusDto[]
 }>()
 
-const difficulties = ref(props.difficulties)
+const statuses = ref(props.statuses)
 
-const form = ref<{ open: boolean; difficulty?: DifficultyDto }>({
+const form = ref<{ open: boolean; status?: StatusDto }>({
   open: false,
-  difficulty: undefined,
+  status: undefined,
 })
 
-const destroy = ref<{ open: boolean; difficulty?: DifficultyDto }>({
+const destroy = ref<{ open: boolean; status?: StatusDto }>({
   open: false,
-  difficulty: undefined,
+  status: undefined,
 })
 
 watch(
-  () => props.difficulties,
-  (diffs) => (difficulties.value = diffs)
+  () => props.statuses,
+  (diffs) => (statuses.value = diffs)
 )
 
 function onOrderUpdate() {
-  const ids = difficulties.value.map((difficulty) => difficulty.id)
-  router.put('/difficulties/order', { ids })
+  const ids = statuses.value.map((status) => status.id)
+  router.put('/statuses/order', { ids })
 }
 
 function onCreate() {
-  form.value.difficulty = undefined
+  form.value.status = undefined
   form.value.open = true
 }
 
-function onEdit(difficulty: DifficultyDto) {
-  form.value.difficulty = difficulty
+function onEdit(status: StatusDto) {
+  form.value.status = status
   form.value.open = true
 }
 
-function onDestroy(difficulty: DifficultyDto) {
-  destroy.value.difficulty = difficulty
+function onDestroy(status: StatusDto) {
+  destroy.value.status = status
   destroy.value.open = true
 }
 </script>
@@ -49,15 +49,15 @@ function onDestroy(difficulty: DifficultyDto) {
 <template>
   <div class="w-full max-w-2xl mx-auto bg-background border rounded-xl p-4">
     <div class="flex items-center justify-between mb-3">
-      <h1 class="text-2xl font-bold px-4">Difficulties</h1>
+      <h1 class="text-2xl font-bold px-4">Statuses</h1>
 
       <Button @click="onCreate" size="sm" variant="ghost">
         <Plus class="w-3 h-3 mr-2" />
-        Add Difficulty
+        Add Status
       </Button>
     </div>
 
-    <Sortable v-model="difficulties" class="flex flex-col" @end="onOrderUpdate">
+    <Sortable v-model="statuses" class="flex flex-col" @end="onOrderUpdate">
       <template #item="{ element }">
         <li
           class="flex items-center justify-between rounded-md px-3 py-1.5 hover:bg-slate-100 duration-300 group draggable"
@@ -85,15 +85,15 @@ function onDestroy(difficulty: DifficultyDto) {
       </template>
     </Sortable>
 
-    <DifficultyFormDialog v-model:open="form.open" :difficulty="form.difficulty" />
+    <StatusFormDialog v-model:open="form.open" :status="form.status" />
     <ConfirmDestroyDialog
       v-model:open="destroy.open"
-      title="Delete Difficulty?"
-      :action-href="`/difficulties/${destroy.difficulty?.id}`"
+      title="Delete Status?"
+      :action-href="`/statuses/${destroy.status?.id}`"
     >
       Are you sure you'd like to delete your
-      <strong>{{ destroy.difficulty?.name }}</strong> difficulty? Any series using
-      {{ destroy.difficulty?.name }} will have their difficulty cleared.
+      <strong>{{ destroy.status?.name }}</strong> status? Any series or lesson using
+      {{ destroy.status?.name }} will have their status cleared.
     </ConfirmDestroyDialog>
   </div>
 </template>

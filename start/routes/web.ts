@@ -1,5 +1,6 @@
 import DifficultiesController from '#controllers/difficulties_controller'
 import OrganizationsController from '#controllers/organizations_controller'
+import StatusesController from '#controllers/statuses_controller'
 import { middleware } from '#start/kernel'
 import router from '@adonisjs/core/services/router'
 
@@ -24,5 +25,16 @@ router
       })
       .prefix('/difficulties')
       .as('difficulties')
+
+    router
+      .group(() => {
+        router.get('/', [StatusesController, 'index']).as('index')
+        router.post('/', [StatusesController, 'store']).as('store')
+        router.put('/order', [StatusesController, 'order']).as('order')
+        router.put('/:id', [StatusesController, 'update']).as('update')
+        router.delete('/:id', [StatusesController, 'destroy']).as('destroy')
+      })
+      .prefix('/statuses')
+      .as('statuses')
   })
   .use([middleware.auth(), middleware.organization()])

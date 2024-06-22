@@ -27,10 +27,7 @@ const emits = defineEmits(['update:modelValue', 'end'])
 
 const internalValue = computed({
   get: () => props.modelValue,
-  set: (value) => {
-    console.log({ value: value.map((r) => ({ ...r })) })
-    emits('update:modelValue', value)
-  },
+  set: (value) => emits('update:modelValue', value),
 })
 
 const sortableOptions = ref({

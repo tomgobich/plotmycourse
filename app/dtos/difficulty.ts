@@ -11,7 +11,6 @@ export default class DifficultyDto {
   declare createdAt: string
   declare updatedAt: string
   declare organization: OrganizationDto | null
-  declare hex: string
 
   constructor(difficulty?: Difficulty) {
     if (!difficulty) return
@@ -24,7 +23,6 @@ export default class DifficultyDto {
     this.createdAt = difficulty.createdAt.toISO()!
     this.updatedAt = difficulty.updatedAt.toISO()!
     this.organization = difficulty.organization && new OrganizationDto(difficulty.organization)
-    this.hex = difficulty.hex
   }
 
   static fromArray(difficulties: Difficulty[]) {
