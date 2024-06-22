@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import DifficultyDto from '#dtos/difficulty'
 import { GripVertical, Pencil, Trash2, Plus } from 'lucide-vue-next'
-import { ref } from 'vue'
+import { ref, toRef } from 'vue'
 
 const props = defineProps<{
   difficulties: DifficultyDto[]
 }>()
 
+const difficulties = toRef(props, 'difficulties')
 const confirmations = ref<Record<number, boolean>>({})
-const difficulties = ref<DifficultyDto[]>(props.difficulties)
 
 const form = ref<{ open: boolean; difficulty?: DifficultyDto }>({
   open: false,

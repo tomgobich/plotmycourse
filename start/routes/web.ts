@@ -17,6 +17,8 @@ router
     router
       .group(() => {
         router.get('/', [DifficultiesController, 'index']).as('index')
+        router.post('/', [DifficultiesController, 'store']).as('store')
+        router.put('/:id', [DifficultiesController, 'update']).as('update')
       })
       .prefix('/difficulties')
       .as('difficulties')
