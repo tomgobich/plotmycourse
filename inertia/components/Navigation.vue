@@ -72,7 +72,7 @@ function onOrganizationChange(activeId: string) {
       href="/access-levels"
       class="text-muted-foreground transition-colors hover:text-foreground"
     >
-      Access
+      Accesses
     </Link>
   </nav>
   <Sheet>

@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AccessLevelFormDialog: typeof import('./inertia/components/AccessLevelFormDialog.vue')['default']
     AlertDialog: typeof import('./inertia/components/ui/alert-dialog/AlertDialog.vue')['default']
     AlertDialogAction: typeof import('./inertia/components/ui/alert-dialog/AlertDialogAction.vue')['default']
     AlertDialogCancel: typeof import('./inertia/components/ui/alert-dialog/AlertDialogCancel.vue')['default']

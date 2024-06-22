@@ -1,3 +1,4 @@
+import AccessLevelsController from '#controllers/access_levels_controller'
 import DifficultiesController from '#controllers/difficulties_controller'
 import OrganizationsController from '#controllers/organizations_controller'
 import StatusesController from '#controllers/statuses_controller'
@@ -36,5 +37,16 @@ router
       })
       .prefix('/statuses')
       .as('statuses')
+
+    router
+      .group(() => {
+        router.get('/', [AccessLevelsController, 'index']).as('index')
+        router.post('/', [AccessLevelsController, 'store']).as('store')
+        router.put('/order', [AccessLevelsController, 'order']).as('order')
+        router.put('/:id', [AccessLevelsController, 'update']).as('update')
+        router.delete('/:id', [AccessLevelsController, 'destroy']).as('destroy')
+      })
+      .prefix('/access-levels')
+      .as('access-levels')
   })
   .use([middleware.auth(), middleware.organization()])
