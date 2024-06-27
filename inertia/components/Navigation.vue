@@ -58,7 +58,9 @@ function onOrganizationChange(activeId: string) {
     <Link href="/" class="text-muted-foreground transition-colors hover:text-foreground">
       Dashboard
     </Link>
-    <a href="#" class="text-muted-foreground transition-colors hover:text-foreground"> Courses </a>
+    <Link href="/courses" class="text-muted-foreground transition-colors hover:text-foreground">
+      Courses
+    </Link>
     <Link
       href="/difficulties"
       class="text-muted-foreground transition-colors hover:text-foreground"
