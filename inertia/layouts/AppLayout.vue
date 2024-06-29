@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { CircleUser, Menu, ChevronsUpDown, Slash, Search, Route } from 'lucide-vue-next'
-import { Button } from '@/components/ui/button'
+import { CircleUser, Search } from 'lucide-vue-next'
+import { Button } from '~/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,9 +8,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { Input } from '@/components/ui/input'
+} from '~/components/ui/dropdown-menu'
+import { Input } from '~/components/ui/input'
 import OrganizationDto from '#dtos/organization'
+import Navigation from "~/components/Navigation.vue";
 
 const props = defineProps<{
   organization: OrganizationDto

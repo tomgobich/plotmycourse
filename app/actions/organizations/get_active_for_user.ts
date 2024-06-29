@@ -6,6 +6,9 @@ export default class GetActiveForUser {
       .related('organizations')
       .query()
       .if(activeId, (query) => query.where('organizations.id', activeId!))
+      .preload('accessLevels')
+      .preload('difficulties')
+      .preload('statuses')
       .firstOrFail()
   }
 }

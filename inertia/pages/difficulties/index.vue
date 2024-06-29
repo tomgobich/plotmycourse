@@ -3,6 +3,10 @@ import DifficultyDto from '#dtos/difficulty'
 import { GripVertical, Pencil, Trash2, Plus } from 'lucide-vue-next'
 import { watch, ref } from 'vue'
 import { router } from '@inertiajs/vue3'
+import { Button } from '~/components/ui/button'
+import Sortable from "~/components/Sortable.vue";
+import DifficultyFormDialog from "~/components/DifficultyFormDialog.vue";
+import ConfirmDestroyDialog from "~/components/ConfirmDestroyDialog.vue";
 
 const props = defineProps<{
   difficulties: DifficultyDto[]

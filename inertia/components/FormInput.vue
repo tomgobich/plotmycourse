@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { Label } from '~/components/ui/label'
+import { Input } from '~/components/ui/input'
 
 const props = withDefaults(
   defineProps<{
@@ -7,7 +9,7 @@ const props = withDefaults(
     modelValue: string | number
     label: string
     errors?: string[]
-    disabled: boolean
+    disabled?: boolean
   }>(),
   {
     type: 'string',

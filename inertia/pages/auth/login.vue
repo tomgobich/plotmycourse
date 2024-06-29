@@ -1,3 +1,17 @@
+<script setup lang="ts">
+import { useForm } from '@inertiajs/vue3'
+import AuthLayout from '~/layouts/AuthLayout.vue'
+import { Loader } from 'lucide-vue-next'
+import FormInput from "~/components/FormInput.vue";
+
+defineOptions({ layout: AuthLayout })
+
+const form = useForm({
+  email: '',
+  password: '',
+})
+</script>
+
 <template>
   <div class="flex flex-col space-y-2">
     <h1 class="text-2xl font-semibold tracking-tight">Login</h1>
@@ -39,16 +53,3 @@
     .
   </p> -->
 </template>
-
-<script setup lang="ts">
-import { useForm } from '@inertiajs/vue3'
-import AuthLayout from '~/layouts/AuthLayout.vue'
-import { Loader } from 'lucide-vue-next'
-
-defineOptions({ layout: AuthLayout })
-
-const form = useForm({
-  email: '',
-  password: '',
-})
-</script>

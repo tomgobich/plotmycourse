@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import StatusDto from '#dtos/status'
 import { GripVertical, Pencil, Trash2, Plus } from 'lucide-vue-next'
+import { Button } from '~/components/ui/button'
 import { watch, ref } from 'vue'
 import { router } from '@inertiajs/vue3'
+import Sortable from "~/components/Sortable.vue";
+import StatusFormDialog from "~/components/StatusFormDialog.vue";
+import ConfirmDestroyDialog from "~/components/ConfirmDestroyDialog.vue";
 
 const props = defineProps<{
   statuses: StatusDto[]

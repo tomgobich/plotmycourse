@@ -1,3 +1,15 @@
+<script setup lang="ts">
+import { useForm, Link } from '@inertiajs/vue3'
+import AuthLayout from '~/layouts/AuthLayout.vue'
+
+defineOptions({ layout: AuthLayout })
+
+const form = useForm({
+  email: '',
+  password: '',
+})
+</script>
+
 <template>
   <div class="flex flex-col space-y-2">
     <h1 class="text-2xl font-semibold tracking-tight">Register</h1>
@@ -49,15 +61,3 @@
     .
   </p>
 </template>
-
-<script setup lang="ts">
-import { useForm, Link } from '@inertiajs/vue3'
-import AuthLayout from '~/layouts/AuthLayout.vue'
-
-defineOptions({ layout: AuthLayout })
-
-const form = useForm({
-  email: '',
-  password: '',
-})
-</script>

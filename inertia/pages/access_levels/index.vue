@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import AccessLevelDto from '#dtos/access_level'
 import { GripVertical, Pencil, Trash2, Plus } from 'lucide-vue-next'
+import { Button } from '~/components/ui/button'
 import { watch, ref } from 'vue'
 import { router } from '@inertiajs/vue3'
+import AccessLevelFormDialog from "~/components/AccessLevelFormDialog.vue";
+import ConfirmDestroyDialog from "~/components/ConfirmDestroyDialog.vue";
+import Sortable from "~/components/Sortable.vue";
 
 const props = defineProps<{
   accessLevels: AccessLevelDto[]
