@@ -8,6 +8,7 @@ import { ref } from "vue";
 import SortHandle from "~/components/SortHandle.vue"
 import { Button } from '~/components/ui/button'
 import { Plus } from 'lucide-vue-next'
+import CourseDetails from "~/components/CourseDetails.vue";
 
 const props = defineProps<{
   organization: OrganizationDto
@@ -15,6 +16,7 @@ const props = defineProps<{
   modules: ModuleDto[]
 }>()
 
+const course = ref(props.course)
 const modules = ref(props.modules)
 </script>
 
@@ -25,20 +27,7 @@ const modules = ref(props.modules)
     </div>
 
     <div class="px-4">
-      <ul class="grid gap-3 mb-6">
-        <li class="flex items-center gap-3">
-          <div class="w-24">Status</div>
-          <TagSelector v-model="course.statusId" :options="organization.statuses" />
-        </li>
-        <li class="flex items-center gap-3">
-          <div class="w-24">Difficulty</div>
-          <TagSelector v-model="course.difficultyId" :options="organization.difficulties" />
-        </li>
-        <li class="flex items-center gap-3">
-          <div class="w-24">Access</div>
-          <TagSelector v-model="course.accessLevelId" :options="organization.accessLevels" />
-        </li>
-      </ul>
+      <CourseDetails v-model="course" :organization="organization" />
     </div>
 
     <div class="px-2">
