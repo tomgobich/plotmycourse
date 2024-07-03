@@ -1,17 +1,15 @@
 import { DateTime } from 'luxon'
 import { BaseModel, belongsTo, column, hasMany } from '@adonisjs/lucid/orm'
-import Organization from './organization.js'
 import Course from './course.js'
 import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
 import Lesson from './lesson.js'
 import Status from '#models/status'
+import { compose } from "@adonisjs/core/helpers";
+import { WithOrganization } from "#models/mixins/with_organization";
 
-export default class Module extends BaseModel {
+export default class Module extends compose(BaseModel, WithOrganization) {
   @column({ isPrimary: true })
   declare id: number
-
-  @column()
-  declare organizationId: number
 
   @column()
   declare courseId: number
@@ -36,9 +34,6 @@ export default class Module extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
-
-  @belongsTo(() => Organization)
-  declare organization: BelongsTo<typeof Organization>
 
   @belongsTo(() => Course)
   declare course: BelongsTo<typeof Course>

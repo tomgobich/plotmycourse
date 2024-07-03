@@ -1,6 +1,5 @@
 import { DateTime } from 'luxon'
 import { BaseModel, belongsTo, column, hasMany, hasManyThrough, scope } from '@adonisjs/lucid/orm'
-import Organization from './organization.js'
 import type { BelongsTo, HasMany, HasManyThrough } from '@adonisjs/lucid/types/relations'
 import AccessLevel from './access_level.js'
 import Difficulty from './difficulty.js'
@@ -8,15 +7,14 @@ import Module from './module.js'
 import Lesson from './lesson.js'
 import Status from '#models/status'
 import { ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
+import { compose } from "@adonisjs/core/helpers";
+import { WithOrganization } from "#models/mixins/with_organization";
 
-export default class Course extends BaseModel {
+export default class Course extends compose(BaseModel, WithOrganization) {
   serializeExtras = true
 
   @column({ isPrimary: true })
   declare id: number
-
-  @column()
-  declare organizationId: number
 
   @column()
   declare accessLevelId: number
@@ -44,9 +42,6 @@ export default class Course extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
-
-  @belongsTo(() => Organization)
-  declare organization: BelongsTo<typeof Organization>
 
   @belongsTo(() => AccessLevel)
   declare accessLevel: BelongsTo<typeof AccessLevel>

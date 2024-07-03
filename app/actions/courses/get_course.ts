@@ -20,6 +20,7 @@ export default class GetCourse {
     await course.load('accessLevel')
     await course.load('difficulty')
     await course.load('status')
+    await course.loadCount('lessons')
 
     return { course, modules }
   }

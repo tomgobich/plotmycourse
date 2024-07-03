@@ -3,15 +3,13 @@ import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
 import Module from '#models/module'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import Status from './status.js'
-import Organization from './organization.js'
 import AccessLevel from './access_level.js'
+import { compose } from "@adonisjs/core/helpers";
+import { WithOrganization } from "#models/mixins/with_organization";
 
-export default class Lesson extends BaseModel {
+export default class Lesson extends compose(BaseModel, WithOrganization) {
   @column({ isPrimary: true })
   declare id: number
-
-  @column()
-  declare organizationId: number
 
   @column()
   declare accessLevelId: number
@@ -39,9 +37,6 @@ export default class Lesson extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
-
-  @belongsTo(() => Organization)
-  declare organization: BelongsTo<typeof Organization>
 
   @belongsTo(() => Module)
   declare module: BelongsTo<typeof Module>

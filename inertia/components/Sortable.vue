@@ -1,8 +1,8 @@
 <template>
-  <Sortable v-model="internalValue" :group="group" @end="$emit('end')">
-    <div v-for="(item, index) in internalValue" :key="item[itemKey]">
+  <Sortable v-model="internalValue" :group="group" @end="$emit('end')" :tag="tag">
+    <template v-for="(item, index) in internalValue" :key="item[itemKey]">
       <slot name="item" :element="item" :index="index" />
-    </div>
+    </template>
   </Sortable>
 </template>
 

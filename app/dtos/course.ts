@@ -24,6 +24,7 @@ export default class CourseDto {
   declare status: StatusDto | null
   declare modules: ModuleDto[]
   declare lessons: LessonDto[]
+  declare meta: Record<string, any>
 
   constructor(course?: Course) {
     if (!course) return
@@ -44,6 +45,7 @@ export default class CourseDto {
     this.status = course.status && new StatusDto(course.status)
     this.modules = ModuleDto.fromArray(course.modules)
     this.lessons = LessonDto.fromArray(course.lessons)
+    this.meta = course.$extras
   }
 
   static fromArray(courses: Course[]) {
