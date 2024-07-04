@@ -44,7 +44,11 @@ const modules = ref(props.modules)
                 >
               </div>
 
-              <TagSelector v-model="module.statusId" :options="organization.statuses" />
+              <TagSelector
+                v-model="module.statusId"
+                :options="organization.statuses"
+                :patch="{ path: `/modules/${module.id}/tags`, key: 'statusId' }"
+              />
             </div>
             <Sortable v-model="module.lessons" class="flex flex-col">
               <template #item="{ element: lesson }">
@@ -62,7 +66,11 @@ const modules = ref(props.modules)
                     </div> -->
                   </div>
 
-                  <TagSelector v-model="lesson.statusId" :options="organization.statuses" />
+                  <TagSelector
+                    v-model="lesson.statusId"
+                    :options="organization.statuses"
+                    :patch="{ path: `/lessons/${lesson.id}/tags`, key: 'statusId' }"
+                  />
                 </li>
               </template>
             </Sortable>
