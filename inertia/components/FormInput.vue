@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Label } from '~/components/ui/label'
-import { Input } from '~/components/ui/input'
 
 const props = withDefaults(
   defineProps<{

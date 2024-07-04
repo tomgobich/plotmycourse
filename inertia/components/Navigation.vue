@@ -3,9 +3,6 @@ import { Menu, ChevronsUpDown, Slash, Route } from 'lucide-vue-next'
 import OrganizationDto from '#dtos/organization'
 import { ref } from 'vue'
 import { router } from '@inertiajs/vue3'
-import { Button } from '~/components/ui/button'
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuItem } from "~/components/ui/dropdown-menu";
-import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet";
 
 const props = defineProps<{
   organization: OrganizationDto

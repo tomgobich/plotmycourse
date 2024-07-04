@@ -3,9 +3,6 @@ import StatusDto from '#dtos/status'
 import { computed, watch } from 'vue'
 import { useForm } from '@inertiajs/vue3'
 import { Loader } from 'lucide-vue-next'
-import { Button } from '~/components/ui/button'
-import { DialogFooter, DialogHeader, Dialog, DialogTitle, DialogContent } from "~/components/ui/dialog";
-import FormInput from "~/components/FormInput.vue";
 
 const props = defineProps<{
   open: boolean

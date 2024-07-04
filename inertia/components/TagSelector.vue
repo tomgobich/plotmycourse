@@ -3,14 +3,13 @@ import StatusDto from '#dtos/status'
 import DifficultyDto from '#dtos/difficulty'
 import AccessLevelDto from '#dtos/access_level'
 import { computed } from 'vue'
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem } from '~/components/ui/dropdown-menu'
-import { router } from "@inertiajs/vue3";
+import { router } from '@inertiajs/vue3'
 
 const props = defineProps<{
   modelValue: number
-  options: StatusDto[] | DifficultyDto[] | AccessLevelDto[],
+  options: StatusDto[] | DifficultyDto[] | AccessLevelDto[]
   put?: {
-    path: string,
+    path: string
     key: string
   }
 }>()
@@ -24,7 +23,7 @@ const internalValue = computed({
   set: (value) => {
     if (props.put?.path && props.put?.key) {
       router.put(props.put.path, {
-        [props.put.key]: parseInt(value)
+        [props.put.key]: parseInt(value),
       })
     }
 
@@ -49,7 +48,11 @@ const internalValue = computed({
     </DropdownMenuTrigger>
     <DropdownMenuContent>
       <DropdownMenuRadioGroup v-model="internalValue">
-        <DropdownMenuRadioItem v-for="option in options" :key="option.id" :value="option.id.toString()">
+        <DropdownMenuRadioItem
+          v-for="option in options"
+          :key="option.id"
+          :value="option.id.toString()"
+        >
           <span
             class="w-4 h-4 rounded-full absolute left-2 -ml-px"
             :style="{ backgroundColor: option.color }"

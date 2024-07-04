@@ -1,52 +1,24 @@
 <script setup lang="ts">
 import DifficultyDto from '#dtos/difficulty'
-import { GripVertical, Pencil, Trash2, Plus } from 'lucide-vue-next'
+import { Plus } from 'lucide-vue-next'
 import { watch, ref } from 'vue'
 import { router } from '@inertiajs/vue3'
-import { Button } from '~/components/ui/button'
-import Sortable from "~/components/Sortable.vue";
-import DifficultyFormDialog from "~/components/DifficultyFormDialog.vue";
-import ConfirmDestroyDialog from "~/components/ConfirmDestroyDialog.vue";
+import { useSortableResource } from '~/composables/sortable_resource'
 
 const props = defineProps<{
   difficulties: DifficultyDto[]
 }>()
 
-const difficulties = ref(props.difficulties)
-
-const form = ref<{ open: boolean; difficulty?: DifficultyDto }>({
-  open: false,
-  difficulty: undefined,
-})
-
-const destroy = ref<{ open: boolean; difficulty?: DifficultyDto }>({
-  open: false,
-  difficulty: undefined,
-})
+const { model, form, destroying, open } = useSortableResource(props.difficulties)
 
 watch(
   () => props.difficulties,
-  (diffs) => (difficulties.value = diffs)
+  (value) => (difficulties.value = value)
 )
 
 function onOrderUpdate() {
   const ids = difficulties.value.map((difficulty) => difficulty.id)
   router.put('/difficulties/order', { ids })
-}
-
-function onCreate() {
-  form.value.difficulty = undefined
-  form.value.open = true
-}
-
-function onEdit(difficulty: DifficultyDto) {
-  form.value.difficulty = difficulty
-  form.value.open = true
-}
-
-function onDestroy(difficulty: DifficultyDto) {
-  destroy.value.difficulty = difficulty
-  destroy.value.open = true
 }
 </script>
 
@@ -55,49 +27,27 @@ function onDestroy(difficulty: DifficultyDto) {
     <div class="flex items-center justify-between mb-3">
       <h1 class="text-2xl font-bold px-4">Difficulties</h1>
 
-      <Button @click="onCreate" size="sm" variant="ghost">
+      <Button @click="open.create" size="sm" variant="ghost">
         <Plus class="w-3 h-3 mr-2" />
         Add Difficulty
       </Button>
     </div>
 
-    <Sortable v-model="difficulties" class="flex flex-col" @end="onOrderUpdate">
+    <Sortable v-model="model" class="flex flex-col" @end="onOrderUpdate">
       <template #item="{ element }">
-        <li
-          class="flex items-center justify-between rounded-md px-3 py-1.5 hover:bg-slate-100 duration-300 group draggable"
-        >
-          <div class="flex items-center gap-4">
-            <div class="text-slate-300 group-hover:text-slate-950 duration-300 handle cursor-move">
-              <GripVertical class="w-4 h-4" />
-            </div>
-            <div
-              class="w-3 h-3 rounded-full bg-slate-100"
-              :style="`background-color: ${element.color}`"
-            ></div>
-            <span class="font-bold">{{ element.name }}</span>
-            <span v-if="element.isDefault" class="text-sm text-slate-400">(Default)</span>
-          </div>
-          <div class="flex gap-2 opacity-0 group-hover:opacity-100 duration-300">
-            <Button size="xs" @click="onEdit(element)">
-              <Pencil class="w-3 h-3" />
-            </Button>
-            <Button variant="destructive" size="xs" @click="onDestroy(element)">
-              <Trash2 class="w-3 h-3" />
-            </Button>
-          </div>
-        </li>
+        <SortableResourceItem :element="element" @edit="open.edit" @destroy="open.destroy" />
       </template>
     </Sortable>
 
-    <DifficultyFormDialog v-model:open="form.open" :difficulty="form.difficulty" />
+    <DifficultyFormDialog v-model:open="form.open" :difficulty="form.resource" />
     <ConfirmDestroyDialog
-      v-model:open="destroy.open"
+      v-model:open="destroying.open"
       title="Delete Difficulty?"
-      :action-href="`/difficulties/${destroy.difficulty?.id}`"
+      :action-href="`/difficulties/${destroying.resource?.id}`"
     >
       Are you sure you'd like to delete your
-      <strong>{{ destroy.difficulty?.name }}</strong> difficulty? Any series using
-      {{ destroy.difficulty?.name }} will have their difficulty cleared.
+      <strong>{{ destroying.resource?.name }}</strong> difficulty? Any series using
+      {{ destroying.resource?.name }} will have their difficulty cleared.
     </ConfirmDestroyDialog>
   </div>
 </template>

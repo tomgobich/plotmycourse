@@ -2,8 +2,6 @@
 import { useForm } from '@inertiajs/vue3'
 import AuthLayout from '~/layouts/AuthLayout.vue'
 import { Loader } from 'lucide-vue-next'
-import FormInput from "~/components/FormInput.vue"
-import { Button } from '~/components/ui/button'
 
 defineOptions({ layout: AuthLayout })
 

@@ -2,13 +2,8 @@
 import OrganizationDto from '#dtos/organization'
 import CourseDto from '#dtos/course'
 import ModuleDto from '#dtos/module'
-import TagSelector from "~/components/TagSelector.vue"
-import Sortable from "~/components/Sortable.vue"
-import { ref } from "vue";
-import SortHandle from "~/components/SortHandle.vue"
-import { Button } from '~/components/ui/button'
+import { ref } from 'vue'
 import { Plus } from 'lucide-vue-next'
-import CourseDetails from "~/components/CourseDetails.vue";
 
 const props = defineProps<{
   organization: OrganizationDto
@@ -21,7 +16,7 @@ const modules = ref(props.modules)
 </script>
 
 <template>
-  <div class="w-full max-w-screen-xl mx-auto bg-background border rounded-xl p-4">
+  <div class="w-full max-w-screen-lg mx-auto bg-background border rounded-xl p-4">
     <div class="flex items-center justify-between mb-6">
       <h1 class="text-2xl font-bold px-4">{{ course.name }}</h1>
     </div>
@@ -38,25 +33,33 @@ const modules = ref(props.modules)
       <Sortable v-model="modules">
         <template #item="{ element: module }">
           <li class="flex flex-col border-b border-slate-200 pb-2 mb-2">
-            <div class="flex items-center justify-between rounded-md px-2 py-2 hover:bg-slate-50 duration-300 group draggable relative">
+            <div
+              class="flex items-center justify-between rounded-md px-2 py-2 hover:bg-slate-50 duration-300 group draggable relative"
+            >
               <div class="flex items-center gap-4">
                 <SortHandle />
                 <span class="font-bold">{{ module.name }}</span>
-                <span class="text-slate-400 text-sm slashed-zero">{{ module.lessons.length }} Lessons</span>
+                <span class="text-slate-400 text-sm slashed-zero"
+                  >{{ module.lessons.length }} Lessons</span
+                >
               </div>
 
               <TagSelector v-model="module.statusId" :options="organization.statuses" />
             </div>
             <Sortable v-model="module.lessons" class="flex flex-col">
               <template #item="{ element: lesson }">
-                <li class="flex items-center justify-between rounded-md px-2 py-2 hover:bg-slate-50 duration-300 group draggable relative">
+                <li
+                  class="flex items-center justify-between rounded-md px-2 py-2 hover:bg-slate-50 duration-300 group draggable relative"
+                >
                   <div class="flex items-center gap-4">
                     <SortHandle />
-                    <span class="text-slate-400 slashed-zero w-[3ch]">{{ module.order }}.{{ lesson.order }}</span>
+                    <span class="text-slate-400 slashed-zero w-[3ch]"
+                      >{{ module.order }}.{{ lesson.order }}</span
+                    >
                     <span>{{ lesson.name }}</span>
-<!--                    <div class="opacity-0 group-hover:opacity-100 duration-300 ml-2">-->
-<!--                      <Button icon="pi pi-pencil" size="small" class="!p-2 -my-2 !w-auto !h-auto" @click="editLesson(lesson)" text rounded />-->
-<!--                    </div>-->
+                    <!-- <div class="opacity-0 group-hover:opacity-100 duration-300 ml-2">
+                      <Button icon="pi pi-pencil" size="small" class="!p-2 -my-2 !w-auto !h-auto" @click="editLesson(lesson)" text rounded />
+                    </div> -->
                   </div>
 
                   <TagSelector v-model="lesson.statusId" :options="organization.statuses" />

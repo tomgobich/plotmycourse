@@ -1,17 +1,6 @@
 <script setup lang="ts">
 import { CircleUser, Search } from 'lucide-vue-next'
-import { Button } from '~/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '~/components/ui/dropdown-menu'
-import { Input } from '~/components/ui/input'
 import OrganizationDto from '#dtos/organization'
-import Navigation from "~/components/Navigation.vue";
 
 const props = defineProps<{
   organization: OrganizationDto
@@ -21,7 +10,9 @@ const props = defineProps<{
 
 <template>
   <div class="flex min-h-screen w-full flex-col">
-    <header class="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+    <header
+      class="sticky top-0 z-50 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6"
+    >
       <Navigation v-bind="props" />
       <div class="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
         <form class="ml-auto flex-1 sm:flex-initial">

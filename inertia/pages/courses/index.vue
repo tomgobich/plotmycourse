@@ -3,9 +3,6 @@ import { EllipsisVertical, Plus } from 'lucide-vue-next'
 import { watch, ref } from 'vue'
 import { Link } from '@inertiajs/vue3'
 import CourseDto from '#dtos/course'
-import { Button } from '~/components/ui/button'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "~/components/ui/dropdown-menu";
 
 const props = defineProps<{
   courses: CourseDto[]
