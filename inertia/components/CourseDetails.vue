@@ -15,7 +15,7 @@ const course = computed({
   set: (value) => emit('update:modelValue', value),
 })
 
-const path = computed(() => `/courses/${course.value.id}`)
+const path = computed(() => `/courses/${course.value.id}/tags`)
 </script>
 
 <template>
@@ -25,7 +25,7 @@ const path = computed(() => `/courses/${course.value.id}`)
       <TagSelector
         v-model="course.statusId"
         :options="organization.statuses"
-        :put="{ path, key: 'statusId' }"
+        :patch="{ path, key: 'statusId' }"
       />
     </li>
     <li class="flex items-center gap-3">
@@ -33,7 +33,7 @@ const path = computed(() => `/courses/${course.value.id}`)
       <TagSelector
         v-model="course.difficultyId"
         :options="organization.difficulties"
-        :put="{ path, key: 'difficultyId' }"
+        :patch="{ path, key: 'difficultyId' }"
       />
     </li>
     <li class="flex items-center gap-3">
@@ -41,7 +41,7 @@ const path = computed(() => `/courses/${course.value.id}`)
       <TagSelector
         v-model="course.accessLevelId"
         :options="organization.accessLevels"
-        :put="{ path, key: 'accessLevelId' }"
+        :patch="{ path, key: 'accessLevelId' }"
       />
     </li>
   </ul>

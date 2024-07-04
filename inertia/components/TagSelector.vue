@@ -8,7 +8,7 @@ import { router } from '@inertiajs/vue3'
 const props = defineProps<{
   modelValue: number
   options: StatusDto[] | DifficultyDto[] | AccessLevelDto[]
-  put?: {
+  patch?: {
     path: string
     key: string
   }
@@ -21,9 +21,11 @@ const selected = computed(() => props.options.find((status) => status.id === pro
 const internalValue = computed({
   get: () => props.modelValue.toString(),
   set: (value) => {
-    if (props.put?.path && props.put?.key) {
-      router.put(props.put.path, {
-        [props.put.key]: parseInt(value),
+    const canPatch = props.patch?.path && props.patch?.key
+
+    if (canPatch) {
+      router.patch(props.patch.path, {
+        [props.patch.key]: parseInt(value),
       })
     }
 

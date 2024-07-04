@@ -56,6 +56,7 @@ router
         router.get('/:id', [CoursesController, 'show']).as('show')
         router.post('/', [CoursesController, 'store']).as('store')
         router.put('/:id', [CoursesController, 'update']).as('update')
+        router.patch('/:id/tags', [CoursesController, 'tag']).as('patch.tags')
         router.delete('/:id', [CoursesController, 'destroy']).as('destroy')
       })
       .prefix('/courses')
