@@ -7,7 +7,7 @@ type Params = {
   data: Infer<typeof difficultyValidator>
 }
 
-export default class CreateDifficulty {
+export default class StoreDifficulty {
   static async handle({ organization, data }: Params) {
     const order = await organization.findNextSort('difficulties')
 

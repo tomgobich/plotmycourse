@@ -7,7 +7,7 @@ type Params = {
   data: Infer<typeof accessLevelValidator>
 }
 
-export default class CreateAccessLevel {
+export default class StoreAccessLevel {
   static async handle({ organization, data }: Params) {
     const order = await organization.findNextSort('accessLevels')
 

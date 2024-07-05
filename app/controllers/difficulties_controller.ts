@@ -1,4 +1,4 @@
-import CreateDifficulty from '#actions/difficulties/create_difficulty'
+import StoreDifficulty from '#actions/difficulties/store_difficulty'
 import DestroyDifficulty from '#actions/difficulties/destroy_difficulty'
 import UpdateDifficulty from '#actions/difficulties/update_difficulty'
 import UpdateDifficultyOrder from '#actions/difficulties/update_difficulty_order'
@@ -23,7 +23,7 @@ export default class DifficultiesController {
   async store({ request, response, organization }: HttpContext) {
     const data = await request.validateUsing(difficultyValidator)
 
-    await CreateDifficulty.handle({ organization, data })
+    await StoreDifficulty.handle({ organization, data })
 
     return response.redirect().back()
   }

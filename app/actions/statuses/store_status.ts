@@ -7,7 +7,7 @@ type Params = {
   data: Infer<typeof statusValidator>
 }
 
-export default class CreateStatus {
+export default class StoreStatus {
   static async handle({ organization, data }: Params) {
     const order = await organization.findNextSort('statuses')
 

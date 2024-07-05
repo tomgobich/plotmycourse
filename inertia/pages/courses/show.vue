@@ -2,7 +2,7 @@
 import OrganizationDto from '#dtos/organization'
 import CourseDto from '#dtos/course'
 import ModuleDto from '#dtos/module'
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 
 const props = defineProps<{
   organization: OrganizationDto
@@ -12,6 +12,9 @@ const props = defineProps<{
 
 const internalCourse = ref(props.course)
 const internalModules = ref(props.modules)
+
+watchEffect(() => (internalCourse.value = props.course))
+watchEffect(() => (internalModules.value = props.modules))
 </script>
 
 <template>
@@ -29,7 +32,11 @@ const internalModules = ref(props.modules)
         {{ modules.length }} Modules, {{ course.meta.lessons_count }} Lessons
       </div>
 
-      <SortableModules v-model="internalModules" :organization="organization" />
+      <SortableModules
+        v-model="internalModules"
+        :organization="organization"
+        :course="internalCourse"
+      />
     </div>
   </div>
 </template>

@@ -1,5 +1,7 @@
+import StoreModule from '#actions/modules/store_module'
+import UpdateModule from '#actions/modules/update_module'
 import UpdateModuleTag from '#actions/modules/update_module_tag'
-import { modulePatchTagValidator } from '#validators/module'
+import { modulePatchTagValidator, moduleValidator } from '#validators/module'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class ModulesController {
@@ -11,7 +13,17 @@ export default class ModulesController {
   /**
    * Handle form submission for the create action
    */
-  async store({ request }: HttpContext) {}
+  async store({ params, request, response, organization }: HttpContext) {
+    const data = await request.validateUsing(moduleValidator)
+
+    await StoreModule.handle({
+      courseId: params.courseId,
+      organization,
+      data,
+    })
+
+    return response.redirect().back()
+  }
 
   /**
    * Edit individual record
@@ -21,7 +33,17 @@ export default class ModulesController {
   /**
    * Handle form submission for the edit action
    */
-  async update({ params, request }: HttpContext) {}
+  async update({ params, request, response, organization }: HttpContext) {
+    const data = await request.validateUsing(moduleValidator)
+
+    await UpdateModule.handle({
+      id: params.id,
+      organization,
+      data,
+    })
+
+    return response.redirect().back()
+  }
 
   /**
    * Handle tag patch for status, difficulty, or access level

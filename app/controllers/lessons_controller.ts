@@ -1,5 +1,7 @@
+import StoreLesson from '#actions/lessons/store_lesson'
+import UpdateLesson from '#actions/lessons/update_lesson'
 import UpdateLessonTag from '#actions/lessons/update_lesson_tag'
-import { lessonPatchTagValidator } from '#validators/lesson'
+import { lessonPatchTagValidator, lessonValidator } from '#validators/lesson'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class LessonsController {
@@ -11,7 +13,17 @@ export default class LessonsController {
   /**
    * Handle form submission for the create action
    */
-  async store({ request }: HttpContext) {}
+  async store({ params, request, response, organization }: HttpContext) {
+    const data = await request.validateUsing(lessonValidator)
+
+    await StoreLesson.handle({
+      moduleId: params.moduleId,
+      organization,
+      data,
+    })
+
+    return response.redirect().back()
+  }
 
   /**
    * Show individual record
@@ -26,7 +38,17 @@ export default class LessonsController {
   /**
    * Handle form submission for the edit action
    */
-  async update({ params, request }: HttpContext) {}
+  async update({ params, request, response, organization }: HttpContext) {
+    const data = await request.validateUsing(lessonValidator)
+
+    await UpdateLesson.handle({
+      id: params.id,
+      organization,
+      data,
+    })
+
+    return response.redirect().back()
+  }
 
   /**
    * Handle tag patch for status, difficulty, or access level

@@ -1,4 +1,4 @@
-import CreateAccessLevel from '#actions/access_levels/create_access_level'
+import StoreAccessLevel from '#actions/access_levels/store_access_level'
 import DestroyAccessLevel from '#actions/access_levels/destroy_access_level'
 import UpdateAccessLevel from '#actions/access_levels/update_access_level'
 import UpdateAccessLevelOrder from '#actions/access_levels/update_access_level_order'
@@ -21,7 +21,7 @@ export default class AccessLevelsController {
   async store({ request, response, organization }: HttpContext) {
     const data = await request.validateUsing(accessLevelValidator)
 
-    await CreateAccessLevel.handle({
+    await StoreAccessLevel.handle({
       organization,
       data,
     })

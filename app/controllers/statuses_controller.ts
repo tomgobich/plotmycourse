@@ -1,4 +1,4 @@
-import CreateStatus from '#actions/statuses/create_status'
+import StoreStatus from '#actions/statuses/store_status'
 import DestroyStatus from '#actions/statuses/destroy_status'
 import UpdateStatus from '#actions/statuses/update_status'
 import UpdateStatusOrder from '#actions/statuses/update_status_order'
@@ -23,7 +23,7 @@ export default class StatusesController {
   async store({ request, response, organization }: HttpContext) {
     const data = await request.validateUsing(statusValidator)
 
-    await CreateStatus.handle({
+    await StoreStatus.handle({
       organization,
       data,
     })
