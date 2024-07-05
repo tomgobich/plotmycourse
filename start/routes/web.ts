@@ -58,39 +58,34 @@ router
         router.get('/:id', [CoursesController, 'show']).as('show')
         router.post('/', [CoursesController, 'store']).as('store')
         router.put('/:id', [CoursesController, 'update']).as('update')
-        router.patch('/:id/tags', [CoursesController, 'tag']).as('patch.tags')
+        router.patch('/:id/tags', [CoursesController, 'tag']).as('tags')
         router.delete('/:id', [CoursesController, 'destroy']).as('destroy')
 
-        router.post('/:courseId/modules', [ModulesController, 'store']).as('modules.store')
-        router.put('/:courseId/modules/order', [ModulesController, 'order']).as('modules.order')
-
-        router.put('/:courseId/lessons', [LessonsController, 'order']).as('lessons.order')
+        router.put('/:id/lessons/order', [LessonsController, 'order']).as('lessons.order')
       })
       .prefix('/courses')
       .as('courses')
 
     router
       .group(() => {
-        router.get('/', [ModulesController, 'index']).as('index')
-        router.get('/:id', [ModulesController, 'show']).as('show')
+        router.post('/', [ModulesController, 'store']).as('store')
         router.put('/:id', [ModulesController, 'update']).as('update')
-        router.patch('/:id/tags', [ModulesController, 'tag']).as('patch.tags')
+        router.put('/order', [ModulesController, 'order']).as('order')
+        router.patch('/:id/tags', [ModulesController, 'tag']).as('tags')
         router.delete('/:id', [ModulesController, 'destroy']).as('destroy')
-
-        router.post('/:moduleId/lessons', [LessonsController, 'store']).as('lessons.store')
       })
-      .prefix('/modules')
+      .prefix('/courses/:courseId/modules')
       .as('modules')
 
     router
       .group(() => {
-        router.get('/', [LessonsController, 'index']).as('index')
+        router.post('/', [LessonsController, 'store']).as('store')
         router.get('/:id', [LessonsController, 'show']).as('show')
         router.put('/:id', [LessonsController, 'update']).as('update')
-        router.patch('/:id/tags', [LessonsController, 'tag']).as('patch.tags')
+        router.patch('/:id/tags', [LessonsController, 'tag']).as('tags')
         router.delete('/:id', [LessonsController, 'destroy']).as('destroy')
       })
-      .prefix('/lessons')
+      .prefix('/modules/:moduleId/lessons')
       .as('lessons')
   })
   .use([middleware.auth(), middleware.organization()])

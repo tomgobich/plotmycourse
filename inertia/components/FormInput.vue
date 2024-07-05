@@ -5,6 +5,7 @@ const props = withDefaults(
   defineProps<{
     type: string
     modelValue: string | number
+    placeholder?: string
     label: string
     errors?: string[]
     disabled?: boolean
@@ -31,10 +32,27 @@ const internalValue = computed({
           v-model="internalValue"
           :type="type"
           :class="{ 'absolute start-2 inset-y-2 w-6 h-6 rounded': type === 'color' }"
+          :disabled="disabled"
         />
-        <Input v-if="type === 'color'" v-model="internalValue" class="pl-10" :disabled="disabled" />
+        <Input
+          v-if="type === 'color'"
+          v-model="internalValue"
+          class="pl-10"
+          :disabled="disabled"
+          :placeholder="placeholder"
+        />
       </div>
-      <Input v-else v-model="internalValue" :type="type" />
+      <Select v-else-if="type === 'select'" v-model="internalValue">
+        <SelectTrigger>
+          <slot name="trigger">
+            <SelectValue :placeholder="placeholder" />
+          </slot>
+        </SelectTrigger>
+        <SelectContent>
+          <slot />
+        </SelectContent>
+      </Select>
+      <Input v-else v-model="internalValue" :type="type" :placeholder="placeholder" />
     </Label>
     <div v-show="errors" class="text-red-500 text-sm">
       {{ errors?.join(',') }}

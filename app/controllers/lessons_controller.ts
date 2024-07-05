@@ -4,11 +4,6 @@ import type { HttpContext } from '@adonisjs/core/http'
 
 export default class LessonsController {
   /**
-   * Display a list of resource
-   */
-  async index({}: HttpContext) {}
-
-  /**
    * Display form to create a new record
    */
   async create({}: HttpContext) {}
