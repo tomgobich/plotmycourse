@@ -1,23 +1,43 @@
 <script setup lang="ts">
 import StatusDto from '#dtos/status'
 import { Plus } from 'lucide-vue-next'
-import { watch, ref } from 'vue'
+import { watchEffect, ref } from 'vue'
 import { router } from '@inertiajs/vue3'
-import { useSortableResource } from '~/composables/sortable_resource'
+import { useResourceActions } from '~/composables/resource_actions'
 
 const props = defineProps<{
   statuses: StatusDto[]
 }>()
 
-const { model, form, destroying, open } = useSortableResource(props.statuses)
+const list = ref(props.statuses)
+const { form, dialog, destroy, onSuccess } = useResourceActions<StatusDto>()({
+  name: '',
+  color: '#818cf8',
+})
 
-watch(
-  () => props.statuses,
-  (diffs) => (statuses.value = diffs)
-)
+watchEffect(() => {
+  list.value = props.statuses
+})
+
+function onEdit(resource: StatusDto) {
+  dialog.value.open(resource, {
+    name: resource.name,
+    color: resource.color,
+  })
+}
+
+function onSubmit() {
+  const id = dialog.value.resource?.id
+
+  if (id) {
+    return form.put(`/statuses/${id}`, { onSuccess })
+  }
+
+  form.post('/statuses', { onSuccess })
+}
 
 function onOrderUpdate() {
-  const ids = statuses.value.map((status) => status.id)
+  const ids = list.value.map((status) => status.id)
   router.put('/statuses/order', { ids })
 }
 </script>
@@ -27,27 +47,37 @@ function onOrderUpdate() {
     <div class="flex items-center justify-between mb-3">
       <h1 class="text-2xl font-bold px-4">Statuses</h1>
 
-      <Button @click="open.create" size="sm" variant="ghost">
+      <Button @click="dialog.open()" size="sm" variant="ghost">
         <Plus class="w-3 h-3 mr-2" />
         Add Status
       </Button>
     </div>
 
-    <Sortable v-model="model" class="flex flex-col" @end="onOrderUpdate">
+    <Sortable v-model="list" class="flex flex-col" @end="onOrderUpdate">
       <template #item="{ element }">
-        <SortableResourceItem :element="element" @edit="open.edit" @destroy="open.destroy" />
+        <SortableResourceItem :element="element" @edit="onEdit" @destroy="destroy.open" />
       </template>
     </Sortable>
 
-    <StatusFormDialog v-model:open="form.open" :status="form.resource" />
+    <FormDialog
+      resource="Status"
+      v-model:open="dialog.isOpen"
+      :processing="form.processing"
+      :editing="dialog.resource?.id"
+      @submit="onSubmit"
+    >
+      <FormInput label="Name" v-model="form.name" :errors="form.errors.name" />
+      <FormInput type="color" label="Color" v-model="form.color" :errors="form.errors.color" />
+    </FormDialog>
+
     <ConfirmDestroyDialog
-      v-model:open="destroying.open"
+      v-model:open="destroy.isOpen"
       title="Delete Status?"
-      :action-href="`/statuses/${destroying.resource?.id}`"
+      :action-href="`/statuses/${destroy.resource?.id}`"
     >
       Are you sure you'd like to delete your
-      <strong>{{ destroying.resource?.name }}</strong> status? Any series or lesson using
-      {{ destroying.resource?.name }} will have their status cleared.
+      <strong>{{ destroy.resource?.name }}</strong> status? Any series or lesson using
+      {{ destroy.resource?.name }} will have their status cleared.
     </ConfirmDestroyDialog>
   </div>
 </template>
