@@ -2,9 +2,10 @@
 import ModuleDto from '#dtos/module'
 import Organization from '#models/organization'
 import { computed } from 'vue'
-import { Plus, Pencil } from 'lucide-vue-next'
+import { Plus, Pencil, EllipsisVertical } from 'lucide-vue-next'
 import { useResourceActions } from '~/composables/resource_actions'
 import CourseDto from '#dtos/course'
+import { Link } from '@inertiajs/vue3'
 
 const props = defineProps<{
   organization: Organization
@@ -18,6 +19,8 @@ const modules = computed({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value),
 })
+
+const urlPrefix = computed(() => `/courses/${props.course.id}`)
 
 const { form, dialog, destroy, onSuccess } = useResourceActions<ModuleDto>()({
   name: '',
@@ -35,10 +38,10 @@ function onSubmit() {
   const id = dialog.value.resource?.id
 
   if (id) {
-    return form.put(`/courses/${props.course.id}/modules/${id}`, { onSuccess })
+    return form.put(`${urlPrefix.value}/modules/${id}`, { onSuccess })
   }
 
-  form.post(`/courses/${props.course.id}/modules`, { onSuccess })
+  form.post(`${urlPrefix.value}/modules`, { onSuccess })
 }
 </script>
 
@@ -68,14 +71,26 @@ function onSubmit() {
             </div>
           </div>
 
-          <TagSelector
-            v-model="module.statusId"
-            :options="organization.statuses"
-            :patch="{ path: `/modules/${module.id}/tags`, key: 'statusId' }"
-          />
+          <div class="flex gap-2 items-center justify-end">
+            <TagSelector
+              v-model="module.statusId"
+              :options="organization.statuses"
+              :patch="{ path: `${urlPrefix}/modules/${module.id}/tags`, key: 'statusId' }"
+            />
+
+            <DropdownMenu>
+              <DropdownMenuTrigger class="ml-2 text-slate-400 hover:text-slate-950 duration-300">
+                <EllipsisVertical class="w-4 h-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem @click="onEdit(module)">Edit</DropdownMenuItem>
+                <DropdownMenuItem @click="destroy.open(module)">Delete</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
 
-        <SortableLessons v-model="modules[index]" :organization="organization" />
+        <SortableLessons v-model="modules[index]" :organization="organization" :course="course" />
       </li>
     </template>
   </Sortable>
@@ -105,4 +120,14 @@ function onSubmit() {
       </SelectItem>
     </FormInput>
   </FormDialog>
+
+  <ConfirmDestroyDialog
+    v-model:open="destroy.isOpen"
+    title="Delete Module?"
+    :action-href="`${urlPrefix}/modules/${destroy.resource?.id}`"
+  >
+    Are you sure you'd like to delete your
+    <strong>{{ destroy.resource?.name }}</strong> module? All this module's data, including lessons,
+    will be deleted. be gone forever.
+  </ConfirmDestroyDialog>
 </template>

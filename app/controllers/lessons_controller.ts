@@ -1,3 +1,4 @@
+import DestroyLesson from '#actions/lessons/destroy_lesson'
 import StoreLesson from '#actions/lessons/store_lesson'
 import UpdateLesson from '#actions/lessons/update_lesson'
 import UpdateLessonTag from '#actions/lessons/update_lesson_tag'
@@ -73,5 +74,13 @@ export default class LessonsController {
   /**
    * Delete record
    */
-  async destroy({ params }: HttpContext) {}
+  async destroy({ params, response, organization }: HttpContext) {
+    await DestroyLesson.handle({
+      moduleId: params.moduleId,
+      id: params.id,
+      organization,
+    })
+
+    return response.redirect().back()
+  }
 }

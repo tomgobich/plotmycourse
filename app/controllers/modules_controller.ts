@@ -1,3 +1,4 @@
+import DestroyModule from '#actions/modules/destroy_module'
 import StoreModule from '#actions/modules/store_module'
 import UpdateModule from '#actions/modules/update_module'
 import UpdateModuleTag from '#actions/modules/update_module_tag'
@@ -68,5 +69,13 @@ export default class ModulesController {
   /**
    * Delete record
    */
-  async destroy({ params }: HttpContext) {}
+  async destroy({ params, response, organization }: HttpContext) {
+    await DestroyModule.handle({
+      courseId: params.courseId,
+      id: params.id,
+      organization,
+    })
+
+    return response.redirect().back()
+  }
 }

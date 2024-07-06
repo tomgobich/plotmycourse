@@ -85,7 +85,7 @@ router
         router.patch('/:id/tags', [LessonsController, 'tag']).as('tags')
         router.delete('/:id', [LessonsController, 'destroy']).as('destroy')
       })
-      .prefix('/modules/:moduleId/lessons')
+      .prefix('/courses/:courseId/modules/:moduleId/lessons')
       .as('lessons')
   })
   .use([middleware.auth(), middleware.organization()])

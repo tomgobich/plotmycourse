@@ -2,12 +2,15 @@
 import ModuleDto from '#dtos/module'
 import OrganizationDto from '#dtos/organization'
 import { computed } from 'vue'
-import { Plus, Pencil } from 'lucide-vue-next'
+import { Plus, Pencil, EllipsisVertical } from 'lucide-vue-next'
 import { useResourceActions } from '~/composables/resource_actions'
 import LessonDto from '#dtos/lesson'
+import CourseDto from '#dtos/course'
+import { Link } from '@inertiajs/vue3'
 
 const props = defineProps<{
   organization: OrganizationDto
+  course: CourseDto
   modelValue: ModuleDto
 }>()
 
@@ -17,6 +20,8 @@ const module = computed({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value),
 })
+
+const urlPrefix = computed(() => `/courses/${props.course.id}/modules/${module.value.id}`)
 
 const { form, dialog, destroy, onSuccess } = useResourceActions<LessonDto>()({
   name: '',
@@ -36,10 +41,10 @@ function onSubmit() {
   const id = dialog.value.resource?.id
 
   if (id) {
-    return form.put(`/modules/${module.value.id}/lessons/${id}`, { onSuccess })
+    return form.put(`${urlPrefix.value}/lessons/${id}`, { onSuccess })
   }
 
-  form.post(`/modules/${module.value.id}/lessons`, { onSuccess })
+  form.post(`${urlPrefix.value}/lessons`, { onSuccess })
 }
 </script>
 
@@ -71,14 +76,27 @@ function onSubmit() {
           <TagSelector
             v-model="lesson.accessLevelId"
             :options="organization.accessLevels"
-            :patch="{ path: `/lessons/${lesson.id}/tags`, key: 'accessLevelId' }"
+            :patch="{ path: `${urlPrefix}/lessons/${lesson.id}/tags`, key: 'accessLevelId' }"
           />
 
           <TagSelector
             v-model="lesson.statusId"
             :options="organization.statuses"
-            :patch="{ path: `/lessons/${lesson.id}/tags`, key: 'statusId' }"
+            :patch="{ path: `${urlPrefix}/lessons/${lesson.id}/tags`, key: 'statusId' }"
           />
+
+          <DropdownMenu>
+            <DropdownMenuTrigger class="ml-2 text-slate-400 hover:text-slate-950 duration-300">
+              <EllipsisVertical class="w-4 h-4" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem :as="Link" :href="`${urlPrefix}/lessons/${lesson.id}`">
+                Open
+              </DropdownMenuItem>
+              <DropdownMenuItem @click="onEdit(lesson)">Edit</DropdownMenuItem>
+              <DropdownMenuItem @click="destroy.open(lesson)">Delete</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </li>
     </template>
@@ -128,4 +146,14 @@ function onSubmit() {
       </SelectItem>
     </FormInput>
   </FormDialog>
+
+  <ConfirmDestroyDialog
+    v-model:open="destroy.isOpen"
+    title="Delete Lesson?"
+    :action-href="`${urlPrefix}/lessons/${destroy.resource?.id}`"
+  >
+    Are you sure you'd like to delete your
+    <strong>{{ destroy.resource?.name }}</strong> lesson? All data associated with this lesson will
+    be gone forever.
+  </ConfirmDestroyDialog>
 </template>
