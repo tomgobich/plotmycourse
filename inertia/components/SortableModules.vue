@@ -5,7 +5,7 @@ import { computed } from 'vue'
 import { Plus, Pencil, EllipsisVertical } from 'lucide-vue-next'
 import { useResourceActions } from '~/composables/resource_actions'
 import CourseDto from '#dtos/course'
-import { Link } from '@inertiajs/vue3'
+import { Link, router } from '@inertiajs/vue3'
 
 const props = defineProps<{
   organization: Organization
@@ -34,6 +34,11 @@ function onEdit(resource: ModuleDto) {
   })
 }
 
+function onModuleOrderChange() {
+  const ids = modules.value.map((module) => module.id)
+  router.patch(`${urlPrefix.value}/modules/order`, { ids })
+}
+
 function onSubmit() {
   const id = dialog.value.resource?.id
 
@@ -46,7 +51,7 @@ function onSubmit() {
 </script>
 
 <template>
-  <Sortable v-model="modules" group="modules">
+  <Sortable v-model="modules" group="modules" @end="onModuleOrderChange">
     <template #item="{ element: module, index }">
       <li class="flex flex-col border-b border-slate-200 pb-2 mb-2">
         <div

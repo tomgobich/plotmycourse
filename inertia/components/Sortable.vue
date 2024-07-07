@@ -1,5 +1,5 @@
 <template>
-  <Sortable v-model="internalValue" :group="group" @end="$emit('end')" :tag="tag">
+  <Sortable v-model="internalValue" :group="group" :tag="tag" :animation="200" @end="$emit('end')">
     <template v-for="(item, index) in internalValue" :key="item[itemKey]">
       <slot name="item" :element="item" :index="index" />
     </template>

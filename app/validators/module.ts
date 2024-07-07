@@ -12,3 +12,9 @@ export const modulePatchTagValidator = vine.compile(
     statusId: vine.number(),
   })
 )
+
+export const moduleOrderValidator = vine.compile(
+  vine.object({
+    ids: vine.array(vine.number()),
+  })
+)

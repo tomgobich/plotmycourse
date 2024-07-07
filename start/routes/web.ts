@@ -61,7 +61,7 @@ router
         router.patch('/:id/tags', [CoursesController, 'tag']).as('tags')
         router.delete('/:id', [CoursesController, 'destroy']).as('destroy')
 
-        router.put('/:id/lessons/order', [LessonsController, 'order']).as('lessons.order')
+        router.patch('/:id/lessons/order', [LessonsController, 'order']).as('lessons.order')
       })
       .prefix('/courses')
       .as('courses')
@@ -70,7 +70,7 @@ router
       .group(() => {
         router.post('/', [ModulesController, 'store']).as('store')
         router.put('/:id', [ModulesController, 'update']).as('update')
-        router.put('/order', [ModulesController, 'order']).as('order')
+        router.patch('/order', [ModulesController, 'order']).as('order')
         router.patch('/:id/tags', [ModulesController, 'tag']).as('tags')
         router.delete('/:id', [ModulesController, 'destroy']).as('destroy')
       })
