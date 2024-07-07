@@ -86,7 +86,7 @@
     "tailwindcss-animate": "^1.0.7",
     "vee-validate": "^4.13.1",
     "vue": "^3.4.29",
-    "vue-draggable-next": "^2.2.1",
+    "vuedraggable": "^4.1.0",
     "zod": "^3.23.8"
   },
   "hotHook": {

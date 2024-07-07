@@ -53,11 +53,12 @@ function onOrderUpdate() {
       </Button>
     </div>
 
-    <Sortable v-model="list" class="flex flex-col" @end="onOrderUpdate">
-      <template #item="{ element }">
-        <SortableResourceItem :element="element" @edit="onEdit" @destroy="destroy.open" />
-      </template>
-    </Sortable>
+    <SortableResourceItem
+      v-model="list"
+      @end="onOrderUpdate"
+      @edit="onEdit"
+      @destroy="destroy.open"
+    />
 
     <FormDialog
       resource="Difficulty"

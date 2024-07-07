@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Sortable from 'vuedraggable'
 import ModuleDto from '#dtos/module'
 import OrganizationDto from '#dtos/organization'
 import { computed } from 'vue'
@@ -7,6 +8,7 @@ import { useResourceActions } from '~/composables/resource_actions'
 import LessonDto from '#dtos/lesson'
 import CourseDto from '#dtos/course'
 import { Link } from '@inertiajs/vue3'
+import SelectItem from './ui/select/SelectItem.vue'
 
 const props = defineProps<{
   organization: OrganizationDto
@@ -49,7 +51,14 @@ function onSubmit() {
 </script>
 
 <template>
-  <Sortable v-model="module.lessons" group="lessons" class="flex flex-col" @end="$emit('end')">
+  <Sortable
+    v-model="module.lessons"
+    class="flex flex-col"
+    group="lessons"
+    item-key="id"
+    tag="ul"
+    @end="$emit('end')"
+  >
     <template #item="{ element: lesson }">
       <li
         class="flex items-center justify-between rounded-md px-2 py-2 hover:bg-slate-50 duration-300 group draggable relative"

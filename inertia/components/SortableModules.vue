@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Sortable from 'vuedraggable'
 import ModuleDto from '#dtos/module'
 import Organization from '#models/organization'
 import { computed, toRaw } from 'vue'
@@ -40,12 +41,11 @@ function onModuleOrderChange() {
 }
 
 function onLessonOrderChange() {
-  console.log('here')
   const data = modules.value.map((module) => ({
     id: module.id,
     lessons: module.lessons.map((lesson) => lesson.id),
   }))
-  console.log({ data })
+
   router.patch(`${urlPrefix.value}/lessons/order`, { modules: data })
 }
 
@@ -61,7 +61,7 @@ function onSubmit() {
 </script>
 
 <template>
-  <Sortable v-model="modules" group="modules" @end="onModuleOrderChange">
+  <Sortable v-model="modules" group="modules" item-key="id" tag="ul" @end="onModuleOrderChange">
     <template #item="{ element: module, index }">
       <li class="flex flex-col border-b border-slate-200 pb-2 mb-2">
         <div
