@@ -61,7 +61,7 @@ router
         router.patch('/:id/tags', [CoursesController, 'tag']).as('tags')
         router.delete('/:id', [CoursesController, 'destroy']).as('destroy')
 
-        router.patch('/:id/lessons/order', [LessonsController, 'order']).as('lessons.order')
+        router.patch('/:courseId/lessons/order', [LessonsController, 'order']).as('lessons.order')
       })
       .prefix('/courses')
       .as('courses')

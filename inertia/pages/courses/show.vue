@@ -2,7 +2,7 @@
 import OrganizationDto from '#dtos/organization'
 import CourseDto from '#dtos/course'
 import ModuleDto from '#dtos/module'
-import { ref, watchEffect } from 'vue'
+import { ref, watchEffect, toRaw } from 'vue'
 
 const props = defineProps<{
   organization: OrganizationDto
@@ -10,11 +10,11 @@ const props = defineProps<{
   modules: ModuleDto[]
 }>()
 
-const internalCourse = ref(props.course)
-const internalModules = ref(props.modules)
+const internalCourse = ref({ ...props.course })
+const internalModules = ref(structuredClone(toRaw(props.modules)))
 
-watchEffect(() => (internalCourse.value = props.course))
-watchEffect(() => (internalModules.value = props.modules))
+watchEffect(() => (internalCourse.value = { ...props.course }))
+watchEffect(() => (internalModules.value = structuredClone(toRaw(props.modules))))
 </script>
 
 <template>

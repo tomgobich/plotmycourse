@@ -14,7 +14,7 @@ const props = defineProps<{
   modelValue: ModuleDto
 }>()
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'end'])
 
 const module = computed({
   get: () => props.modelValue,
@@ -49,7 +49,7 @@ function onSubmit() {
 </script>
 
 <template>
-  <Sortable v-model="module.lessons" group="lessons" class="flex flex-col">
+  <Sortable v-model="module.lessons" group="lessons" class="flex flex-col" @end="$emit('end')">
     <template #item="{ element: lesson }">
       <li
         class="flex items-center justify-between rounded-md px-2 py-2 hover:bg-slate-50 duration-300 group draggable relative"

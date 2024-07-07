@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ModuleDto from '#dtos/module'
 import Organization from '#models/organization'
-import { computed } from 'vue'
+import { computed, toRaw } from 'vue'
 import { Plus, Pencil, EllipsisVertical } from 'lucide-vue-next'
 import { useResourceActions } from '~/composables/resource_actions'
 import CourseDto from '#dtos/course'
@@ -37,6 +37,16 @@ function onEdit(resource: ModuleDto) {
 function onModuleOrderChange() {
   const ids = modules.value.map((module) => module.id)
   router.patch(`${urlPrefix.value}/modules/order`, { ids })
+}
+
+function onLessonOrderChange() {
+  console.log('here')
+  const data = modules.value.map((module) => ({
+    id: module.id,
+    lessons: module.lessons.map((lesson) => lesson.id),
+  }))
+  console.log({ data })
+  router.patch(`${urlPrefix.value}/lessons/order`, { modules: data })
 }
 
 function onSubmit() {
@@ -95,7 +105,12 @@ function onSubmit() {
           </div>
         </div>
 
-        <SortableLessons v-model="modules[index]" :organization="organization" :course="course" />
+        <SortableLessons
+          v-model="modules[index]"
+          :organization="organization"
+          :course="course"
+          @end="onLessonOrderChange"
+        />
       </li>
     </template>
   </Sortable>

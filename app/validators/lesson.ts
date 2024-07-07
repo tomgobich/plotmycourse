@@ -14,3 +14,14 @@ export const lessonPatchTagValidator = vine.compile(
     accessLevelId: vine.number().optional().requiredIfMissing(['statusId']),
   })
 )
+
+export const lessonOrderValidator = vine.compile(
+  vine.object({
+    modules: vine.array(
+      vine.object({
+        id: vine.number(),
+        lessons: vine.array(vine.number()),
+      })
+    ),
+  })
+)
