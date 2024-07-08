@@ -2,6 +2,7 @@
 import OrganizationDto from '#dtos/organization'
 import CourseDto from '#dtos/course'
 import ModuleDto from '#dtos/module'
+import { Pencil, Trash2 } from 'lucide-vue-next'
 import { ref, watchEffect, toRaw } from 'vue'
 
 const props = defineProps<{
@@ -12,6 +13,7 @@ const props = defineProps<{
 
 const internalCourse = ref({ ...props.course })
 const internalModules = ref(structuredClone(toRaw(props.modules)))
+const actions = ref()
 
 watchEffect(() => (internalCourse.value = { ...props.course }))
 watchEffect(() => (internalModules.value = structuredClone(toRaw(props.modules))))
@@ -21,6 +23,23 @@ watchEffect(() => (internalModules.value = structuredClone(toRaw(props.modules))
   <div class="w-full max-w-screen-lg mx-auto bg-background border rounded-xl p-4">
     <div class="flex items-center justify-between mb-6">
       <h1 class="text-2xl font-bold px-4">{{ course.name }}</h1>
+
+      <div class="flex items-center justify-end gap-2">
+        <Button size="sm" variant="ghost" @click="actions.edit(internalCourse)">
+          <Pencil class="w-3 h-3 mr-2" />
+          Edit
+        </Button>
+
+        <Button
+          size="sm"
+          variant="ghost"
+          class="hover:text-red-500"
+          @click="actions.destroy(internalCourse)"
+        >
+          <Trash2 class="w-3 h-3 mr-2" />
+          Delete
+        </Button>
+      </div>
     </div>
 
     <div class="px-4">
@@ -38,5 +57,7 @@ watchEffect(() => (internalModules.value = structuredClone(toRaw(props.modules))
         :course="internalCourse"
       />
     </div>
+
+    <CourseActions ref="actions" :organization="organization" />
   </div>
 </template>

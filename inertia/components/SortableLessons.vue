@@ -27,15 +27,15 @@ const urlPrefix = computed(() => `/courses/${props.course.id}/modules/${module.v
 
 const { form, dialog, destroy, onSuccess } = useResourceActions<LessonDto>()({
   name: '',
-  accessLevelId: props.organization.accessLevels.at(0)?.id,
-  statusId: props.organization.statuses.at(0)?.id,
+  accessLevelId: props.organization.accessLevels.at(0)?.id.toString(),
+  statusId: props.organization.statuses.at(0)?.id.toString(),
 })
 
 function onEdit(resource: LessonDto) {
   dialog.value.open(resource, {
     name: resource.name,
-    accessLevelId: resource.accessLevelId,
-    statusId: resource.statusId,
+    accessLevelId: resource.accessLevelId.toString(),
+    statusId: resource.statusId.toString(),
   })
 }
 
@@ -61,7 +61,7 @@ function onSubmit() {
   >
     <template #item="{ element: lesson }">
       <li
-        class="flex items-center justify-between rounded-md px-2 py-2 hover:bg-slate-50 duration-300 group draggable relative"
+        class="flex items-center justify-between rounded-md px-2 py-1.5 hover:bg-slate-50 duration-300 group draggable relative"
       >
         <div class="flex items-center gap-4">
           <SortHandle />
@@ -73,10 +73,10 @@ function onSubmit() {
             <Button
               variant="ghost"
               size="icon"
-              class="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8"
+              class="absolute left-0 top-1/2 -translate-y-1/2 w-7 h-7"
               @click="onEdit(lesson)"
             >
-              <Pencil class="w-4 h-4" />
+              <Pencil class="w-3.5 h-3.5" />
             </Button>
           </div>
         </div>
@@ -143,14 +143,18 @@ function onSubmit() {
       <SelectItem
         v-for="level in props.organization.accessLevels"
         :key="level.id"
-        :value="level.id"
+        :value="level.id.toString()"
       >
         {{ level.name }}
       </SelectItem>
     </FormInput>
 
     <FormInput type="select" label="Status" v-model="form.statusId" :errors="form.errors.statusId">
-      <SelectItem v-for="status in props.organization.statuses" :key="status.id" :value="status.id">
+      <SelectItem
+        v-for="status in props.organization.statuses"
+        :key="status.id"
+        :value="status.id.toString()"
+      >
         {{ status.name }}
       </SelectItem>
     </FormInput>

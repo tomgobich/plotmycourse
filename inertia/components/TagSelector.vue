@@ -42,8 +42,8 @@ const internalValue = computed({
           class="opacity-25 absolute w-full h-full left-0 top-0 rounded"
           :style="{ backgroundColor: selected?.color }"
         />
-        <div class="text-sm flex items-center gap-2 px-2.5 py-1 -my-1 rounded-full relative z-10">
-          <span class="w-4 h-4 rounded-full" :style="{ backgroundColor: selected?.color }" />
+        <div class="text-xs flex items-center gap-2 px-2.5 py-1 -my-1 rounded-full relative z-10">
+          <span class="w-3 h-3 rounded-full" :style="{ backgroundColor: selected?.color }" />
           <span class="opacity-75">{{ selected?.name ?? 'No Match Found' }}</span>
         </div>
       </div>

@@ -1,24 +1,19 @@
 <script setup lang="ts">
 import { EllipsisVertical, Plus } from 'lucide-vue-next'
-import { watch, ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 import { Link } from '@inertiajs/vue3'
 import CourseDto from '#dtos/course'
+import OrganizationDto from '#dtos/organization'
 
 const props = defineProps<{
+  organization: OrganizationDto
   courses: CourseDto[]
 }>()
 
 const courses = ref(props.courses)
+const actions = ref()
 
-const destroy = ref<{ open: boolean; course?: CourseDto }>({
-  open: false,
-  course: undefined,
-})
-
-watch(
-  () => props.courses,
-  (value) => (courses.value = value)
-)
+watchEffect(() => (courses.value = props.courses))
 </script>
 
 <template>
@@ -26,7 +21,7 @@ watch(
     <div class="flex items-center justify-between mb-3">
       <h1 class="text-2xl font-bold px-4">Courses</h1>
 
-      <Button size="sm" variant="ghost">
+      <Button size="sm" variant="ghost" @click="actions.create()">
         <Plus class="w-3 h-3 mr-2" />
         Add Course
       </Button>
@@ -55,19 +50,21 @@ watch(
           <TableCell>
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <EllipsisVertical />
+                <EllipsisVertical class="w-4 h-4" />
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem :as="Link" :href="`/courses/${course.id}`">
                   Open
                 </DropdownMenuItem>
-                <DropdownMenuItem>Edit</DropdownMenuItem>
-                <DropdownMenuItem>Delete</DropdownMenuItem>
+                <DropdownMenuItem @click="actions.edit(course)">Edit</DropdownMenuItem>
+                <DropdownMenuItem @click="actions.destroy(course)">Delete</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </TableCell>
         </TableRow>
       </TableBody>
     </Table>
+
+    <CourseActions ref="actions" :organization="organization" />
   </div>
 </template>

@@ -78,10 +78,10 @@ function onSubmit() {
               <Button
                 variant="ghost"
                 size="icon"
-                class="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8"
+                class="absolute left-0 top-1/2 -translate-y-1/2 w-7 h-7"
                 @click="onEdit(module)"
               >
-                <Pencil class="w-4 h-4" />
+                <Pencil class="w-3.5 h-3.5" />
               </Button>
             </div>
           </div>
