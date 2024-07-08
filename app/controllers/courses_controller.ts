@@ -1,9 +1,12 @@
+import DestroyCourse from '#actions/courses/destroy_course'
 import GetCourse from '#actions/courses/get_course'
 import GetCourses from '#actions/courses/get_courses'
+import StoreCourse from '#actions/courses/store_course'
+import UpdateCourse from '#actions/courses/update_course'
 import UpdateCourseTag from '#actions/courses/update_course_tag'
 import CourseDto from '#dtos/course'
 import ModuleDto from '#dtos/module'
-import { coursePatchTagValidator } from '#validators/course'
+import { coursePatchTagValidator, courseValidator } from '#validators/course'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class CoursesController {
@@ -19,14 +22,18 @@ export default class CoursesController {
   }
 
   /**
-   * Display form to create a new record
-   */
-  async create({}: HttpContext) {}
-
-  /**
    * Handle form submission for the create action
    */
-  async store({ request }: HttpContext) {}
+  async store({ request, response, organization }: HttpContext) {
+    const data = await request.validateUsing(courseValidator)
+
+    const course = await StoreCourse.handle({
+      organization,
+      data,
+    })
+
+    return response.redirect().toRoute('courses.show', { id: course.id })
+  }
 
   /**
    * Show individual record
@@ -44,14 +51,19 @@ export default class CoursesController {
   }
 
   /**
-   * Edit individual record
-   */
-  async edit({ params }: HttpContext) {}
-
-  /**
    * Handle form submission for the edit action
    */
-  async update({ params, request }: HttpContext) {}
+  async update({ params, request, response, organization }: HttpContext) {
+    const data = await request.validateUsing(courseValidator)
+
+    await UpdateCourse.handle({
+      id: params.id,
+      organization,
+      data,
+    })
+
+    return response.redirect().back()
+  }
 
   /**
    * Handle tag patch for status, difficulty, or access level
@@ -71,5 +83,12 @@ export default class CoursesController {
   /**
    * Delete record
    */
-  async destroy({ params }: HttpContext) {}
+  async destroy({ params, response, organization }: HttpContext) {
+    await DestroyCourse.handle({
+      id: params.id,
+      organization,
+    })
+
+    return response.redirect().toRoute('courses.index')
+  }
 }

@@ -1,8 +1,16 @@
+import Organization from '#models/organization'
 
-type Params = {}
+type Params = {
+  organization: Organization
+  id: number
+}
 
 export default class DestroyCourse {
-  static async handle({}: Params) {
-    // do stuff
+  static async handle({ organization, id }: Params) {
+    const course = await organization.findCourse(id)
+
+    await course.delete()
+
+    return course
   }
 }
