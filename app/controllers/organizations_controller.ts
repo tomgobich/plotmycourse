@@ -1,50 +1,75 @@
-import GetActiveForUser from '#actions/organizations/get_active_for_user'
-import { activeCookieName } from '#config/organization'
+import DestroyOrganization from '#actions/organizations/destroy_organization'
+import GetActiveOrganization from '#actions/organizations/http/get_active_organization'
+import SetActiveOrganization from '#actions/organizations/http/set_active_organization'
+import StoreOrganization from '#actions/organizations/store_organization'
+import UpdateOrganization from '#actions/organizations/update_organization'
+import { organizationValidator } from '#validators/organization'
 import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
 
+@inject()
 export default class OrganizationsController {
-  /**
-   * Display a list of resource
-   */
-  async index({}: HttpContext) {}
+  constructor(
+    protected getActiveOrganization: GetActiveOrganization,
+    protected setActiveOrganization: SetActiveOrganization
+  ) {}
 
-  /**
-   * Display form to create a new record
-   */
-  async create({}: HttpContext) {}
+  async create({ inertia }: HttpContext) {
+    return inertia.render('organizations/create')
+  }
 
   /**
    * Handle form submission for the create action
    */
-  async store({ request }: HttpContext) {}
+  async store({ request, response, auth }: HttpContext) {
+    const data = await request.validateUsing(organizationValidator)
+    const organization = await StoreOrganization.handle({
+      user: auth.user!,
+      data,
+    })
 
-  @inject()
-  async active({ response, params, auth }: HttpContext, getActiveForUser: GetActiveForUser) {
-    const organization = await getActiveForUser.handle(auth.user!, params.id)
+    this.setActiveOrganization.handle({ id: organization.id })
 
-    response.cookie(activeCookieName, organization.id)
+    return response.redirect().toRoute('courses.index')
+  }
+
+  async active({ response, params }: HttpContext) {
+    this.setActiveOrganization.handle({ id: params.id })
+
+    return response.redirect().toRoute('courses.index')
+  }
+
+  /**
+   * Handle form submission for the edit action
+   */
+  async update({ params, request, response, auth }: HttpContext) {
+    const data = await request.validateUsing(organizationValidator)
+
+    await UpdateOrganization.handle({
+      user: auth.user!,
+      id: params.id,
+      data,
+    })
 
     return response.redirect().back()
   }
 
   /**
-   * Show individual record
-   */
-  async show({ params }: HttpContext) {}
-
-  /**
-   * Edit individual record
-   */
-  async edit({ params }: HttpContext) {}
-
-  /**
-   * Handle form submission for the edit action
-   */
-  async update({ params, request }: HttpContext) {}
-
-  /**
    * Delete record
    */
-  async destroy({ params }: HttpContext) {}
+  async destroy(ctx: HttpContext) {
+    const destroyed = await DestroyOrganization.handle({
+      user: ctx.auth.user!,
+      id: ctx.params.id,
+    })
+
+    if (destroyed.id === ctx.organizationId) {
+      ctx.organizationId = undefined
+
+      // will fetch a default and set it as active
+      await this.getActiveOrganization.handle()
+    }
+
+    return ctx.response.redirect().toRoute('courses.index')
+  }
 }

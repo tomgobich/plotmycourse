@@ -10,14 +10,24 @@ const StatusesController = () => import('#controllers/statuses_controller')
 
 router
   .group(() => {
-    router.on('/').renderInertia('home', { version: 6 }).as('home').use(middleware.auth())
-
+    // we want this out here so we don't enforce an organization to exist
+    // and so we can redirect here when a user has no organizations
     router
       .group(() => {
+        router.get('/create', [OrganizationsController, 'create']).as('create')
+        router.post('/', [OrganizationsController, 'store']).as('store')
+        router.put('/:id', [OrganizationsController, 'update']).as('update')
         router.get('/:id', [OrganizationsController, 'active']).as('active')
+        router.delete('/:id', [OrganizationsController, 'destroy']).as('destroy')
       })
       .prefix('organizations')
       .as('organizations')
+  })
+  .use(middleware.auth())
+
+router
+  .group(() => {
+    router.on('/').renderInertia('home', { version: 6 }).as('home').use(middleware.auth())
 
     router
       .group(() => {

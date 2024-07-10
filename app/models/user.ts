@@ -35,4 +35,12 @@ export default class User extends compose(BaseModel, AuthFinder) {
     pivotTable: 'organization_users',
   })
   declare organizations: ManyToMany<typeof Organization>
+
+  async findOrganization(id: number) {
+    return (<User>this).related('organizations').query().where('organizations.id', id).firstOrFail()
+  }
+
+  getOrganizations() {
+    return (<User>this).related('organizations').query()
+  }
 }

@@ -59,6 +59,7 @@ declare module 'vue' {
     Input: typeof import('./inertia/components/ui/input/Input.vue')['default']
     Label: typeof import('./inertia/components/ui/label/Label.vue')['default']
     Navigation: typeof import('./inertia/components/Navigation.vue')['default']
+    OrganizationSelect: typeof import('./inertia/components/OrganizationSelect.vue')['default']
     Popover: typeof import('./inertia/components/ui/popover/Popover.vue')['default']
     PopoverContent: typeof import('./inertia/components/ui/popover/PopoverContent.vue')['default']
     PopoverTrigger: typeof import('./inertia/components/ui/popover/PopoverTrigger.vue')['default']

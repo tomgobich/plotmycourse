@@ -1,19 +1,11 @@
 <script setup lang="ts">
-import { Menu, ChevronsUpDown, Slash, Route } from 'lucide-vue-next'
+import { Menu, Slash, Route } from 'lucide-vue-next'
 import OrganizationDto from '#dtos/organization'
-import { ref } from 'vue'
-import { router } from '@inertiajs/vue3'
 
 const props = defineProps<{
   organization: OrganizationDto
   organizations: OrganizationDto[]
 }>()
-
-const organizationId = ref(props.organization.id.toString())
-
-function onOrganizationChange(activeId: string) {
-  router.get(`/organizations/${activeId}`)
-}
 </script>
 
 <template>
@@ -26,33 +18,7 @@ function onOrganizationChange(activeId: string) {
     </a>
     <div class="flex items-center">
       <Slash class="text-slate-300 w-4 h-4 -rotate-12" />
-      <DropdownMenu>
-        <DropdownMenuTrigger as-child>
-          <Button variant="ghost">
-            {{ organization.name }}
-            <ChevronsUpDown class="w-4 h-4 ml-2" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent class="w-56">
-          <DropdownMenuLabel>Your Organizations ({{ organizations.length }})</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuRadioGroup
-            v-model="organizationId"
-            @update:modelValue="onOrganizationChange"
-          >
-            <DropdownMenuRadioItem
-              v-for="org in organizations"
-              :key="org.id"
-              :value="org.id.toString()"
-            >
-              {{ org.name }}
-            </DropdownMenuRadioItem>
-          </DropdownMenuRadioGroup>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem> Edit {{ organization.name }} </DropdownMenuItem>
-          <DropdownMenuItem>Add Organization</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <OrganizationSelect :organization="organization" :organizations="organizations" />
       <Slash class="text-slate-300 w-4 h-4 -rotate-12" />
     </div>
     <Link href="/" class="text-muted-foreground transition-colors hover:text-foreground">
