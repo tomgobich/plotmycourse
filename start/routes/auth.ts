@@ -1,7 +1,7 @@
-import LoginController from '#controllers/auth/login_controller'
-import LogoutController from '#controllers/auth/logout_controller'
-import RegisterController from '#controllers/auth/register_controller'
 import router from '@adonisjs/core/services/router'
+const LoginController = () => import('#controllers/auth/login_controller')
+const LogoutController = () => import('#controllers/auth/logout_controller')
+const RegisterController = () => import('#controllers/auth/register_controller')
 
 router.get('/login', [LoginController, 'show']).as('login.show')
 router.post('/login', [LoginController, 'store']).as('login.store')
