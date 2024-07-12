@@ -2,7 +2,7 @@
 import Sortable from 'vuedraggable'
 import ModuleDto from '#dtos/module'
 import OrganizationDto from '#dtos/organization'
-import { computed } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import { Plus, Pencil, EllipsisVertical } from 'lucide-vue-next'
 import { useResourceActions } from '~/composables/resource_actions'
 import LessonDto from '#dtos/lesson'
@@ -18,6 +18,8 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:modelValue', 'end'])
 
+const dialogFocusEl = ref()
+
 const module = computed({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value),
@@ -31,12 +33,18 @@ const { form, dialog, destroy, onSuccess } = useResourceActions<LessonDto>()({
   statusId: props.organization.statuses.at(0)?.id.toString(),
 })
 
+function onCreate() {
+  dialog.value.open()
+  nextTick(() => dialogFocusEl.value.inputEl.$el.focus())
+}
+
 function onEdit(resource: LessonDto) {
   dialog.value.open(resource, {
     name: resource.name,
     accessLevelId: resource.accessLevelId.toString(),
     statusId: resource.statusId.toString(),
   })
+  nextTick(() => dialogFocusEl.value.inputEl.$el.focus())
 }
 
 function onSubmit() {
@@ -113,7 +121,7 @@ function onSubmit() {
 
   <ul>
     <li class="px-2 ml-[3ch]">
-      <Button variant="ghost" size="sm" class="flex gap-2" @click="dialog.open()">
+      <Button variant="ghost" size="sm" class="flex gap-2" @click="onCreate">
         <Plus class="w-4 h-4" />
         Add Lesson
       </Button>
@@ -128,6 +136,7 @@ function onSubmit() {
     @submit="onSubmit"
   >
     <FormInput
+      ref="dialogFocusEl"
       label="Name"
       v-model="form.name"
       :errors="form.errors.name"

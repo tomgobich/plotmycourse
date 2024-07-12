@@ -21,9 +21,6 @@ const props = defineProps<{
       <OrganizationSelect :organization="organization" :organizations="organizations" />
       <Slash class="text-slate-300 w-4 h-4 -rotate-12" />
     </div>
-    <Link href="/" class="text-muted-foreground transition-colors hover:text-foreground">
-      Dashboard
-    </Link>
     <Link href="/courses" class="text-muted-foreground transition-colors hover:text-foreground">
       Courses
     </Link>
@@ -56,7 +53,6 @@ const props = defineProps<{
           <Route class="h-6 w-6" />
           <span class="sr-only">PlotMyCourse</span>
         </a>
-        <a href="#" class="text-muted-foreground hover:text-foreground"> Dashboard </a>
         <a href="#" class="text-muted-foreground hover:text-foreground"> Courses </a>
         <a href="#" class="text-muted-foreground hover:text-foreground"> Difficulties </a>
         <a href="#" class="text-muted-foreground hover:text-foreground"> Statuses </a>

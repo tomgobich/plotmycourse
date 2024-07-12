@@ -14,6 +14,6 @@ export default class LoginController {
 
     await webLogin.handle({ data })
 
-    return response.redirect().toRoute('home')
+    return response.redirect().toRoute('courses.index')
   }
 }

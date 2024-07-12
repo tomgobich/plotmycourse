@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -9,6 +9,7 @@ const props = withDefaults(
     label: string
     errors?: string[]
     disabled?: boolean
+    autofocus?: boolean
   }>(),
   {
     type: 'string',
@@ -17,10 +18,14 @@ const props = withDefaults(
 
 const emits = defineEmits(['update:modelValue'])
 
+const inputEl = ref()
+
 const internalValue = computed({
   get: () => props.modelValue,
   set: (value) => emits('update:modelValue', value),
 })
+
+defineExpose({ inputEl })
 </script>
 
 <template>
@@ -35,14 +40,19 @@ const internalValue = computed({
           :disabled="disabled"
         />
         <Input
-          v-if="type === 'color'"
+          ref="inputEl"
           v-model="internalValue"
           class="pl-10"
           :disabled="disabled"
           :placeholder="placeholder"
         />
       </div>
-      <Select v-else-if="type === 'select'" v-model="internalValue">
+      <Select
+        v-else-if="type === 'select'"
+        v-model="internalValue"
+        ref="inputEl"
+        :disabled="disabled"
+      >
         <SelectTrigger>
           <slot name="trigger">
             <SelectValue :placeholder="placeholder" />
@@ -52,7 +62,14 @@ const internalValue = computed({
           <slot />
         </SelectContent>
       </Select>
-      <Input v-else v-model="internalValue" :type="type" :placeholder="placeholder" />
+      <Input
+        v-else
+        v-model="internalValue"
+        ref="inputEl"
+        :type="type"
+        :disabled="disabled"
+        :placeholder="placeholder"
+      />
     </Label>
     <div v-show="errors" class="text-red-500 text-sm">
       {{ errors?.join(',') }}

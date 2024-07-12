@@ -8,6 +8,8 @@ const DifficultiesController = () => import('#controllers/difficulties_controlle
 const OrganizationsController = () => import('#controllers/organizations_controller')
 const StatusesController = () => import('#controllers/statuses_controller')
 
+router.on('/').render('landing').as('landing')
+
 router
   .group(() => {
     // we want this out here so we don't enforce an organization to exist
@@ -27,8 +29,6 @@ router
 
 router
   .group(() => {
-    router.on('/').renderInertia('home', { version: 6 }).as('home').use(middleware.auth())
-
     router
       .group(() => {
         router.get('/', [DifficultiesController, 'index']).as('index')

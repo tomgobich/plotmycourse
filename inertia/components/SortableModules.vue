@@ -2,7 +2,7 @@
 import Sortable from 'vuedraggable'
 import ModuleDto from '#dtos/module'
 import Organization from '#models/organization'
-import { computed, toRaw } from 'vue'
+import { computed, nextTick, ref, toRaw } from 'vue'
 import { Plus, Pencil, EllipsisVertical } from 'lucide-vue-next'
 import { useResourceActions } from '~/composables/resource_actions'
 import CourseDto from '#dtos/course'
@@ -16,6 +16,8 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:modelValue'])
 
+const dialogFocusEl = ref()
+
 const modules = computed({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value),
@@ -28,11 +30,17 @@ const { form, dialog, destroy, onSuccess } = useResourceActions<ModuleDto>()({
   statusId: props.organization.statuses.at(0)?.id,
 })
 
+function onCreate() {
+  dialog.value.open()
+  nextTick(() => dialogFocusEl.value.inputEl.$el.focus())
+}
+
 function onEdit(resource: ModuleDto) {
   dialog.value.open(resource, {
     name: resource.name,
     statusId: resource.statusId,
   })
+  nextTick(() => dialogFocusEl.value.inputEl.$el.focus())
 }
 
 function onModuleOrderChange() {
@@ -115,7 +123,7 @@ function onSubmit() {
     </template>
   </Sortable>
 
-  <Button variant="ghost" size="sm" class="flex gap-2" @click="dialog.open()">
+  <Button variant="ghost" size="sm" class="flex gap-2" @click="onCreate">
     <Plus class="w-4 h-4" />
     Add Module
   </Button>
@@ -128,6 +136,7 @@ function onSubmit() {
     @submit="onSubmit"
   >
     <FormInput
+      ref="dialogFocusEl"
       label="Name"
       v-model="form.name"
       :errors="form.errors.name"

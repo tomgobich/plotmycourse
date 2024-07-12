@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { CircleUser, Search } from 'lucide-vue-next'
+import { CircleUser } from 'lucide-vue-next'
 import OrganizationDto from '#dtos/organization'
+import UserDto from '#dtos/user'
 
 const props = defineProps<{
   organization: OrganizationDto
   organizations: OrganizationDto[]
+  user: UserDto
 }>()
 </script>
 
@@ -14,17 +16,8 @@ const props = defineProps<{
       class="sticky top-0 z-50 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6"
     >
       <Navigation v-bind="props" />
-      <div class="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-        <form class="ml-auto flex-1 sm:flex-initial">
-          <div class="relative">
-            <Search class="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Search products..."
-              class="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
-            />
-          </div>
-        </form>
+
+      <div class="flex w-full items-center justify-end">
         <DropdownMenu>
           <DropdownMenuTrigger as-child>
             <Button variant="secondary" size="icon" class="rounded-full">
@@ -33,10 +26,7 @@ const props = defineProps<{
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuItem>Support</DropdownMenuItem>
+            <DropdownMenuLabel>{{ user.email }}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem as-child>
               <Link method="post" href="/logout">Logout</Link>

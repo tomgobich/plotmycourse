@@ -2,10 +2,13 @@
 import CourseDto from '#dtos/course'
 import OrganizationDto from '#dtos/organization'
 import { useResourceActions } from '~/composables/resource_actions'
+import { ref, nextTick } from 'vue'
 
 const props = defineProps<{
   organization: OrganizationDto
 }>()
+
+const dialogFocusEl = ref()
 
 const { form, dialog, destroy, onSuccess } = useResourceActions<CourseDto>()({
   name: '',
@@ -26,6 +29,7 @@ function onSubmit() {
 
 function onCreate() {
   dialog.value.open()
+  nextTick(() => dialogFocusEl.value.inputEl.$el.focus())
 }
 
 function onEdit(course: CourseDto) {
@@ -35,6 +39,7 @@ function onEdit(course: CourseDto) {
     difficultyId: course.difficultyId.toString(),
     accessLevelId: course.accessLevelId.toString(),
   })
+  nextTick(() => dialogFocusEl.value.inputEl.$el.focus())
 }
 
 function onDestroy(course: CourseDto) {
@@ -57,6 +62,7 @@ defineExpose({
     @submit="onSubmit"
   >
     <FormInput
+      ref="dialogFocusEl"
       label="Name"
       v-model="form.name"
       :errors="form.errors.name"

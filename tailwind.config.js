@@ -7,10 +7,8 @@ module.exports = {
   prefix: '',
 
   content: [
-    './inertia/pages/**/*.{ts,tsx,vue}',
-    './inertia/components/**/*.{ts,tsx,vue}',
-    './inertia/app/**/*.{ts,tsx,vue}',
-    './inertia/layouts/**/*.{ts,tsx,vue}',
+    './inertia/{pages,components,app,layouts}/**/*.{ts,tsx,vue}',
+    './resources/views/**/*.edge',
   ],
 
   theme: {
