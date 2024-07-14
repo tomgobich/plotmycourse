@@ -7,6 +7,7 @@ import UpdateCourseTag from '#actions/courses/update_course_tag'
 import CourseDto from '#dtos/course'
 import ModuleDto from '#dtos/module'
 import { coursePatchTagValidator, courseValidator } from '#validators/course'
+import { withOrganizationMetaData } from '#validators/helpers/organization'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class CoursesController {
@@ -25,7 +26,10 @@ export default class CoursesController {
    * Handle form submission for the create action
    */
   async store({ request, response, organization }: HttpContext) {
-    const data = await request.validateUsing(courseValidator)
+    const data = await request.validateUsing(
+      courseValidator,
+      withOrganizationMetaData(organization.id)
+    )
 
     const course = await StoreCourse.handle({
       organization,
@@ -54,7 +58,10 @@ export default class CoursesController {
    * Handle form submission for the edit action
    */
   async update({ params, request, response, organization }: HttpContext) {
-    const data = await request.validateUsing(courseValidator)
+    const data = await request.validateUsing(
+      courseValidator,
+      withOrganizationMetaData(organization.id)
+    )
 
     await UpdateCourse.handle({
       id: params.id,
@@ -69,7 +76,10 @@ export default class CoursesController {
    * Handle tag patch for status, difficulty, or access level
    */
   async tag({ params, request, response, organization }: HttpContext) {
-    const data = await request.validateUsing(coursePatchTagValidator)
+    const data = await request.validateUsing(
+      coursePatchTagValidator,
+      withOrganizationMetaData(organization.id)
+    )
 
     await UpdateCourseTag.handle({
       id: params.id,

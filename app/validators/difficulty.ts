@@ -1,4 +1,5 @@
 import vine from '@vinejs/vine'
+import { existsInOrganization, OrganizationMetData } from './helpers/organization.js'
 
 export const difficultyValidator = vine.compile(
   vine.object({
@@ -7,8 +8,8 @@ export const difficultyValidator = vine.compile(
   })
 )
 
-export const difficultyOrderValidator = vine.compile(
+export const difficultyOrderValidator = vine.withMetaData<OrganizationMetData>().compile(
   vine.object({
-    ids: vine.array(vine.number()),
+    ids: vine.array(vine.number().exists(existsInOrganization('difficulties'))),
   })
 )

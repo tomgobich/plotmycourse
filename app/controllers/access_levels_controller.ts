@@ -4,6 +4,7 @@ import UpdateAccessLevel from '#actions/access_levels/update_access_level'
 import UpdateAccessLevelOrder from '#actions/access_levels/update_access_level_order'
 import { accessLevelOrderValidate, accessLevelValidator } from '#validators/access_level'
 import type { HttpContext } from '@adonisjs/core/http'
+import { withOrganizationMetaData } from '#validators/helpers/organization'
 
 export default class AccessLevelsController {
   /**
@@ -33,7 +34,10 @@ export default class AccessLevelsController {
    * Update order of the access levels
    */
   async order({ request, response, organization }: HttpContext) {
-    const { ids } = await request.validateUsing(accessLevelOrderValidate)
+    const { ids } = await request.validateUsing(
+      accessLevelOrderValidate,
+      withOrganizationMetaData(organization.id)
+    )
 
     await UpdateAccessLevelOrder.handle({
       organization,
