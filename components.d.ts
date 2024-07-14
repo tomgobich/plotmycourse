@@ -8,6 +8,8 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AccessLevelFormDialog: typeof import('./inertia/components/AccessLevelFormDialog.vue')['default']
+    Alert: typeof import('./inertia/components/ui/alert/Alert.vue')['default']
+    AlertDescription: typeof import('./inertia/components/ui/alert/AlertDescription.vue')['default']
     AlertDialog: typeof import('./inertia/components/ui/alert-dialog/AlertDialog.vue')['default']
     AlertDialogAction: typeof import('./inertia/components/ui/alert-dialog/AlertDialogAction.vue')['default']
     AlertDialogCancel: typeof import('./inertia/components/ui/alert-dialog/AlertDialogCancel.vue')['default']
@@ -17,6 +19,7 @@ declare module 'vue' {
     AlertDialogHeader: typeof import('./inertia/components/ui/alert-dialog/AlertDialogHeader.vue')['default']
     AlertDialogTitle: typeof import('./inertia/components/ui/alert-dialog/AlertDialogTitle.vue')['default']
     AlertDialogTrigger: typeof import('./inertia/components/ui/alert-dialog/AlertDialogTrigger.vue')['default']
+    AlertTitle: typeof import('./inertia/components/ui/alert/AlertTitle.vue')['default']
     Badge: typeof import('./inertia/components/ui/badge/Badge.vue')['default']
     Button: typeof import('./inertia/components/ui/button/Button.vue')['default']
     Card: typeof import('./inertia/components/ui/card/Card.vue')['default']
