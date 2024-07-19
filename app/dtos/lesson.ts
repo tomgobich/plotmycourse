@@ -12,7 +12,7 @@ export default class LessonDto {
   declare name: string
   declare notes: string | null
   declare order: number
-  declare archivedAt: string | null
+  declare publishAt: string | null
   declare createdAt: string
   declare updatedAt: string
   declare organization: OrganizationDto | null
@@ -29,7 +29,7 @@ export default class LessonDto {
     this.name = lesson.name
     this.notes = lesson.notes
     this.order = lesson.order
-    this.archivedAt = lesson.archivedAt?.toISO()!
+    this.publishAt = lesson.publishAt?.toISO()!
     this.createdAt = lesson.createdAt.toISO()!
     this.updatedAt = lesson.updatedAt.toISO()!
     this.organization = lesson.organization && new OrganizationDto(lesson.organization)

@@ -4,8 +4,8 @@ import Module from '#models/module'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import Status from './status.js'
 import AccessLevel from './access_level.js'
-import { compose } from "@adonisjs/core/helpers";
-import { WithOrganization } from "#models/mixins/with_organization";
+import { compose } from '@adonisjs/core/helpers'
+import { WithOrganization } from '#models/mixins/with_organization'
 
 export default class Lesson extends compose(BaseModel, WithOrganization) {
   @column({ isPrimary: true })
@@ -30,7 +30,7 @@ export default class Lesson extends compose(BaseModel, WithOrganization) {
   declare order: number
 
   @column.dateTime()
-  declare archivedAt: DateTime | null
+  declare publishAt: DateTime | null
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

@@ -12,7 +12,6 @@ export default class ModuleDto {
   declare name: string
   declare notes: string | null
   declare order: number
-  declare archivedAt: string | null
   declare createdAt: string
   declare updatedAt: string
   declare organization: OrganizationDto | null
@@ -29,7 +28,6 @@ export default class ModuleDto {
     this.name = module.name
     this.notes = module.notes
     this.order = module.order
-    this.archivedAt = module.archivedAt?.toISO()!
     this.createdAt = module.createdAt.toISO()!
     this.updatedAt = module.updatedAt.toISO()!
     this.organization = module.organization && new OrganizationDto(module.organization)

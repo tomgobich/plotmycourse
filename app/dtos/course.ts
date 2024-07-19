@@ -15,7 +15,6 @@ export default class CourseDto {
   declare name: string
   declare notes: string | null
   declare order: number
-  declare archivedAt: string | null
   declare createdAt: string
   declare updatedAt: string
   declare organization: OrganizationDto | null
@@ -36,7 +35,6 @@ export default class CourseDto {
     this.name = course.name
     this.notes = course.notes
     this.order = course.order
-    this.archivedAt = course.archivedAt?.toISO()!
     this.createdAt = course.createdAt.toISO()!
     this.updatedAt = course.updatedAt.toISO()!
     this.organization = course.organization && new OrganizationDto(course.organization)

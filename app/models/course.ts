@@ -7,8 +7,8 @@ import Module from './module.js'
 import Lesson from './lesson.js'
 import Status from '#models/status'
 import { ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
-import { compose } from "@adonisjs/core/helpers";
-import { WithOrganization } from "#models/mixins/with_organization";
+import { compose } from '@adonisjs/core/helpers'
+import { WithOrganization } from '#models/mixins/with_organization'
 
 export default class Course extends compose(BaseModel, WithOrganization) {
   serializeExtras = true
@@ -33,9 +33,6 @@ export default class Course extends compose(BaseModel, WithOrganization) {
 
   @column()
   declare order: number
-
-  @column.dateTime()
-  declare archivedAt: DateTime | null
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
