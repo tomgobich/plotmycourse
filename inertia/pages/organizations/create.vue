@@ -11,6 +11,11 @@ const form = useForm({
 </script>
 
 <template>
+  <AppHead
+    title="Create An Organization"
+    description="Create an organization to hold your courses"
+  />
+
   <div class="flex flex-col space-y-2">
     <h1 class="text-2xl font-semibold tracking-tight">Create An Organization</h1>
     <p class="text-sm text-muted-foreground">

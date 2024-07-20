@@ -4,9 +4,11 @@ import { Plus } from 'lucide-vue-next'
 import { watchEffect, ref } from 'vue'
 import { router } from '@inertiajs/vue3'
 import { useResourceActions } from '~/composables/resource_actions'
+import OrganizationDto from '../../../app/dtos/organization'
 
 const props = defineProps<{
   statuses: StatusDto[]
+  organization: OrganizationDto
 }>()
 
 const list = ref(props.statuses)
@@ -43,6 +45,8 @@ function onOrderUpdate() {
 </script>
 
 <template>
+  <AppHead title="Statuses" :description="`Manage the statuses of ${organization.name}`" />
+
   <div class="w-full max-w-2xl mx-auto bg-background border rounded-xl p-4">
     <div class="flex items-center justify-between mb-3">
       <h1 class="text-2xl font-bold px-4">Statuses</h1>

@@ -8,7 +8,7 @@ import { createInertiaApp, Link } from '@inertiajs/vue3'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 import AppLayout from '~/layouts/AppLayout.vue'
 
-const appName = import.meta.env.VITE_APP_NAME || 'AdonisJS'
+const appName = import.meta.env.VITE_APP_NAME || 'PlotMyCourse'
 
 createInertiaApp({
   progress: { color: '#5468FF' },

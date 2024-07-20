@@ -19,6 +19,7 @@ declare module 'vue' {
     AlertDialogTitle: typeof import('./inertia/components/ui/alert-dialog/AlertDialogTitle.vue')['default']
     AlertDialogTrigger: typeof import('./inertia/components/ui/alert-dialog/AlertDialogTrigger.vue')['default']
     AlertTitle: typeof import('./inertia/components/ui/alert/AlertTitle.vue')['default']
+    AppHead: typeof import('./inertia/components/AppHead.vue')['default']
     Badge: typeof import('./inertia/components/ui/badge/Badge.vue')['default']
     Button: typeof import('./inertia/components/ui/button/Button.vue')['default']
     Calendar: typeof import('./inertia/components/ui/v-calendar/Calendar.vue')['default']

@@ -20,6 +20,8 @@ watchEffect(() => (internalModules.value = structuredClone(toRaw(props.modules))
 </script>
 
 <template>
+  <AppHead :title="course.name" :description="`Manage your course ${course.name}`" />
+
   <div class="w-full max-w-screen-lg mx-auto bg-background border rounded-xl p-4">
     <div class="flex items-center justify-between mb-6">
       <h1 class="text-2xl font-bold px-4">{{ course.name }}</h1>

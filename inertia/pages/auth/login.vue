@@ -5,7 +5,7 @@ import { Loader, AlertCircle } from 'lucide-vue-next'
 
 defineOptions({ layout: AuthLayout })
 
-const props = defineProps<{
+defineProps<{
   exceptions: Record<string, string>
 }>()
 
@@ -16,6 +16,8 @@ const form = useForm({
 </script>
 
 <template>
+  <AppHead title="Login" description="Login to your PlotMyCourse account" />
+
   <div class="flex flex-col space-y-2">
     <h1 class="text-2xl font-semibold tracking-tight">Login</h1>
     <p class="text-sm text-muted-foreground">

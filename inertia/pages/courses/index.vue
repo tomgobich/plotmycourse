@@ -17,6 +17,8 @@ watchEffect(() => (courses.value = props.courses))
 </script>
 
 <template>
+  <AppHead title="Courses" :description="`Manage the courses of ${organization.name}`" />
+
   <div class="w-full max-w-screen-xl mx-auto bg-background border rounded-xl p-4">
     <div class="flex items-center justify-between mb-3">
       <h1 class="text-2xl font-bold px-4">Courses</h1>
