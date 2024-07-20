@@ -10,6 +10,6 @@ export const difficultyValidator = vine.compile(
 
 export const difficultyOrderValidator = vine.withMetaData<OrganizationMetData>().compile(
   vine.object({
-    ids: vine.array(vine.number().exists(existsInOrganization('difficulties'))),
+    ids: vine.array(vine.number()),
   })
 )

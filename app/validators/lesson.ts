@@ -37,8 +37,8 @@ export const lessonOrderValidator = vine
     vine.object({
       modules: vine.array(
         vine.object({
-          id: vine.number().exists(existsInCourse('modules')),
-          lessons: vine.array(vine.number().exists(existsInOrganization('lessons'))),
+          id: vine.number(),
+          lessons: vine.array(vine.number()),
         })
       ),
     })

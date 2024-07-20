@@ -10,6 +10,6 @@ export const statusValidator = vine.compile(
 
 export const statusOrderValidator = vine.withMetaData<OrganizationMetData>().compile(
   vine.object({
-    ids: vine.array(vine.number().exists(existsInOrganization('statuses'))),
+    ids: vine.array(vine.number()),
   })
 )

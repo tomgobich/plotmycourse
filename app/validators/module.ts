@@ -17,6 +17,6 @@ export const modulePatchTagValidator = vine.withMetaData<OrganizationMetData>().
 
 export const moduleOrderValidator = vine.withMetaData<CourseMetaData>().compile(
   vine.object({
-    ids: vine.array(vine.number().exists(existsInCourse('modules'))),
+    ids: vine.array(vine.number()),
   })
 )

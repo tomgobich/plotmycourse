@@ -10,6 +10,6 @@ export const accessLevelValidator = vine.compile(
 
 export const accessLevelOrderValidate = vine.withMetaData<OrganizationMetData>().compile(
   vine.object({
-    ids: vine.array(vine.number().exists(existsInOrganization('access_levels'))),
+    ids: vine.array(vine.number()),
   })
 )
