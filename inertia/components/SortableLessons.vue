@@ -3,12 +3,20 @@ import Sortable from 'vuedraggable'
 import ModuleDto from '#dtos/module'
 import OrganizationDto from '#dtos/organization'
 import { computed, nextTick, ref } from 'vue'
-import { Plus, Pencil, EllipsisVertical } from 'lucide-vue-next'
+import { Plus, Pencil, EllipsisVertical, CalendarClock } from 'lucide-vue-next'
 import { useResourceActions } from '~/composables/resource_actions'
 import LessonDto from '#dtos/lesson'
 import CourseDto from '#dtos/course'
 import { Link } from '@inertiajs/vue3'
 import SelectItem from './ui/select/SelectItem.vue'
+import { DateTime } from 'luxon'
+
+type LessonForm = {
+  name: string
+  publishAt: string | null
+  accessLevelId?: string
+  statusId?: string
+}
 
 const props = defineProps<{
   organization: OrganizationDto
@@ -19,6 +27,7 @@ const props = defineProps<{
 const emit = defineEmits(['update:modelValue', 'end'])
 
 const dialogFocusEl = ref()
+const userZone = DateTime.now().zoneName
 
 const module = computed({
   get: () => props.modelValue,
@@ -27,8 +36,9 @@ const module = computed({
 
 const urlPrefix = computed(() => `/courses/${props.course.id}/modules/${module.value.id}`)
 
-const { form, dialog, destroy, onSuccess } = useResourceActions<LessonDto>()({
+const { form, dialog, destroy, onSuccess } = useResourceActions<LessonDto>()<LessonForm>({
   name: '',
+  publishAt: '',
   accessLevelId: props.organization.accessLevels.at(0)?.id.toString(),
   statusId: props.organization.statuses.at(0)?.id.toString(),
 })
@@ -41,6 +51,7 @@ function onCreate() {
 function onEdit(resource: LessonDto) {
   dialog.value.open(resource, {
     name: resource.name,
+    publishAt: resource.publishAt,
     accessLevelId: resource.accessLevelId.toString(),
     statusId: resource.statusId.toString(),
   })
@@ -76,7 +87,15 @@ function onSubmit() {
           <span class="text-slate-400 slashed-zero w-[3ch]"
             >{{ module.order }}.{{ lesson.order }}</span
           >
-          <span>{{ lesson.name }}</span>
+          <span>
+            {{ lesson.name }}
+          </span>
+
+          <span v-if="lesson.publishAt" class="text-slate-400 text-xs flex items-center gap-2">
+            <CalendarClock class="w-3 h-3" />
+            {{ DateTime.fromISO(lesson.publishAt, { zone: 'UTC' }).setZone(userZone).toRelative() }}
+          </span>
+
           <div class="opacity-0 group-hover:opacity-100 duration-300 ml-2 relative">
             <Button
               variant="ghost"
@@ -142,6 +161,10 @@ function onSubmit() {
       :errors="form.errors.name"
       placeholder="My Cool Lesson"
     />
+
+    <FormInput type="group" label="Publish At" :errors="form.errors.publishAt">
+      <DatePicker v-model="form.publishAt" />
+    </FormInput>
 
     <FormInput
       type="select"

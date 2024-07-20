@@ -1,10 +1,16 @@
 import vine from '@vinejs/vine'
 import { existsInOrganization, OrganizationMetData } from './helpers/organization.js'
 import { existsInCourse } from './helpers/course.js'
+import { DateTime } from 'luxon'
 
 export const lessonValidator = vine.withMetaData<OrganizationMetData>().compile(
   vine.object({
     name: vine.string().maxLength(150),
+    publishAt: vine
+      .date({ formats: { utc: true } })
+      .nullable()
+      .optional()
+      .transform((value) => (value ? DateTime.fromJSDate(value) : null)),
     accessLevelId: vine.number().exists(existsInOrganization('access_levels')),
     statusId: vine.number().exists(existsInOrganization('statuses')),
   })

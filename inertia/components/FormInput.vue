@@ -62,6 +62,7 @@ defineExpose({ inputEl })
           <slot />
         </SelectContent>
       </Select>
+      <slot v-else-if="type === 'group'" />
       <Input
         v-else
         v-model="internalValue"
