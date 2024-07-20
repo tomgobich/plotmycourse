@@ -9,16 +9,13 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:modelValue'])
 
-const userZone = DateTime.now().zoneName
 const date = computed({
   get: () => {
     if (!props.modelValue) return null
-    return DateTime.fromISO(props.modelValue, { zone: 'UTC' }).setZone(userZone).toJSDate()
+    return DateTime.fromISO(props.modelValue).toJSDate()
   },
   set: (value) => {
-    const date = value
-      ? DateTime.fromJSDate(value, { zone: userZone }).setZone('UTC').toISO()
-      : null
+    const date = value ? DateTime.fromJSDate(value).toISO() : null
     emit('update:modelValue', date)
   },
 })
@@ -33,9 +30,7 @@ const date = computed({
       >
         <CalendarIcon class="mr-2 h-4 w-4" />
         <span>
-          {{
-            date ? DateTime.fromJSDate(date).toLocaleString(DateTime.DATETIME_FULL) : 'Pick a date'
-          }}
+          {{ date ? DateTime.fromJSDate(date) : 'Pick a date' }}
         </span>
       </Button>
     </PopoverTrigger>

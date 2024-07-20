@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useForm, Link } from '@inertiajs/vue3'
+import { Info } from 'lucide-vue-next'
 import AuthLayout from '~/layouts/AuthLayout.vue'
 
 defineOptions({ layout: AuthLayout })
@@ -18,33 +19,36 @@ const form = useForm({
     </p>
   </div>
 
-  <div class="grid gap-6">
+  <Alert>
+    <Info class="h-4 w-4" />
+    <AlertTitle>Registration coming soon</AlertTitle>
+    <AlertDescription>
+      This application is still in development. Registration will be open soon, thanks for your
+      patience.
+    </AlertDescription>
+  </Alert>
+
+  <div class="hidden grid gap-6">
     <form @submit.prevent="form.post('/register')">
       <div class="grid gap-3">
-        <div class="grid gap-1">
-          <Label for="email"> Email </Label>
-          <Input
-            id="email"
-            v-model="form.email"
-            placeholder="name@example.com"
-            type="email"
-            auto-capitalize="none"
-            auto-complete="email"
-            auto-correct="off"
-            :disabled="form.processing"
-          />
-        </div>
-        <div class="grid gap-1">
-          <Label for="password"> Password </Label>
-          <Input
-            id="password"
-            v-model="form.password"
-            type="password"
-            auto-capitalize="none"
-            auto-correct="off"
-            :disabled="form.processing"
-          />
-        </div>
+        <FormInput
+          label="Email"
+          type="email"
+          name="email"
+          v-model="form.email"
+          :errors="form.errors.email"
+          :disabled="form.processing"
+        />
+
+        <FormInput
+          label="Password"
+          type="password"
+          name="password"
+          v-model="form.password"
+          :errors="form.errors.password"
+          :disabled="form.processing"
+        />
+
         <Button :disabled="form.processing">
           <Loader v-if="form.processing" class="mr-2 h-4 w-4 animate-spin" />
           Register
