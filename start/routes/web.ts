@@ -90,7 +90,6 @@ router
     router
       .group(() => {
         router.post('/', [LessonsController, 'store']).as('store')
-        router.get('/:id', [LessonsController, 'show']).as('show')
         router.put('/:id', [LessonsController, 'update']).as('update')
         router.patch('/:id/tags', [LessonsController, 'tag']).as('tags')
         router.delete('/:id', [LessonsController, 'destroy']).as('destroy')
