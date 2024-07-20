@@ -1,5 +1,4 @@
 import vine from '@vinejs/vine'
-import { existsInOrganization, OrganizationMetData } from './helpers/organization.js'
 
 export const statusValidator = vine.compile(
   vine.object({
@@ -8,7 +7,7 @@ export const statusValidator = vine.compile(
   })
 )
 
-export const statusOrderValidator = vine.withMetaData<OrganizationMetData>().compile(
+export const statusOrderValidator = vine.compile(
   vine.object({
     ids: vine.array(vine.number()),
   })

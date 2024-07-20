@@ -66,12 +66,7 @@ export default class LessonsController {
    * Update order of modules
    */
   async order({ params, request, response, organization }: HttpContext) {
-    const data = await request.validateUsing(lessonOrderValidator, {
-      meta: {
-        organizationId: organization.id,
-        courseId: params.courseId,
-      },
-    })
+    const data = await request.validateUsing(lessonOrderValidator)
 
     await UpdateLessonOrder.handle({
       courseId: params.courseId,

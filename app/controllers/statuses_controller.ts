@@ -5,7 +5,6 @@ import UpdateStatusOrder from '#actions/statuses/update_status_order'
 import StatusDto from '#dtos/status'
 import { statusOrderValidator, statusValidator } from '#validators/status'
 import type { HttpContext } from '@adonisjs/core/http'
-import { withOrganizationMetaData } from '#validators/helpers/organization'
 
 export default class StatusesController {
   /**
@@ -36,10 +35,7 @@ export default class StatusesController {
    * Edit individual record
    */
   async order({ request, response, organization }: HttpContext) {
-    const { ids } = await request.validateUsing(
-      statusOrderValidator,
-      withOrganizationMetaData(organization.id)
-    )
+    const { ids } = await request.validateUsing(statusOrderValidator)
 
     await UpdateStatusOrder.handle({
       organization,

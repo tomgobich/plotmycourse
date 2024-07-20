@@ -5,7 +5,6 @@ import UpdateDifficultyOrder from '#actions/difficulties/update_difficulty_order
 import DifficultyDto from '#dtos/difficulty'
 import { difficultyOrderValidator, difficultyValidator } from '#validators/difficulty'
 import type { HttpContext } from '@adonisjs/core/http'
-import { withOrganizationMetaData } from '#validators/helpers/organization'
 
 export default class DifficultiesController {
   /**
@@ -48,10 +47,7 @@ export default class DifficultiesController {
    * Handle reordering of difficulties
    */
   async order({ request, response, organization }: HttpContext) {
-    const { ids } = await request.validateUsing(
-      difficultyOrderValidator,
-      withOrganizationMetaData(organization.id)
-    )
+    const { ids } = await request.validateUsing(difficultyOrderValidator)
 
     await UpdateDifficultyOrder.handle({
       organization,

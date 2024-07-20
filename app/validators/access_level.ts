@@ -1,5 +1,4 @@
 import vine from '@vinejs/vine'
-import { existsInOrganization, OrganizationMetData } from './helpers/organization.js'
 
 export const accessLevelValidator = vine.compile(
   vine.object({
@@ -8,7 +7,7 @@ export const accessLevelValidator = vine.compile(
   })
 )
 
-export const accessLevelOrderValidate = vine.withMetaData<OrganizationMetData>().compile(
+export const accessLevelOrderValidate = vine.compile(
   vine.object({
     ids: vine.array(vine.number()),
   })

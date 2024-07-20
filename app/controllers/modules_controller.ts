@@ -3,7 +3,6 @@ import StoreModule from '#actions/modules/store_module'
 import UpdateModule from '#actions/modules/update_module'
 import UpdateModuleOrder from '#actions/modules/update_module_order'
 import UpdateModuleTag from '#actions/modules/update_module_tag'
-import { withCourseMetaData } from '#validators/helpers/course'
 import { withOrganizationMetaData } from '#validators/helpers/organization'
 import { moduleOrderValidator, modulePatchTagValidator, moduleValidator } from '#validators/module'
 import type { HttpContext } from '@adonisjs/core/http'
@@ -67,10 +66,7 @@ export default class ModulesController {
    * Update order of modules
    */
   async order({ params, request, response, organization }: HttpContext) {
-    const { ids } = await request.validateUsing(
-      moduleOrderValidator,
-      withCourseMetaData(params.courseId)
-    )
+    const { ids } = await request.validateUsing(moduleOrderValidator)
 
     await UpdateModuleOrder.handle({
       courseId: params.courseId,

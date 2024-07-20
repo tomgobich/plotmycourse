@@ -1,6 +1,5 @@
 import vine from '@vinejs/vine'
 import { existsInOrganization, OrganizationMetData } from './helpers/organization.js'
-import { existsInCourse } from './helpers/course.js'
 import { DateTime } from 'luxon'
 
 export const lessonValidator = vine.withMetaData<OrganizationMetData>().compile(
@@ -31,15 +30,13 @@ export const lessonPatchTagValidator = vine.withMetaData<OrganizationMetData>().
   })
 )
 
-export const lessonOrderValidator = vine
-  .withMetaData<{ organizationId: number; courseId: number }>()
-  .compile(
-    vine.object({
-      modules: vine.array(
-        vine.object({
-          id: vine.number(),
-          lessons: vine.array(vine.number()),
-        })
-      ),
-    })
-  )
+export const lessonOrderValidator = vine.compile(
+  vine.object({
+    modules: vine.array(
+      vine.object({
+        id: vine.number(),
+        lessons: vine.array(vine.number()),
+      })
+    ),
+  })
+)

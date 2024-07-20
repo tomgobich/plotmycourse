@@ -1,6 +1,5 @@
 import vine from '@vinejs/vine'
 import { existsInOrganization, OrganizationMetData } from './helpers/organization.js'
-import { CourseMetaData, existsInCourse } from './helpers/course.js'
 
 export const moduleValidator = vine.withMetaData<OrganizationMetData>().compile(
   vine.object({
@@ -15,7 +14,7 @@ export const modulePatchTagValidator = vine.withMetaData<OrganizationMetData>().
   })
 )
 
-export const moduleOrderValidator = vine.withMetaData<CourseMetaData>().compile(
+export const moduleOrderValidator = vine.compile(
   vine.object({
     ids: vine.array(vine.number()),
   })
