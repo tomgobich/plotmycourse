@@ -38,7 +38,7 @@ function onSubmit() {
 
 function onOrderUpdate() {
   const ids = list.value.map((accessLevel) => accessLevel.id)
-  router.put('/access-levels/order', { ids })
+  router.put('/access-levels/order', { ids }, { preserveScroll: true })
 }
 </script>
 

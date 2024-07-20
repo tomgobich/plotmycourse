@@ -45,7 +45,7 @@ function onEdit(resource: ModuleDto) {
 
 function onModuleOrderChange() {
   const ids = modules.value.map((module) => module.id)
-  router.patch(`${urlPrefix.value}/modules/order`, { ids })
+  router.patch(`${urlPrefix.value}/modules/order`, { ids }, { preserveScroll: true })
 }
 
 function onLessonOrderChange() {
@@ -54,7 +54,7 @@ function onLessonOrderChange() {
     lessons: module.lessons.map((lesson) => lesson.id),
   }))
 
-  router.patch(`${urlPrefix.value}/lessons/order`, { modules: data })
+  router.patch(`${urlPrefix.value}/lessons/order`, { modules: data }, { preserveScroll: true })
 }
 
 function onSubmit() {

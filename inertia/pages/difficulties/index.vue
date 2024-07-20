@@ -38,7 +38,7 @@ function onSubmit() {
 
 function onOrderUpdate() {
   const ids = list.value.map((difficulty) => difficulty.id)
-  router.put('/difficulties/order', { ids })
+  router.put('/difficulties/order', { ids }, { preserveScroll: true })
 }
 </script>
 
