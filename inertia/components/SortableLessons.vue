@@ -62,10 +62,10 @@ function onSubmit() {
   const id = dialog.value.resource?.id
 
   if (id) {
-    return form.put(`${urlPrefix.value}/lessons/${id}`, { onSuccess })
+    return form.put(`${urlPrefix.value}/lessons/${id}`, { onSuccess, preserveScroll: true })
   }
 
-  form.post(`${urlPrefix.value}/lessons`, { onSuccess })
+  form.post(`${urlPrefix.value}/lessons`, { onSuccess, preserveScroll: true })
 }
 </script>
 
