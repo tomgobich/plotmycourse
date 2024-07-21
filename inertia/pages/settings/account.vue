@@ -19,6 +19,7 @@ defineProps<{ user: UserDto }>()
       </nav>
       <div class="grid gap-6">
         <AccountEmailCard :email="user.email" />
+        <AccountDeleteCard :email="user.email" />
       </div>
     </div>
   </main>

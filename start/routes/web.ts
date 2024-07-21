@@ -102,6 +102,7 @@ router
       .group(() => {
         router.get('/', [AccountsController, 'index']).as('index')
         router.put('/email', [AccountsController, 'updateEmail']).as('email')
+        router.delete('/', [AccountsController, 'destroy']).as('destroy')
       })
       .prefix('/settings/account')
       .as('settings.account')

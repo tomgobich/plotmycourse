@@ -1,3 +1,7 @@
+<script setup lang="ts">
+defineProps<{ messages: Record<string, any> }>()
+</script>
+
 <template>
   <div>
     <header>
@@ -36,5 +40,7 @@
         <slot />
       </div>
     </div>
+
+    <ToastManager :messages="messages" />
   </div>
 </template>

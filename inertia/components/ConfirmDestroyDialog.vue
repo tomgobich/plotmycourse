@@ -15,7 +15,7 @@ const props = withDefaults(
   }
 )
 
-const emits = defineEmits(['update:open'])
+const emits = defineEmits(['update:open', 'confirm'])
 
 const internalOpen = computed({
   get: () => props.open,
@@ -35,7 +35,12 @@ const internalOpen = computed({
       <AlertDialogFooter>
         <AlertDialogCancel>{{ cancelText }}</AlertDialogCancel>
         <AlertDialogAction as-child>
-          <Link :href="actionHref" method="delete" as="button"> {{ actionText }} </Link>
+          <Link v-if="actionHref" :href="actionHref" method="delete" as="button">
+            {{ actionText }}
+          </Link>
+          <Button v-else type="button" variant="destructive" @click="emits('confirm')">
+            {{ actionText }}
+          </Button>
         </AlertDialogAction>
       </AlertDialogFooter>
     </AlertDialogContent>

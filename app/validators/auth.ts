@@ -11,7 +11,7 @@ export const loginValidator = vine.compile(
 
 export const registerValidator = vine.compile(
   vine.object({
-    email: emailRule().in(['tom@adocasts.com']),
+    email: emailRule(), //.in(['tom@adocasts.com']),
     password: vine.string().minLength(8),
   })
 )

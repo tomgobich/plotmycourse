@@ -9,7 +9,7 @@ const props = withDefaults(
     label: string
     errors?: string[]
     disabled?: boolean
-    autofocus?: boolean
+    required?: boolean
   }>(),
   {
     type: 'string',
@@ -45,6 +45,7 @@ defineExpose({ inputEl })
           class="pl-10"
           :disabled="disabled"
           :placeholder="placeholder"
+          :required="required"
         />
       </div>
       <Select
@@ -52,6 +53,7 @@ defineExpose({ inputEl })
         v-model="internalValue"
         ref="inputEl"
         :disabled="disabled"
+        :required="required"
       >
         <SelectTrigger>
           <slot name="trigger">
@@ -70,6 +72,7 @@ defineExpose({ inputEl })
         :type="type"
         :disabled="disabled"
         :placeholder="placeholder"
+        :required="required"
       />
     </Label>
     <div v-show="errors" class="text-red-500 text-sm">
