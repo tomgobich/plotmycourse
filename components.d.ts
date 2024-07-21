@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AccountEmailCard: typeof import('./inertia/components/settings/AccountEmailCard.vue')['default']
     Alert: typeof import('./inertia/components/ui/alert/Alert.vue')['default']
     AlertDescription: typeof import('./inertia/components/ui/alert/AlertDescription.vue')['default']
     AlertDialog: typeof import('./inertia/components/ui/alert-dialog/AlertDialog.vue')['default']
@@ -85,6 +86,7 @@ declare module 'vue' {
     SheetHeader: typeof import('./inertia/components/ui/sheet/SheetHeader.vue')['default']
     SheetTitle: typeof import('./inertia/components/ui/sheet/SheetTitle.vue')['default']
     SheetTrigger: typeof import('./inertia/components/ui/sheet/SheetTrigger.vue')['default']
+    Sonner: typeof import('./inertia/components/ui/sonner/Sonner.vue')['default']
     SortableLessons: typeof import('./inertia/components/SortableLessons.vue')['default']
     SortableModules: typeof import('./inertia/components/SortableModules.vue')['default']
     SortableResourceItem: typeof import('./inertia/components/SortableResourceItem.vue')['default']
@@ -99,5 +101,6 @@ declare module 'vue' {
     TableHeader: typeof import('./inertia/components/ui/table/TableHeader.vue')['default']
     TableRow: typeof import('./inertia/components/ui/table/TableRow.vue')['default']
     TagSelector: typeof import('./inertia/components/TagSelector.vue')['default']
+    ToastManager: typeof import('./inertia/components/ToastManager.vue')['default']
   }
 }

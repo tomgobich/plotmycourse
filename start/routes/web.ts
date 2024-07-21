@@ -7,6 +7,7 @@ const CoursesController = () => import('#controllers/courses_controller')
 const DifficultiesController = () => import('#controllers/difficulties_controller')
 const OrganizationsController = () => import('#controllers/organizations_controller')
 const StatusesController = () => import('#controllers/statuses_controller')
+const AccountsController = () => import('#controllers/settings/accounts_controller')
 
 router.on('/').render('landing').as('landing')
 
@@ -96,5 +97,13 @@ router
       })
       .prefix('/courses/:courseId/modules/:moduleId/lessons')
       .as('lessons')
+
+    router
+      .group(() => {
+        router.get('/', [AccountsController, 'index']).as('index')
+        router.put('/email', [AccountsController, 'updateEmail']).as('email')
+      })
+      .prefix('/settings/account')
+      .as('settings.account')
   })
   .use([middleware.auth(), middleware.organization()])

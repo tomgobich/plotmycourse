@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { CircleUser } from 'lucide-vue-next'
+import { Link } from '@inertiajs/vue3'
 import OrganizationDto from '#dtos/organization'
 import UserDto from '#dtos/user'
 
@@ -7,6 +8,7 @@ const props = defineProps<{
   organization: OrganizationDto
   organizations: OrganizationDto[]
   user: UserDto
+  messages: Record<string, any>
 }>()
 </script>
 
@@ -28,6 +30,10 @@ const props = defineProps<{
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>{{ user.email }}</DropdownMenuLabel>
             <DropdownMenuSeparator />
+            <DropdownMenuItem :as="Link" href="/settings/account"
+              >Account Settings</DropdownMenuItem
+            >
+            <DropdownMenuSeparator />
             <DropdownMenuItem as-child>
               <Link method="post" href="/logout">Logout</Link>
             </DropdownMenuItem>
@@ -40,5 +46,7 @@ const props = defineProps<{
     >
       <slot />
     </main>
+
+    <ToastManager :messages="messages" />
   </div>
 </template>
