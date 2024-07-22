@@ -1,12 +1,12 @@
 import User from '#models/user'
-import { loginValidator } from '#validators/auth'
 import { Infer } from '@vinejs/vine/types'
 import mail from '@adonisjs/mail/services/main'
 import db from '@adonisjs/lucid/services/db'
+import { updateEmailValidator } from '#validators/setting'
 
 type Params = {
   user: User
-  data: Infer<typeof loginValidator>
+  data: Infer<typeof updateEmailValidator>
 }
 
 export default class UpdateUserEmail {
