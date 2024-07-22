@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useForm, Link } from '@inertiajs/vue3'
 import { Info } from 'lucide-vue-next'
+import { Loader } from 'lucide-vue-next'
 import AuthLayout from '~/layouts/AuthLayout.vue'
 
 defineOptions({ layout: AuthLayout })

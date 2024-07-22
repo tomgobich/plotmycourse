@@ -30,7 +30,9 @@ const date = computed({
       >
         <CalendarIcon class="mr-2 h-4 w-4" />
         <span>
-          {{ date ? DateTime.fromJSDate(date) : 'Pick a date' }}
+          {{
+            date ? DateTime.fromJSDate(date).toLocaleString(DateTime.DATETIME_FULL) : 'Pick a date'
+          }}
         </span>
       </Button>
     </PopoverTrigger>

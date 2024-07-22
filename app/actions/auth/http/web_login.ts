@@ -15,7 +15,7 @@ export default class WebLogin {
   async handle({ data }: Params) {
     const user = await User.verifyCredentials(data.email, data.password)
 
-    await this.ctx.auth.use('web').login(user)
+    await this.ctx.auth.use('web').login(user, data.remember)
 
     return user
   }

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { Loader } from 'lucide-vue-next'
 
 const props = defineProps<{
   open: boolean
-  editing: boolean
+  editing?: boolean
   processing: boolean
   resource: string
 }>()

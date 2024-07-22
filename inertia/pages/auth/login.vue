@@ -12,6 +12,7 @@ defineProps<{
 const form = useForm({
   email: '',
   password: '',
+  remember: false,
 })
 </script>
 
@@ -49,6 +50,13 @@ const form = useForm({
           :errors="form.errors.password"
           :disabled="form.processing"
         />
+
+        <FormInput type="group" :errors="form.errors.remember">
+          <div class="flex items-center gap-2">
+            <Checkbox v-model:checked="form.remember" :disabled="form.processing" />
+            <span>Remember me</span>
+          </div>
+        </FormInput>
 
         <Button :disabled="form.processing">
           <Loader v-if="form.processing" class="mr-2 h-4 w-4 animate-spin" />
