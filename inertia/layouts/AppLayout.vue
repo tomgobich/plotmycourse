@@ -30,9 +30,12 @@ const props = defineProps<{
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>{{ user.email }}</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem :as="Link" href="/settings/account"
-              >Account Settings</DropdownMenuItem
-            >
+            <DropdownMenuItem :as="Link" href="/settings/account">
+              Account Settings
+            </DropdownMenuItem>
+            <DropdownMenuItem :as="Link" href="/settings/organization">
+              Organization Settings
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem as-child>
               <Link method="post" href="/logout">Logout</Link>

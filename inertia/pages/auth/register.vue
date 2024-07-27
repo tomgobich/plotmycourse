@@ -7,6 +7,7 @@ import AuthLayout from '~/layouts/AuthLayout.vue'
 defineOptions({ layout: AuthLayout })
 
 const form = useForm({
+  fullName: '',
   email: '',
   password: '',
 })
@@ -38,9 +39,15 @@ const form = useForm({
     <form @submit.prevent="form.post('/register')">
       <div class="grid gap-3">
         <FormInput
+          label="Full Name"
+          v-model="form.fullName"
+          :errors="form.errors.fullName"
+          :disabled="form.processing"
+        />
+
+        <FormInput
           label="Email"
           type="email"
-          name="email"
           v-model="form.email"
           :errors="form.errors.email"
           :disabled="form.processing"
@@ -49,7 +56,6 @@ const form = useForm({
         <FormInput
           label="Password"
           type="password"
-          name="password"
           v-model="form.password"
           :errors="form.errors.password"
           :disabled="form.processing"

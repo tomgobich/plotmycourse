@@ -112,6 +112,7 @@ router
     router
       .group(() => {
         router.get('/', [SettingsOrganizationsController, 'index']).as('index')
+        router.post('/invite', [SettingsOrganizationsController, 'inviteUser']).as('invite')
       })
       .prefix('/settings/organization')
       .as('settings.organization')

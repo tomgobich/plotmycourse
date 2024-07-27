@@ -1,33 +1,52 @@
 <script setup lang="ts">
-import { computed, watchEffect } from 'vue'
+import { unref, computed, watchEffect, nextTick } from 'vue'
 import { toast } from 'vue-sonner'
 import { Toaster } from '~/components/ui/sonner'
+
+type Toast = string | Record<string, string>
 
 const props = defineProps<{
   messages: Record<string, any>
 }>()
 
-const exceptions = computed(() => props.messages?.errorsBag || {})
-const success = computed(() => props.messages?.success || {})
+const exceptions = computed(() => props.messages?.errorsBag)
+const success = computed(() => props.messages?.success)
+
+nextTick(() =>
+  runToasts({
+    exceptions: exceptions.value,
+    success: success.value,
+  })
+)
 
 watchEffect(() => {
-  if (Object.values(exceptions.value).length) {
+  runToasts({
+    exceptions: exceptions.value,
+    success: success.value,
+  })
+})
+
+function runToasts(toasts: { exceptions: Toast; success: Toast }) {
+  const exceptions = getToastMessage(unref(toasts.exceptions))
+  const success = getToastMessage(unref(toasts.success))
+
+  if (exceptions.length) {
     toast.error('An error occurred', {
-      description:
-        typeof exceptions.value === 'string'
-          ? exceptions.value
-          : Object.values(exceptions.value).join(', '),
+      description: exceptions,
     })
   }
-})
 
-watchEffect(() => {
-  if (Object.values(success.value).length) {
-    toast.success(
-      typeof success.value === 'string' ? success.value : Object.values(success.value).join(', ')
-    )
+  if (success.length) {
+    toast.success(success)
   }
-})
+}
+
+function getToastMessage(toast: Toast) {
+  if (typeof toast === 'string') return toast
+  if (typeof toast === 'object') return Object.values(toast).join(', ')
+
+  return ''
+}
 </script>
 
 <template>

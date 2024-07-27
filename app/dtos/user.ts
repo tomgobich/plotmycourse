@@ -7,6 +7,7 @@ export default class UserDto extends BaseModelDto {
   declare email: string
   declare createdAt: string
   declare updatedAt: string | null
+  declare meta: Record<string, any>
 
   constructor(user?: User) {
     super()
@@ -17,5 +18,6 @@ export default class UserDto extends BaseModelDto {
     this.email = user.email
     this.createdAt = user.createdAt.toISO()!
     this.updatedAt = user.updatedAt?.toISO()!
+    this.meta = user.$extras
   }
 }

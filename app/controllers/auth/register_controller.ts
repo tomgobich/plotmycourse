@@ -12,7 +12,11 @@ export default class RegisterController {
   async store({ request, response }: HttpContext, webRegister: WebRegister) {
     const data = await request.validateUsing(registerValidator)
 
-    await webRegister.handle({ data })
+    const { invite } = await webRegister.handle({ data })
+
+    if (invite) {
+      return response.redirect().toRoute('courses.index')
+    }
 
     return response.redirect().toRoute('organizations.create')
   }
