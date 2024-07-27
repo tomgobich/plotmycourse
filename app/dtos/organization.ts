@@ -6,8 +6,9 @@ import AccessLevelDto from '#dtos/access_level'
 import DifficultyDto from '#dtos/difficulty'
 import StatusDto from '#dtos/status'
 import UserDto from '#dtos/user'
+import { BaseModelDto } from '@adocasts.com/dto/base'
 
-export default class OrganizationDto {
+export default class OrganizationDto extends BaseModelDto {
   declare id: number
   declare name: string
   declare createdAt: string
@@ -21,6 +22,8 @@ export default class OrganizationDto {
   declare users: UserDto[]
 
   constructor(organization?: Organization) {
+    super()
+
     if (!organization) return
     this.id = organization.id
     this.name = organization.name
@@ -33,10 +36,5 @@ export default class OrganizationDto {
     this.difficulties = DifficultyDto.fromArray(organization.difficulties)
     this.statuses = StatusDto.fromArray(organization.statuses)
     this.users = UserDto.fromArray(organization.users)
-  }
-
-  static fromArray(organizations: Organization[]) {
-    if (!organizations) return []
-    return organizations.map((organization) => new OrganizationDto(organization))
   }
 }

@@ -1,7 +1,8 @@
 import Difficulty from '#models/difficulty'
 import OrganizationDto from '#dtos/organization'
+import { BaseModelDto } from '@adocasts.com/dto/base'
 
-export default class DifficultyDto {
+export default class DifficultyDto extends BaseModelDto {
   declare id: number
   declare organizationId: number
   declare name: string
@@ -13,6 +14,8 @@ export default class DifficultyDto {
   declare organization: OrganizationDto | null
 
   constructor(difficulty?: Difficulty) {
+    super()
+
     if (!difficulty) return
     this.id = difficulty.id
     this.organizationId = difficulty.organizationId
@@ -23,10 +26,5 @@ export default class DifficultyDto {
     this.createdAt = difficulty.createdAt.toISO()!
     this.updatedAt = difficulty.updatedAt.toISO()!
     this.organization = difficulty.organization && new OrganizationDto(difficulty.organization)
-  }
-
-  static fromArray(difficulties: Difficulty[]) {
-    if (!difficulties) return []
-    return difficulties.map((difficulty) => new DifficultyDto(difficulty))
   }
 }

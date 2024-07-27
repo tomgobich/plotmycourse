@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import DifficultyDto from '#dtos/difficulty'
 import { Plus } from 'lucide-vue-next'
 import { watchEffect, ref } from 'vue'
 import { router } from '@inertiajs/vue3'
 import { useResourceActions } from '~/composables/resource_actions'
 import OrganizationDto from '../../../app/dtos/organization'
+import DifficultyDto from '#dtos/difficulty'
 
 const props = defineProps<{
   difficulties: DifficultyDto[]

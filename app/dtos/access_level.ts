@@ -1,9 +1,10 @@
+import { BaseModelDto } from '@adocasts.com/dto/base'
 import AccessLevel from '#models/access_level'
 import OrganizationDto from '#dtos/organization'
 import CourseDto from '#dtos/course'
 import LessonDto from '#dtos/lesson'
 
-export default class AccessLevelDto {
+export default class AccessLevelDto extends BaseModelDto {
   declare id: number
   declare organizationId: number
   declare name: string
@@ -17,6 +18,8 @@ export default class AccessLevelDto {
   declare lessons: LessonDto[]
 
   constructor(accessLevel?: AccessLevel) {
+    super()
+
     if (!accessLevel) return
     this.id = accessLevel.id
     this.organizationId = accessLevel.organizationId
@@ -29,10 +32,5 @@ export default class AccessLevelDto {
     this.organization = accessLevel.organization && new OrganizationDto(accessLevel.organization)
     this.courses = CourseDto.fromArray(accessLevel.courses)
     this.lessons = LessonDto.fromArray(accessLevel.lessons)
-  }
-
-  static fromArray(accessLevels: AccessLevel[]) {
-    if (!accessLevels) return []
-    return accessLevels.map((accessLevel) => new AccessLevelDto(accessLevel))
   }
 }

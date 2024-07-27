@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import UserDto from '#dtos/user'
+import OrganizationDto from '#dtos/organization'
 
-defineProps<{ user: UserDto }>()
+defineProps<{ organization: OrganizationDto }>()
 </script>
 
 <template>
@@ -17,8 +17,7 @@ defineProps<{ user: UserDto }>()
       <AsideNavigation />
 
       <div class="grid gap-6">
-        <AccountEmailCard :email="user.email" />
-        <AccountDeleteCard :email="user.email" />
+        <OrganizationEditCard :organization="organization" />
       </div>
     </div>
   </main>

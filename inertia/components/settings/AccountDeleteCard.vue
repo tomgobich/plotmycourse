@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3'
-import { ref } from 'vue'
 
 defineProps<{ email: string }>()
 
@@ -32,7 +31,7 @@ const form = useForm({
       </form>
     </CardContent>
     <CardFooter class="border-t px-6 py-4">
-      <Button form="accountDeleteForm" type="submit"> Delete Account </Button>
+      <Button variant="destructive" form="accountDeleteForm" type="submit"> Delete Account </Button>
     </CardFooter>
   </Card>
 </template>

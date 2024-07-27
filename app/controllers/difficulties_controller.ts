@@ -12,6 +12,7 @@ export default class DifficultiesController {
    */
   async index({ inertia, organization }: HttpContext) {
     const difficulties = await organization.getDifficulties()
+
     return inertia.render('difficulties/index', {
       difficulties: DifficultyDto.fromArray(difficulties),
     })

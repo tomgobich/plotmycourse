@@ -20,13 +20,19 @@ const selected = computed(() => props.options.find((status) => status.id === pro
 
 const internalValue = computed({
   get: () => props.modelValue.toString(),
-  set: (value) => {
+  set: async (value) => {
     const canPatch = props.patch?.path && props.patch?.key
 
     if (canPatch) {
-      router.patch(props.patch.path, {
-        [props.patch.key]: parseInt(value),
-      })
+      await router.patch(
+        props.patch.path,
+        {
+          [props.patch.key]: parseInt(value),
+        },
+        {
+          preserveScroll: true,
+        }
+      )
     }
 
     emit('update:modelValue', parseInt(value))

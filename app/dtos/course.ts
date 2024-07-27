@@ -5,8 +5,9 @@ import DifficultyDto from '#dtos/difficulty'
 import StatusDto from '#dtos/status'
 import ModuleDto from '#dtos/module'
 import LessonDto from '#dtos/lesson'
+import { BaseModelDto } from '@adocasts.com/dto/base'
 
-export default class CourseDto {
+export default class CourseDto extends BaseModelDto {
   declare id: number
   declare organizationId: number
   declare accessLevelId: number
@@ -26,6 +27,8 @@ export default class CourseDto {
   declare meta: Record<string, any>
 
   constructor(course?: Course) {
+    super()
+
     if (!course) return
     this.id = course.id
     this.organizationId = course.organizationId
@@ -44,10 +47,5 @@ export default class CourseDto {
     this.modules = ModuleDto.fromArray(course.modules)
     this.lessons = LessonDto.fromArray(course.lessons)
     this.meta = course.$extras
-  }
-
-  static fromArray(courses: Course[]) {
-    if (!courses) return []
-    return courses.map((course) => new CourseDto(course))
   }
 }

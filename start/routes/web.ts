@@ -7,7 +7,9 @@ const CoursesController = () => import('#controllers/courses_controller')
 const DifficultiesController = () => import('#controllers/difficulties_controller')
 const OrganizationsController = () => import('#controllers/organizations_controller')
 const StatusesController = () => import('#controllers/statuses_controller')
-const AccountsController = () => import('#controllers/settings/accounts_controller')
+const SettingsAccountsController = () => import('#controllers/settings/accounts_controller')
+const SettingsOrganizationsController = () =>
+  import('#controllers/settings/organizations_controller')
 
 router.on('/').render('landing').as('landing')
 
@@ -100,11 +102,18 @@ router
 
     router
       .group(() => {
-        router.get('/', [AccountsController, 'index']).as('index')
-        router.put('/email', [AccountsController, 'updateEmail']).as('email')
-        router.delete('/', [AccountsController, 'destroy']).as('destroy')
+        router.get('/', [SettingsAccountsController, 'index']).as('index')
+        router.put('/email', [SettingsAccountsController, 'updateEmail']).as('email')
+        router.delete('/', [SettingsAccountsController, 'destroy']).as('destroy')
       })
       .prefix('/settings/account')
       .as('settings.account')
+
+    router
+      .group(() => {
+        router.get('/', [SettingsOrganizationsController, 'index']).as('index')
+      })
+      .prefix('/settings/organization')
+      .as('settings.organization')
   })
   .use([middleware.auth(), middleware.organization()])

@@ -2,8 +2,9 @@ import Lesson from '#models/lesson'
 import OrganizationDto from '#dtos/organization'
 import ModuleDto from '#dtos/module'
 import StatusDto from '#dtos/status'
+import { BaseModelDto } from '@adocasts.com/dto/base'
 
-export default class LessonDto {
+export default class LessonDto extends BaseModelDto {
   declare id: number
   declare organizationId: number
   declare accessLevelId: number
@@ -20,6 +21,8 @@ export default class LessonDto {
   declare status: StatusDto | null
 
   constructor(lesson?: Lesson) {
+    super()
+
     if (!lesson) return
     this.id = lesson.id
     this.organizationId = lesson.organizationId
@@ -35,10 +38,5 @@ export default class LessonDto {
     this.organization = lesson.organization && new OrganizationDto(lesson.organization)
     this.module = lesson.module && new ModuleDto(lesson.module)
     this.status = lesson.status && new StatusDto(lesson.status)
-  }
-
-  static fromArray(lessons: Lesson[]) {
-    if (!lessons) return []
-    return lessons.map((lesson) => new LessonDto(lesson))
   }
 }
