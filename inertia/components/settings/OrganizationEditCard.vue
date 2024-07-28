@@ -32,7 +32,10 @@ watchEffect(() =>
         id="accountEmailForm"
         class="grid gap-4"
         @submit.prevent="
-          form.put(`/organizations/${organization.id}`, { onSuccess: () => form.reset() })
+          form.put(`/organizations/${organization.id}`, {
+            onSuccess: () => form.reset(),
+            preserveScroll: true,
+          })
         "
       >
         <FormInput label="Name" v-model="form.name" :errors="form.errors.name" />

@@ -23,21 +23,31 @@ const props = defineProps<{
       <OrganizationSelect v-bind="props" />
       <Slash class="text-slate-300 w-4 h-4 -rotate-12" />
     </div>
-    <Link href="/courses" class="text-muted-foreground transition-colors hover:text-foreground">
+    <Link
+      href="/courses"
+      class="desktop-link"
+      :class="{ active: $page.url.startsWith('/courses') }"
+    >
       Courses
     </Link>
     <Link
       href="/difficulties"
-      class="text-muted-foreground transition-colors hover:text-foreground"
+      class="desktop-link"
+      :class="{ active: $page.url.startsWith('/difficulties') }"
     >
       Difficulties
     </Link>
-    <Link href="/statuses" class="text-muted-foreground transition-colors hover:text-foreground">
+    <Link
+      href="/statuses"
+      class="desktop-link"
+      :class="{ active: $page.url.startsWith('/statuses') }"
+    >
       Statuses
     </Link>
     <Link
       href="/access-levels"
-      class="text-muted-foreground transition-colors hover:text-foreground"
+      class="desktop-link"
+      :class="{ active: $page.url.startsWith('/access-levels') }"
     >
       Accesses
     </Link>
@@ -51,15 +61,57 @@ const props = defineProps<{
     </SheetTrigger>
     <SheetContent side="left">
       <nav class="grid gap-6 text-lg font-medium">
-        <a href="#" class="flex items-center gap-2 text-lg font-semibold">
+        <a href="/courses" class="flex items-center gap-2 text-lg font-semibold">
           <Route class="h-6 w-6" />
           <span class="sr-only">PlotMyCourse</span>
         </a>
-        <a href="#" class="text-muted-foreground hover:text-foreground"> Courses </a>
-        <a href="#" class="text-muted-foreground hover:text-foreground"> Difficulties </a>
-        <a href="#" class="text-muted-foreground hover:text-foreground"> Statuses </a>
-        <a href="#" class="hover:text-foreground"> Access </a>
+        <a
+          href="/courses"
+          class="mobile-link"
+          :class="{ active: $page.url.startsWith('/courses') }"
+        >
+          Courses
+        </a>
+        <a
+          href="/difficulties"
+          class="mobile-link"
+          :class="{ active: $page.url.startsWith('/difficulties') }"
+        >
+          Difficulties
+        </a>
+        <a
+          href="/statuses"
+          class="mobile-link"
+          :class="{ active: $page.url.startsWith('/statuses') }"
+        >
+          Statuses
+        </a>
+        <a
+          href="/access-levels"
+          class="mobile-link"
+          :class="{ active: $page.url.startsWith('/access-levels') }"
+        >
+          Access
+        </a>
       </nav>
     </SheetContent>
   </Sheet>
 </template>
+
+<style scoped>
+.desktop-link {
+  @apply text-muted-foreground transition-colors hover:text-foreground;
+
+  &.active {
+    @apply text-foreground;
+  }
+}
+
+.mobile-link {
+  @apply text-muted-foreground hover:text-foreground;
+
+  &.active {
+    @apply text-foreground;
+  }
+}
+</style>

@@ -10,3 +10,9 @@ export const updateEmailValidator = vine.compile(
     password: vine.string(),
   })
 )
+
+export const updateProfileValidator = vine.compile(
+  vine.object({
+    fullName: vine.string().maxLength(254),
+  })
+)

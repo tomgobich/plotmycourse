@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3'
+import { Loader } from 'lucide-vue-next'
 
 defineProps<{ email: string }>()
 
@@ -39,7 +40,10 @@ const form = useForm({
       </form>
     </CardContent>
     <CardFooter class="border-t px-6 py-4">
-      <Button form="accountEmailForm" type="submit"> Update Email </Button>
+      <Button form="accountEmailForm" type="submit">
+        <Loader v-if="form.processing" class="mr-2 h-4 w-4 animate-spin" />
+        Update Email
+      </Button>
     </CardFooter>
   </Card>
 </template>

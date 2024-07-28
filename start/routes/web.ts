@@ -8,6 +8,7 @@ const DifficultiesController = () => import('#controllers/difficulties_controlle
 const OrganizationsController = () => import('#controllers/organizations_controller')
 const StatusesController = () => import('#controllers/statuses_controller')
 const SettingsAccountsController = () => import('#controllers/settings/accounts_controller')
+const SettingsProfilesController = () => import('#controllers/settings/profiles_controller')
 const SettingsOrganizationsController = () =>
   import('#controllers/settings/organizations_controller')
 
@@ -108,6 +109,14 @@ router
       })
       .prefix('/settings/account')
       .as('settings.account')
+
+    router
+      .group(() => {
+        router.get('/', [SettingsProfilesController, 'index']).as('index')
+        router.put('/', [SettingsProfilesController, 'update']).as('update')
+      })
+      .prefix('/settings/profile')
+      .as('settings.profile')
 
     router
       .group(() => {

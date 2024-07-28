@@ -1,6 +1,6 @@
 import vine from '@vinejs/vine'
 
-export const emailRule = () => vine.string().email().normalizeEmail()
+export const emailRule = () => vine.string().maxLength(254).email().normalizeEmail()
 
 export const loginValidator = vine.compile(
   vine.object({
@@ -12,7 +12,7 @@ export const loginValidator = vine.compile(
 
 export const registerValidator = vine.compile(
   vine.object({
-    fullName: vine.string(),
+    fullName: vine.string().maxLength(254),
     email: emailRule().in(['tom@adocasts.com']),
     password: vine.string().minLength(8),
   })
