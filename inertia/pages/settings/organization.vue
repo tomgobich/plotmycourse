@@ -2,11 +2,15 @@
 import OrganizationDto from '#dtos/organization'
 import UserDto from '#dtos/user'
 import RoleDto from '#dtos/role'
+import { Abilities } from '#actions/abilities/get_abilities'
+import OrganizationPendingUserDto from '#dtos/organization_pending_user'
 
 defineProps<{
   organization: OrganizationDto
+  can: Abilities
   user: UserDto
   users: UserDto[]
+  usersPending: OrganizationPendingUserDto[]
   roles: RoleDto[]
 }>()
 </script>
@@ -26,11 +30,12 @@ defineProps<{
     <div
       class="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]"
     >
-      <AsideNavigation />
+      <AsideNavigation :can="can" />
 
       <div class="grid gap-6">
         <OrganizationEditCard :organization="organization" />
         <OrganizationUsersCard :user="user" :users="users" :roles="roles" />
+        <OrganizationUsersPendingCard :users-pending="usersPending" :roles="roles" />
       </div>
     </div>
   </main>

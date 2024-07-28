@@ -3,6 +3,7 @@ import GetActiveOrganization from '#actions/organizations/http/get_active_organi
 import SetActiveOrganization from '#actions/organizations/http/set_active_organization'
 import StoreOrganization from '#actions/organizations/store_organization'
 import UpdateOrganization from '#actions/organizations/update_organization'
+import UnauthorizedException from '#exceptions/unauthorized_exception'
 import { organizationValidator } from '#validators/organization'
 import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
@@ -42,7 +43,11 @@ export default class OrganizationsController {
   /**
    * Handle form submission for the edit action
    */
-  async update({ params, request, response, auth }: HttpContext) {
+  async update({ params, request, response, auth, can }: HttpContext) {
+    if (!can.organization.edit) {
+      throw new UnauthorizedException('You are not authorized to edit this organization')
+    }
+
     const data = await request.validateUsing(organizationValidator)
 
     await UpdateOrganization.handle({
@@ -58,6 +63,10 @@ export default class OrganizationsController {
    * Delete record
    */
   async destroy(ctx: HttpContext) {
+    if (!ctx.can.organization.destroy) {
+      throw new UnauthorizedException('You are not authorized to delete this organization')
+    }
+
     const destroyed = await DestroyOrganization.handle({
       user: ctx.auth.user!,
       id: ctx.params.id,

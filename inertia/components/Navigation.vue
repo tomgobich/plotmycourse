@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { Menu, Slash, Route } from 'lucide-vue-next'
 import OrganizationDto from '#dtos/organization'
+import type { Abilities } from '#actions/abilities/get_abilities'
 
-defineProps<{
+const props = defineProps<{
   organization: OrganizationDto
   organizations: OrganizationDto[]
+  can: Abilities
 }>()
 </script>
 
@@ -18,7 +20,7 @@ defineProps<{
     </a>
     <div class="flex items-center">
       <Slash class="text-slate-300 w-4 h-4 -rotate-12" />
-      <OrganizationSelect :organization="organization" :organizations="organizations" />
+      <OrganizationSelect v-bind="props" />
       <Slash class="text-slate-300 w-4 h-4 -rotate-12" />
     </div>
     <Link href="/courses" class="text-muted-foreground transition-colors hover:text-foreground">

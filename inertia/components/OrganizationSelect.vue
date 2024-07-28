@@ -4,10 +4,12 @@ import { router } from '@inertiajs/vue3'
 import { ChevronsUpDown } from 'lucide-vue-next'
 import { useResourceActions } from '../composables/resource_actions'
 import { ref, watchEffect } from 'vue'
+import type { Abilities } from '#actions/abilities/get_abilities'
 
 const props = defineProps<{
   organization: OrganizationDto
   organizations: OrganizationDto[]
+  can: Abilities
 }>()
 
 const organizationId = ref(props.organization.id.toString())
@@ -59,10 +61,10 @@ function onSubmit() {
         </DropdownMenuRadioItem>
       </DropdownMenuRadioGroup>
       <DropdownMenuSeparator />
-      <DropdownMenuItem @click="onEdit(organization)">
+      <DropdownMenuItem v-if="can.organization.edit" @click="onEdit(organization)">
         Edit {{ organization.name }}
       </DropdownMenuItem>
-      <DropdownMenuItem @click="destroy.open(organization)">
+      <DropdownMenuItem v-if="can.organization.destroy" @click="destroy.open(organization)">
         Delete {{ organization.name }}
       </DropdownMenuItem>
       <DropdownMenuSeparator />

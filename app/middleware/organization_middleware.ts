@@ -5,6 +5,7 @@ import OrganizationDto from '../dtos/organization.js'
 import GetActiveOrganization from '#actions/organizations/http/get_active_organization'
 import { inject } from '@adonisjs/core'
 import { activeCookieName } from '#config/organization'
+import GetAbilities, { Abilities } from '#actions/abilities/get_abilities'
 
 @inject()
 export default class OrganizationMiddleware {
@@ -14,7 +15,11 @@ export default class OrganizationMiddleware {
     try {
       // get from cookie here, and set of CTX as source of truth so we can mutate it if needed
       ctx.organizationId = ctx.request.cookie(activeCookieName)
-      ctx.organization = await this.getActiveOrganization.handle()
+
+      const { organization, roleId } = await this.getActiveOrganization.handle()
+      ctx.organization = organization
+      ctx.roleId = roleId
+      ctx.can = GetAbilities.handle({ roleId })
     } catch (_) {
       // when user doesn't have an org, we need them to create one
       return ctx.response.redirect().toRoute('organizations.create')
@@ -29,6 +34,7 @@ export default class OrganizationMiddleware {
     ctx.inertia.share({
       organization: new OrganizationDto(ctx.organization),
       organizations: OrganizationDto.fromArray(organizations),
+      can: ctx.can,
     })
 
     return next()
@@ -39,5 +45,7 @@ declare module '@adonisjs/core/http' {
   export interface HttpContext {
     organizationId?: number
     organization: Organization
+    roleId: number
+    can: Abilities
   }
 }

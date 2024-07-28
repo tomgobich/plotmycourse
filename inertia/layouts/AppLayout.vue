@@ -3,10 +3,12 @@ import { CircleUser } from 'lucide-vue-next'
 import { Link } from '@inertiajs/vue3'
 import OrganizationDto from '#dtos/organization'
 import UserDto from '#dtos/user'
+import type { Abilities } from '#actions/abilities/get_abilities'
 
 const props = defineProps<{
   organization: OrganizationDto
   organizations: OrganizationDto[]
+  can: Abilities
   user: UserDto
   messages: Record<string, any>
 }>()
@@ -33,7 +35,7 @@ const props = defineProps<{
             <DropdownMenuItem :as="Link" href="/settings/account">
               Account Settings
             </DropdownMenuItem>
-            <DropdownMenuItem :as="Link" href="/settings/organization">
+            <DropdownMenuItem v-if="can.organization.edit" :as="Link" href="/settings/organization">
               Organization Settings
             </DropdownMenuItem>
             <DropdownMenuSeparator />

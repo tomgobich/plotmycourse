@@ -10,6 +10,7 @@ export default class GetOrganizationPendingUsers {
       .related('usersPending')
       .query()
       .preload('invitedByUser')
+      .whereNull('acceptedAt')
       .orderBy('createdAt', 'desc')
   }
 }

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import UserDto from '#dtos/user'
+import { Abilities } from '#actions/abilities/get_abilities'
 
-defineProps<{ user: UserDto }>()
+const props = defineProps<{ user: UserDto; can: Abilities }>()
 </script>
 
 <template>
@@ -16,7 +17,7 @@ defineProps<{ user: UserDto }>()
     <div
       class="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]"
     >
-      <AsideNavigation />
+      <AsideNavigation :can="can" />
 
       <div class="grid gap-6">
         <AccountEmailCard :email="user.email" />
