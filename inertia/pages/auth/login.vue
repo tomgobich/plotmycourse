@@ -51,12 +51,16 @@ const form = useForm({
           :disabled="form.processing"
         />
 
-        <FormInput type="group" :errors="form.errors.remember">
-          <div class="flex items-center gap-2">
-            <Checkbox v-model:checked="form.remember" :disabled="form.processing" />
-            <span>Remember me</span>
-          </div>
-        </FormInput>
+        <div class="flex items-center justify-between flex-wrap gap-4">
+          <FormInput type="group" :errors="form.errors.remember">
+            <div class="flex items-center gap-2">
+              <Checkbox v-model:checked="form.remember" :disabled="form.processing" />
+              <span>Remember me</span>
+            </div>
+          </FormInput>
+
+          <Link href="/forgot-password" class="text-sm underline">Forgot Password</Link>
+        </div>
 
         <Button :disabled="form.processing">
           <Loader v-if="form.processing" class="mr-2 h-4 w-4 animate-spin" />

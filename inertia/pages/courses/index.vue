@@ -64,6 +64,10 @@ watchEffect(() => (courses.value = props.courses))
             </DropdownMenu>
           </TableCell>
         </TableRow>
+
+        <TableRow v-if="!courses?.length">
+          <TableCell class="text-center" colspan="5"> You don't have any courses yet. </TableCell>
+        </TableRow>
       </TableBody>
     </Table>
 

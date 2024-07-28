@@ -7,6 +7,7 @@ import Organization from './organization.js'
 import type { HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import EmailHistory from './email_history.js'
 import { DbRememberMeTokensProvider } from '@adonisjs/auth/session'
+import PasswordResetToken from './password_reset_token.js'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
@@ -36,6 +37,9 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
   @hasMany(() => EmailHistory)
   declare emailHistories: HasMany<typeof EmailHistory>
+
+  @hasMany(() => PasswordResetToken)
+  declare passwordResetTokens: HasMany<typeof PasswordResetToken>
 
   @manyToMany(() => Organization, {
     pivotColumns: ['role_id'],

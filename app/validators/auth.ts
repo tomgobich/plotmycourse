@@ -17,3 +17,16 @@ export const registerValidator = vine.compile(
     password: vine.string().minLength(8),
   })
 )
+
+export const passwordResetSendValidator = vine.compile(
+  vine.object({
+    email: emailRule(),
+  })
+)
+
+export const passwordResetValidator = vine.compile(
+  vine.object({
+    hash: vine.string(),
+    password: vine.string().minLength(8),
+  })
+)
