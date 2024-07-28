@@ -30,8 +30,11 @@ const props = defineProps<{
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>{{ user.email }}</DropdownMenuLabel>
+            <DropdownMenuLabel>{{ user.fullName ?? user.email }}</DropdownMenuLabel>
             <DropdownMenuSeparator />
+            <DropdownMenuItem :as="Link" href="/settings/profile">
+              Profile Settings
+            </DropdownMenuItem>
             <DropdownMenuItem :as="Link" href="/settings/account">
               Account Settings
             </DropdownMenuItem>
