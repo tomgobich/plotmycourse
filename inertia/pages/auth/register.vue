@@ -35,7 +35,7 @@ const form = useForm({
     </AlertDescription>
   </Alert>
 
-  <div class="hidden grid gap-6">
+  <div class="grid gap-6">
     <form @submit.prevent="form.post('/register')">
       <div class="grid gap-3">
         <FormInput

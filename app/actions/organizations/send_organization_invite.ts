@@ -13,7 +13,7 @@ type Params = {
 
 export default class SendOrganizationInvite {
   static async handle({ organization, invitedByUserId, data }: Params) {
-    const invite = await organization.related('usersPending').create({
+    const invite = await organization.related('invites').create({
       invitedByUserId,
       ...data,
     })

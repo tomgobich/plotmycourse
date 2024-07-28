@@ -1,5 +1,5 @@
 import AcceptOrganizationInvite from '#actions/organizations/accept_organization_invite'
-import OrganizationPendingUser from '#models/organization_pending_user'
+import OrganizationInvite from '#models/organization_invite'
 import User from '#models/user'
 import type { HttpContext } from '@adonisjs/core/http'
 
@@ -13,7 +13,7 @@ export default class InvitesController {
     await auth.use('web').check()
 
     if (!auth.user) {
-      const invite = await OrganizationPendingUser.findOrFail(params.id)
+      const invite = await OrganizationInvite.findOrFail(params.id)
       const isUser = await User.query().whereILike('email', invite.email).first()
 
       session.put('invite_id', params.id)

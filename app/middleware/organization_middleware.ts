@@ -22,6 +22,7 @@ export default class OrganizationMiddleware {
       ctx.can = GetAbilities.handle({ roleId })
     } catch (_) {
       // when user doesn't have an org, we need them to create one
+      ctx.session.reflash()
       return ctx.response.redirect().toRoute('organizations.create')
     }
 

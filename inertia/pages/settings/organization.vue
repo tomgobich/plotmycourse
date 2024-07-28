@@ -3,14 +3,14 @@ import OrganizationDto from '#dtos/organization'
 import UserDto from '#dtos/user'
 import RoleDto from '#dtos/role'
 import { Abilities } from '#actions/abilities/get_abilities'
-import OrganizationPendingUserDto from '#dtos/organization_pending_user'
+import OrganizationInviteDto from '#dtos/organization_invite'
 
 defineProps<{
   organization: OrganizationDto
   can: Abilities
   user: UserDto
   users: UserDto[]
-  usersPending: OrganizationPendingUserDto[]
+  invites: OrganizationInviteDto[]
   roles: RoleDto[]
 }>()
 </script>
@@ -35,7 +35,7 @@ defineProps<{
       <div class="grid gap-6">
         <OrganizationEditCard :organization="organization" />
         <OrganizationUsersCard :user="user" :users="users" :roles="roles" />
-        <OrganizationUsersPendingCard :users-pending="usersPending" :roles="roles" />
+        <OrganizationUserInvitesCard :invites="invites" :roles="roles" />
       </div>
     </div>
   </main>

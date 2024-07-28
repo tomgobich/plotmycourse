@@ -1,5 +1,5 @@
 import UnauthorizedException from '#exceptions/unauthorized_exception'
-import OrganizationPendingUser from '#models/organization_pending_user'
+import OrganizationInvite from '#models/organization_invite'
 import User from '#models/user'
 import db from '@adonisjs/lucid/services/db'
 import { DateTime } from 'luxon'
@@ -11,7 +11,7 @@ type Params = {
 
 export default class AcceptOrganizationInvite {
   static async handle({ inviteId, user }: Params) {
-    const invite = await OrganizationPendingUser.query()
+    const invite = await OrganizationInvite.query()
       .preload('organization')
       .where('id', inviteId)
       .firstOrFail()

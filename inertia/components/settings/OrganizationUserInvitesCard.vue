@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import UserDto from '#dtos/user'
 import RoleDto from '#dtos/role'
 import Roles from '#enums/roles'
 import { useForm } from '@inertiajs/vue3'
-import OrganizationPendingUserDto from '#dtos/organization_pending_user'
+import OrganizationInviteDto from '#dtos/organization_invite'
 
-const props = defineProps<{ usersPending: OrganizationPendingUserDto[]; roles: RoleDto[] }>()
+const props = defineProps<{ invites: OrganizationInviteDto[]; roles: RoleDto[] }>()
 
 const inviteForm = useForm({
   email: '',
@@ -20,7 +19,7 @@ function getRoleName(roleId: number) {
 <template>
   <Card>
     <CardHeader>
-      <CardTitle>Pending Organization Members</CardTitle>
+      <CardTitle>Pending Organization Invitations</CardTitle>
       <CardDescription>
         The following users have been invited to your organization.
       </CardDescription>
@@ -35,15 +34,28 @@ function getRoleName(roleId: number) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow v-for="member in usersPending" :key="member.id">
+          <TableRow v-for="invite in invites" :key="invite.id">
             <TableCell>
-              {{ member.email }}
+              {{ invite.email }}
             </TableCell>
             <TableCell>
-              {{ getRoleName(member.roleId) }}
+              {{ getRoleName(invite.roleId) }}
             </TableCell>
             <TableCell>
-              <Link href="#" method="delete" class="text-red-500"> Cancel Invite </Link>
+              <Link
+                :href="`/settings/organization/invite/${invite.id}`"
+                method="delete"
+                class="text-red-500"
+                preserve-scroll
+              >
+                Cancel Invite
+              </Link>
+            </TableCell>
+          </TableRow>
+
+          <TableRow v-if="!invites?.length">
+            <TableCell colspan="3">
+              <div class="text-center text-slate-600">No pending invites.</div>
             </TableCell>
           </TableRow>
         </TableBody>

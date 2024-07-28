@@ -4,13 +4,14 @@ type Params = {
   organization: Organization
 }
 
-export default class GetOrganizationPendingUsers {
+export default class GetOrganizationPendingInvites {
   static async handle({ organization }: Params) {
     return organization
-      .related('usersPending')
+      .related('invites')
       .query()
       .preload('invitedByUser')
       .whereNull('acceptedAt')
+      .whereNull('canceledAt')
       .orderBy('createdAt', 'desc')
   }
 }

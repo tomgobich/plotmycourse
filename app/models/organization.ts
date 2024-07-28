@@ -8,7 +8,7 @@ import Difficulty from './difficulty.js'
 import Status from './status.js'
 import User from './user.js'
 import type { ExtractModelRelations, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
-import OrganizationPendingUser from './organization_pending_user.js'
+import OrganizationInvite from './organization_invite.js'
 
 export default class Organization extends BaseModel {
   @column({ isPrimary: true })
@@ -47,8 +47,8 @@ export default class Organization extends BaseModel {
   })
   declare users: ManyToMany<typeof User>
 
-  @hasMany(() => OrganizationPendingUser)
-  declare usersPending: HasMany<typeof OrganizationPendingUser>
+  @hasMany(() => OrganizationInvite)
+  declare invites: HasMany<typeof OrganizationInvite>
 
   async findNextSort(type: ExtractModelRelations<Organization> = 'courses') {
     switch (type) {

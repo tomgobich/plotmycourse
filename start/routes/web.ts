@@ -113,6 +113,12 @@ router
       .group(() => {
         router.get('/', [SettingsOrganizationsController, 'index']).as('index')
         router.post('/invite', [SettingsOrganizationsController, 'inviteUser']).as('invite')
+        router
+          .delete('/invite/:id', [SettingsOrganizationsController, 'cancelInvite'])
+          .as('invite.cancel')
+        router
+          .delete('/user/:id', [SettingsOrganizationsController, 'removeUser'])
+          .as('user.remove')
       })
       .prefix('/settings/organization')
       .as('settings.organization')

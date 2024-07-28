@@ -16,8 +16,6 @@ export default class UpdateDifficulty {
       .where({ id })
       .firstOrFail()
 
-    const org = await difficulty.related('organization').query().firstOrFail()
-
     await difficulty.merge(data).save()
 
     return difficulty

@@ -40,7 +40,13 @@ function getRoleName(roleId: number) {
               {{ getRoleName(member.meta.pivot_role_id) }}
             </TableCell>
             <TableCell>
-              <Link v-if="user.id !== member.id" href="#" method="delete" class="text-red-500">
+              <Link
+                v-if="user.id !== member.id"
+                :href="`/settings/organization/user/${member.id}`"
+                method="delete"
+                class="text-red-500"
+                preserve-scroll
+              >
                 Remove
               </Link>
             </TableCell>
