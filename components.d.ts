@@ -69,8 +69,6 @@ declare module 'vue' {
     OrganizationSelect: typeof import('./inertia/components/OrganizationSelect.vue')['default']
     OrganizationUserInvitesCard: typeof import('./inertia/components/settings/OrganizationUserInvitesCard.vue')['default']
     OrganizationUsersCard: typeof import('./inertia/components/settings/OrganizationUsersCard.vue')['default']
-    OrganizationUsersInviteCard: typeof import('./inertia/components/settings/OrganizationUsersInviteCard.vue')['default']
-    OrganizationUsersPendingCard: typeof import('./inertia/components/settings/OrganizationUsersPendingCard.vue')['default']
     Popover: typeof import('./inertia/components/ui/popover/Popover.vue')['default']
     PopoverContent: typeof import('./inertia/components/ui/popover/PopoverContent.vue')['default']
     PopoverTrigger: typeof import('./inertia/components/ui/popover/PopoverTrigger.vue')['default']

@@ -25,7 +25,7 @@ export default class OrganizationInviteDto extends BaseModelDto {
     this.id = organizationInvite.id
     this.organizationId = organizationInvite.organizationId
     this.invitedByUserId = organizationInvite.invitedByUserId
-    this.canceledByUserId = organizationInvite.cancledByUserId
+    this.canceledByUserId = organizationInvite.canceledByUserId
     this.roleId = organizationInvite.roleId
     this.email = organizationInvite.email
     this.acceptedAt = organizationInvite.acceptedAt?.toISO()!
