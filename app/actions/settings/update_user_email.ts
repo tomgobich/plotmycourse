@@ -29,20 +29,17 @@ export default class UpdateUserEmail {
       })
     })
 
-    await this.#sendEmailNotification(emailOld, data.email)
+    await this.#sendEmailNotification(user, emailOld)
 
     return user
   }
 
-  static async #sendEmailNotification(emailOld: string, emailNew: string) {
+  static async #sendEmailNotification(user: User, emailOld: string) {
     await mail.sendLater((message) => {
-      message.to(emailOld).subject('Your email has been successfully changed').html(`
-          <p>Your PlotMyCourse email has been updated</p>
-          <p>Old Email: ${emailOld}</p>
-          <p>New Email: ${emailNew}</p>
-          <hr />
-          <p>If this is incorrect, please contact support</p>  
-        `)
+      message
+        .to(emailOld)
+        .subject('Your email has been successfully changed')
+        .htmlView('emails/email_change', { user })
     })
   }
 }

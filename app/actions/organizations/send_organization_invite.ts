@@ -25,11 +25,10 @@ export default class SendOrganizationInvite {
       .makeSigned('invites.organization.accept')
 
     await mail.sendLater((message) => {
-      message.to(data.email).subject(`Your have been invited to join ${organization.name}`).html(`
-          <p>You have been invited to join the PlotMyCourse organization ${organization.name}.</p>
-          <p>If you would like to join, please click the link below.</p>
-          <a href="${inviteUrl}">Join Organization</a>
-        `)
+      message
+        .to(data.email)
+        .subject(`Your have been invited to join ${organization.name}`)
+        .htmlView('emails/organization_invite', { organization, inviteUrl })
     })
   }
 }

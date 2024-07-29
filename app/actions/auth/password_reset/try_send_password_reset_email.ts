@@ -36,9 +36,10 @@ export default class TrySendPasswordResetEmail {
       message
         .subject('Reset Your PlotMyCourse Password')
         .to(user.email)
-        .html(
-          `Please reset your PlotMyCourse password by <a href="${resetLink}">clicking here</a>.`
-        )
+        .htmlView('emails/forgot_password', {
+          user,
+          resetLink,
+        })
     })
   }
 }
