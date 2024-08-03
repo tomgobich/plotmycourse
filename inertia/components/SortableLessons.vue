@@ -87,13 +87,16 @@ function onSubmit() {
           <span class="text-slate-400 slashed-zero w-[3ch]"
             >{{ module.order }}.{{ lesson.order }}</span
           >
-          <span>
+          <Link
+            :href="`/courses/${course.id}/modules/${module.id}/lessons/${lesson.id}`"
+            class="hover:underline"
+          >
             {{ lesson.name }}
-          </span>
+          </Link>
 
           <span v-if="lesson.publishAt" class="text-slate-400 text-xs flex items-center gap-2">
             <CalendarClock class="w-3 h-3" />
-            {{ DateTime.fromISO(lesson.publishAt, { zone: 'UTC' }).setZone(userZone).toRelative() }}
+            {{ DateTime.fromISO(lesson.publishAt).toRelative() }}
           </span>
 
           <div class="opacity-0 group-hover:opacity-100 duration-300 ml-2 relative">

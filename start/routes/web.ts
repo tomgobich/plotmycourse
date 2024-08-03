@@ -93,9 +93,11 @@ router
 
     router
       .group(() => {
+        router.get('/:id', [LessonsController, 'show']).as('show')
         router.post('/', [LessonsController, 'store']).as('store')
         router.put('/:id', [LessonsController, 'update']).as('update')
         router.patch('/:id/tags', [LessonsController, 'tag']).as('tags')
+        router.patch('/:id/notes', [LessonsController, 'notes']).as('notes')
         router.delete('/:id', [LessonsController, 'destroy']).as('destroy')
       })
       .prefix('/courses/:courseId/modules/:moduleId/lessons')

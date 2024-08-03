@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { unref, computed, watchEffect, nextTick } from 'vue'
+import { unref, computed, watchEffect, nextTick, ref } from 'vue'
 import { toast } from 'vue-sonner'
 import { Toaster } from '~/components/ui/sonner'
 
@@ -9,8 +9,9 @@ const props = defineProps<{
   messages: Record<string, any>
 }>()
 
-const exceptions = computed(() => props.messages?.errorsBag)
-const success = computed(() => props.messages?.success)
+const pendingMessages = ref({ ...props.messages })
+const exceptions = computed(() => pendingMessages.value?.errorsBag)
+const success = computed(() => pendingMessages.value?.success)
 
 nextTick(() =>
   runToasts({
@@ -18,6 +19,8 @@ nextTick(() =>
     success: success.value,
   })
 )
+
+watchEffect(() => (pendingMessages.value = { ...props.messages }))
 
 watchEffect(() => {
   runToasts({
@@ -39,6 +42,8 @@ function runToasts(toasts: { exceptions: Toast; success: Toast }) {
   if (success.length) {
     toast.success(success)
   }
+
+  pendingMessages.value = {}
 }
 
 function getToastMessage(toast: Toast) {

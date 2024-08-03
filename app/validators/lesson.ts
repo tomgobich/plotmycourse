@@ -30,6 +30,12 @@ export const lessonPatchTagValidator = vine.withMetaData<OrganizationMetData>().
   })
 )
 
+export const lessonNotesValidator = vine.compile(
+  vine.object({
+    notes: vine.string().nullable(),
+  })
+)
+
 export const lessonOrderValidator = vine.compile(
   vine.object({
     modules: vine.array(
