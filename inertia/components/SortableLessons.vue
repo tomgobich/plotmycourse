@@ -84,12 +84,12 @@ function onSubmit() {
       >
         <div class="flex items-center gap-4">
           <SortHandle />
-          <span class="text-slate-400 slashed-zero w-[3ch]"
+          <span class="text-slate-400 slashed-zero w-[3ch] text-sm"
             >{{ module.order }}.{{ lesson.order }}</span
           >
           <Link
             :href="`/courses/${course.id}/modules/${module.id}/lessons/${lesson.id}`"
-            class="hover:underline"
+            class="hover:underline text-sm"
           >
             {{ lesson.name }}
           </Link>

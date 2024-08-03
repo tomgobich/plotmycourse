@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import OrganizationDto from '#dtos/organization'
-import { Pencil, Trash2, Slash } from 'lucide-vue-next'
+import { Pencil, Trash2 } from 'lucide-vue-next'
 import { watchEffect, computed } from 'vue'
 import LessonDto from '#dtos/lesson'
 import { useForm } from '@inertiajs/vue3'
+import { DateTime } from 'luxon'
 
 const props = defineProps<{
   organization: OrganizationDto
   lesson: LessonDto
 }>()
 
+const publishAt = computed(() => props.lesson.publishAt && DateTime.fromISO(props.lesson.publishAt))
 const module = computed(() => props.lesson.module!)
 const course = computed(() => module.value.course!)
 const breadcrumbs = computed(() => [
@@ -55,6 +57,15 @@ watchEffect(() => (form.notes = props.lesson.notes))
     </div>
 
     <ul class="grid gap-3 mb-6 mx-4 pb-6 border-b border-slate-300">
+      <li v-if="publishAt" class="flex items-center gap-3">
+        <div class="w-24">Publish</div>
+        <div class="flex items-baseline gap-2">
+          <span>{{ publishAt.toRelative() }}</span>
+          <span class="text-slate-600 text-xs italic">
+            ({{ publishAt.toLocaleString(DateTime.DATETIME_FULL) }})
+          </span>
+        </div>
+      </li>
       <li class="flex items-center gap-3">
         <div class="w-24">Status</div>
         <TagSelector
@@ -76,7 +87,7 @@ watchEffect(() => (form.notes = props.lesson.notes))
     <LessonEditor
       v-model="form.notes"
       :proccessing="form.processing"
-      @blur="form.patch(`${pathPrefix}/notes`)"
+      @blur="form.patch(`${pathPrefix}/notes`, { preserveState: true, preserveScroll: true })"
     />
   </div>
 </template>

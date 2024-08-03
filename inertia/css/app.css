@@ -75,5 +75,6 @@
 
   body {
     @apply bg-background text-foreground;
+    scroll-margin-top: 100px;
   }
 }

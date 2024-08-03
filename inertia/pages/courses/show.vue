@@ -3,12 +3,13 @@ import OrganizationDto from '#dtos/organization'
 import CourseDto from '#dtos/course'
 import ModuleDto from '#dtos/module'
 import { Pencil, Trash2 } from 'lucide-vue-next'
-import { ref, watchEffect, toRaw } from 'vue'
+import { ref, watchEffect, toRaw, onMounted } from 'vue'
 
 const props = defineProps<{
   organization: OrganizationDto
   course: CourseDto
   modules: ModuleDto[]
+  qs: Record<string, any>
 }>()
 
 const internalCourse = ref({ ...props.course })
@@ -17,6 +18,15 @@ const actions = ref()
 
 watchEffect(() => (internalCourse.value = { ...props.course }))
 watchEffect(() => (internalModules.value = structuredClone(toRaw(props.modules))))
+
+onMounted(() => {
+  if (props.qs.module) {
+    setTimeout(() => {
+      const moduleLi = document.querySelector(`li[data-module-id="${props.qs.module}"]`)
+      moduleLi?.scrollIntoView({ behavior: 'smooth' })
+    }, 100)
+  }
+})
 </script>
 
 <template>

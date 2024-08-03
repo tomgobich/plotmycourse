@@ -71,7 +71,10 @@ function onSubmit() {
 <template>
   <Sortable v-model="modules" group="modules" item-key="id" tag="ul" @end="onModuleOrderChange">
     <template #item="{ element: module, index }">
-      <li class="flex flex-col border-b border-slate-200 pb-2 mb-2">
+      <li
+        :data-module-id="module.id"
+        class="flex flex-col border-b border-slate-200 pb-2 mb-2 scroll-mt-24"
+      >
         <div
           class="flex items-center justify-between rounded-md px-2 py-2 hover:bg-slate-50 duration-300 group draggable relative"
         >
