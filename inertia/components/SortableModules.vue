@@ -81,9 +81,9 @@ function onSubmit() {
           <div class="flex items-center gap-4">
             <SortHandle />
             <span class="font-bold">{{ module.name }}</span>
-            <span class="text-slate-400 text-sm slashed-zero"
-              >{{ module.lessons.length }} Lessons</span
-            >
+            <span class="text-slate-400 text-sm slashed-zero hidden md:inline-block">
+              {{ module.lessons.length }} Lessons
+            </span>
 
             <div class="opacity-0 group-hover:opacity-100 duration-300 ml-2 relative">
               <Button

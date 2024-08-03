@@ -35,8 +35,8 @@ watchEffect(() => (form.notes = props.lesson.notes))
 <template>
   <AppHead :title="lesson.name" :description="`Manage your lesson ${lesson.name}`" />
 
-  <div class="w-full max-w-screen-lg mx-auto bg-background border rounded-xl p-4">
-    <div class="flex items-start justify-between mb-6">
+  <div class="w-full max-w-screen-lg mx-auto bg-background border rounded-xl py-4 lg:px-4">
+    <div class="flex flex-wrap items-start justify-between mb-6">
       <div class="px-4">
         <Breadcrumbs :items="breadcrumbs" class="mb-4" />
 

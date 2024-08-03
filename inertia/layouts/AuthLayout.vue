@@ -35,7 +35,7 @@ defineProps<{ messages: Record<string, any> }>()
         </div>
       </nav>
     </header>
-    <div class="lg:p-8">
+    <div class="p-6 md:p-8">
       <div class="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
         <slot />
       </div>

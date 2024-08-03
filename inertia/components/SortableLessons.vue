@@ -80,34 +80,41 @@ function onSubmit() {
   >
     <template #item="{ element: lesson }">
       <li
-        class="flex items-center justify-between rounded-md px-2 py-1.5 hover:bg-slate-50 duration-300 group draggable relative"
+        class="flex flex-wrap items-center justify-between gap-2 rounded-md px-2 py-1.5 hover:bg-slate-50 duration-300 group draggable relative"
       >
-        <div class="flex items-center gap-4">
+        <div class="w-full flex items-center gap-4">
           <SortHandle />
-          <span class="text-slate-400 slashed-zero w-[3ch] text-sm"
-            >{{ module.order }}.{{ lesson.order }}</span
-          >
-          <Link
-            :href="`/courses/${course.id}/modules/${module.id}/lessons/${lesson.id}`"
-            class="hover:underline text-sm"
-          >
-            {{ lesson.name }}
-          </Link>
 
-          <span v-if="lesson.publishAt" class="text-slate-400 text-xs flex items-center gap-2">
-            <CalendarClock class="w-3 h-3" />
-            {{ DateTime.fromISO(lesson.publishAt).toRelative() }}
-          </span>
+          <div class="w-full flex items-center gap-4">
+            <span class="text-slate-400 slashed-zero w-[3ch] text-sm handle cursor-move">
+              {{ module.order }}.{{ lesson.order }}
+            </span>
 
-          <div class="opacity-0 group-hover:opacity-100 duration-300 ml-2 relative">
-            <Button
-              variant="ghost"
-              size="icon"
-              class="absolute left-0 top-1/2 -translate-y-1/2 w-7 h-7"
-              @click="onEdit(lesson)"
+            <Link
+              :href="`${urlPrefix}/lessons/${lesson.id}`"
+              class="hover:underline text-sm inline-block truncate"
             >
-              <Pencil class="w-3.5 h-3.5" />
-            </Button>
+              {{ lesson.name }}
+            </Link>
+
+            <span
+              v-if="lesson.publishAt"
+              class="text-slate-400 text-xs hidden lg:flex items-center gap-2"
+            >
+              <CalendarClock class="w-3 h-3" />
+              {{ DateTime.fromISO(lesson.publishAt).toRelative() }}
+            </span>
+
+            <div class="opacity-0 group-hover:opacity-100 duration-300 ml-2 relative">
+              <Button
+                variant="ghost"
+                size="icon"
+                class="absolute left-0 top-1/2 -translate-y-1/2 w-7 h-7"
+                @click="onEdit(lesson)"
+              >
+                <Pencil class="w-3.5 h-3.5" />
+              </Button>
+            </div>
           </div>
         </div>
 
