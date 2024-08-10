@@ -27,7 +27,6 @@ const props = defineProps<{
 const emit = defineEmits(['update:modelValue', 'end'])
 
 const dialogFocusEl = ref()
-const userZone = DateTime.now().zoneName
 
 const module = computed({
   get: () => props.modelValue,
@@ -74,6 +73,7 @@ function onSubmit() {
     v-model="module.lessons"
     class="flex flex-col"
     group="lessons"
+    handle=".handle"
     item-key="id"
     tag="ul"
     @end="$emit('end')"

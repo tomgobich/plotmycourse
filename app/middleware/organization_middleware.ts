@@ -1,11 +1,12 @@
+import GetAbilities, { Abilities } from '#actions/abilities/get_abilities'
+import GetOrganizationUserRoleId from '#actions/organizations/get_organization_user_role_id'
+import GetActiveOrganization from '#actions/organizations/http/get_active_organization'
+import { activeCookieName } from '#config/organization'
 import Organization from '#models/organization'
+import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
 import OrganizationDto from '../dtos/organization.js'
-import GetActiveOrganization from '#actions/organizations/http/get_active_organization'
-import { inject } from '@adonisjs/core'
-import { activeCookieName } from '#config/organization'
-import GetAbilities, { Abilities } from '#actions/abilities/get_abilities'
 
 @inject()
 export default class OrganizationMiddleware {
@@ -16,7 +17,12 @@ export default class OrganizationMiddleware {
       // get from cookie here, and set of CTX as source of truth so we can mutate it if needed
       ctx.organizationId = ctx.request.cookie(activeCookieName)
 
-      const { organization, roleId } = await this.getActiveOrganization.handle()
+      const organization = await this.getActiveOrganization.handle()
+      const roleId = await GetOrganizationUserRoleId.handle({
+        organizationId: organization.id,
+        userId: ctx.auth.user!.id,
+      })
+
       ctx.organization = organization
       ctx.roleId = roleId
       ctx.can = GetAbilities.handle({ roleId })

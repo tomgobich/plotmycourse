@@ -19,6 +19,7 @@ const internalValue = computed({
   <Sortable
     v-model="internalValue"
     item-key="id"
+    handle=".handle"
     tag="ul"
     class="flex flex-col"
     @end="$emit('end')"

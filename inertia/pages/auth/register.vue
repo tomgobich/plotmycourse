@@ -26,16 +26,16 @@ const form = useForm({
     </p>
   </div>
 
-  <Alert>
+  <!-- <Alert>
     <Info class="h-4 w-4" />
     <AlertTitle>Registration coming soon</AlertTitle>
     <AlertDescription>
       This application is still in development. Registration will be open soon, thanks for your
       patience.
     </AlertDescription>
-  </Alert>
+  </Alert> -->
 
-  <div class="hidden grid gap-6">
+  <div class="grid gap-6">
     <form @submit.prevent="form.post('/register')">
       <div class="grid gap-3">
         <FormInput

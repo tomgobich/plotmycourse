@@ -1,4 +1,6 @@
+import GetOrganizationAbilities from '#actions/abilities/get_organization_abilities'
 import DestroyOrganization from '#actions/organizations/destroy_organization'
+import GetOrganizationUserRoleId from '#actions/organizations/get_organization_user_role_id'
 import GetActiveOrganization from '#actions/organizations/http/get_active_organization'
 import SetActiveOrganization from '#actions/organizations/http/set_active_organization'
 import StoreOrganization from '#actions/organizations/store_organization'
@@ -43,8 +45,13 @@ export default class OrganizationsController {
   /**
    * Handle form submission for the edit action
    */
-  async update({ params, request, response, auth, can }: HttpContext) {
-    if (!can.organization.edit) {
+  async update({ params, request, response, auth }: HttpContext) {
+    const roleId = await GetOrganizationUserRoleId.handle({
+      organizationId: params.id,
+      userId: auth.user!.id,
+    })
+
+    if (!GetOrganizationAbilities.canEdit(roleId)) {
       throw new UnauthorizedException('You are not authorized to edit this organization')
     }
 
@@ -63,7 +70,12 @@ export default class OrganizationsController {
    * Delete record
    */
   async destroy(ctx: HttpContext) {
-    if (!ctx.can.organization.destroy) {
+    const roleId = await GetOrganizationUserRoleId.handle({
+      organizationId: ctx.params.id,
+      userId: ctx.auth.user!.id,
+    })
+
+    if (!GetOrganizationAbilities.canDestroy(roleId)) {
       throw new UnauthorizedException('You are not authorized to delete this organization')
     }
 

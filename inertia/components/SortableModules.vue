@@ -69,7 +69,14 @@ function onSubmit() {
 </script>
 
 <template>
-  <Sortable v-model="modules" group="modules" item-key="id" tag="ul" @end="onModuleOrderChange">
+  <Sortable
+    v-model="modules"
+    group="modules"
+    handle=".handle"
+    item-key="id"
+    tag="ul"
+    @end="onModuleOrderChange"
+  >
     <template #item="{ element: module, index }">
       <li
         :data-module-id="module.id"

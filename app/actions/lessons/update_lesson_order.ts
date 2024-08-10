@@ -22,7 +22,7 @@ export default class UpdateLessonOrder {
   static async handle({ organization, courseId, data }: Params) {
     const course = await organization.findCourse(courseId)
     const lessons = await this.#getLessons(course)
-    const lessonsData = await this.#flattenData(data)
+    const lessonsData = this.#flattenData(data)
 
     return db.transaction(async (trx) => {
       const promises = lessonsData.map(({ id, moduleId, order }) => {
