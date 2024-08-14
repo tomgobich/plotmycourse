@@ -49,5 +49,4 @@ export default await Env.create(new URL('../', import.meta.url), {
 
   TURNSTILE_SITE_KEY: Env.schema.string(),
   TURNSTILE_SECRET_KEY: Env.schema.string(),
-  VITE_TURNSTILE_KEY: Env.schema.string(),
 })

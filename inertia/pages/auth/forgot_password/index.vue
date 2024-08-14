@@ -8,8 +8,6 @@ import VueTurnstile from 'vue-turnstile'
 defineOptions({ layout: AuthLayout })
 defineProps<{ isSent: boolean }>()
 
-const turnstileKey = import.meta.env.VITE_TURNSTILE_KEY
-
 const form = useForm({
   fullName: '',
   email: '',
@@ -44,7 +42,7 @@ const form = useForm({
         form.post('/forgot-password', { onSuccess: () => form.reset(), preserveScroll: true })
       "
     >
-      <VueTurnstile :site-key="turnstileKey" v-model="form.turnstile" />
+      <VueTurnstile site-key="0x4AAAAAAAhP2XDR6i3L_eau" v-model="form.turnstile" />
 
       <div class="grid gap-3">
         <FormInput

@@ -72,7 +72,6 @@ declare module 'vue' {
     FormInput: typeof import('./inertia/components/FormInput.vue')['default']
     Input: typeof import('./inertia/components/ui/input/Input.vue')['default']
     Label: typeof import('./inertia/components/ui/label/Label.vue')['default']
-    LessonDetails: typeof import('./inertia/components/LessonDetails.vue')['default']
     LessonEditor: typeof import('./inertia/components/LessonEditor.vue')['default']
     Navigation: typeof import('./inertia/components/Navigation.vue')['default']
     OrganizationEditCard: typeof import('./inertia/components/settings/OrganizationEditCard.vue')['default']

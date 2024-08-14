@@ -10,8 +10,6 @@ defineProps<{
   exceptions: Record<string, string>
 }>()
 
-const turnstileKey = import.meta.env.VITE_TURNSTILE_KEY
-
 const form = useForm({
   email: '',
   password: '',
@@ -32,7 +30,7 @@ const form = useForm({
 
   <div class="grid gap-6">
     <form @submit.prevent="form.post('/login')">
-      <VueTurnstile :site-key="turnstileKey" v-model="form.turnstile" />
+      <VueTurnstile site-key="0x4AAAAAAAhP2XDR6i3L_eau" v-model="form.turnstile" />
 
       <Alert v-if="exceptions.E_INVALID_CREDENTIALS" variant="destructive" class="mb-6">
         <AlertCircle class="w-4 h-4" />
