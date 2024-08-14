@@ -60,6 +60,17 @@ export default class Organization extends BaseModel {
           .first()
 
         return lastCourse ? lastCourse.order + 1 : 1
+      case 'lessons':
+        const lastLesson = await (<Organization>this)
+          .related('lessons')
+          .query()
+          .whereNull('moduleId')
+          .orderBy('order', 'desc')
+          .first()
+
+        return lastLesson ? lastLesson.order + 1 : 1
+      case 'users':
+        return 0
       default:
         const lastest = await (<Organization>this)
           .related(type)
