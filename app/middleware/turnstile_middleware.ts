@@ -10,7 +10,7 @@ export default class TurnstileMiddleware {
     }
 
     const token = request.input('turnstile')
-    const ip = request.ip()
+    const ip = request.header('CF-Connecting-IP')
 
     const { data } = await axios.post('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
       secret: env.get('TURNSTILE_SECRET_KEY'),
