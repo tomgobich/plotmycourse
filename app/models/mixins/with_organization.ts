@@ -6,7 +6,7 @@ import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 export const WithOrganization = <T extends NormalizeConstructor<typeof BaseModel>>(
   superclass: T
 ) => {
-  class parentclass extends superclass {
+  class ParentClass extends superclass {
     @column()
     declare organizationId: number
 
@@ -14,5 +14,5 @@ export const WithOrganization = <T extends NormalizeConstructor<typeof BaseModel
     declare organization: BelongsTo<typeof Organization>
   }
 
-  return parentclass
+  return ParentClass
 }
