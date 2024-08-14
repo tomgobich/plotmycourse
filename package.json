@@ -82,6 +82,7 @@
     "@vinejs/vine": "^2.1.0",
     "@vue/server-renderer": "^3.4.35",
     "@vueuse/core": "^10.11.0",
+    "axios": "^1.7.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "edge.js": "^6.0.2",
@@ -97,6 +98,7 @@
     "vee-validate": "^4.13.2",
     "vue": "^3.4.35",
     "vue-sonner": "^1.1.4",
+    "vue-turnstile": "^1.0.10",
     "vuedraggable": "^4.1.0",
     "zod": "^3.23.8"
   },

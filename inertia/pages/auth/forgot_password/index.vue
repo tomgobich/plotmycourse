@@ -3,14 +3,18 @@ import { useForm } from '@inertiajs/vue3'
 import { Info } from 'lucide-vue-next'
 import { Loader } from 'lucide-vue-next'
 import AuthLayout from '~/layouts/AuthLayout.vue'
+import VueTurnstile from 'vue-turnstile'
 
 defineOptions({ layout: AuthLayout })
 defineProps<{ isSent: boolean }>()
+
+const turnstileKey = import.meta.env.VITE_TURNSTILE_KEY
 
 const form = useForm({
   fullName: '',
   email: '',
   password: '',
+  turnstile: '',
 })
 </script>
 
@@ -40,6 +44,8 @@ const form = useForm({
         form.post('/forgot-password', { onSuccess: () => form.reset(), preserveScroll: true })
       "
     >
+      <VueTurnstile :site-key="turnstileKey" v-model="form.turnstile" />
+
       <div class="grid gap-3">
         <FormInput
           label="Email"

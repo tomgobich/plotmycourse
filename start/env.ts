@@ -46,4 +46,8 @@ export default await Env.create(new URL('../', import.meta.url), {
   SMTP_PORT: Env.schema.string(),
   SMTP_USERNAME: Env.schema.string(),
   SMTP_PASSWORD: Env.schema.string(),
+
+  TURNSTILE_SITE_KEY: Env.schema.string(),
+  TURNSTILE_SECRET_KEY: Env.schema.string(),
+  VITE_TURNSTILE_KEY: Env.schema.string(),
 })

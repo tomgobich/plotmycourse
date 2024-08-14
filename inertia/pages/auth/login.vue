@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3'
 import AuthLayout from '~/layouts/AuthLayout.vue'
+import VueTurnstile from 'vue-turnstile'
 import { Loader, AlertCircle } from 'lucide-vue-next'
 
 defineOptions({ layout: AuthLayout })
@@ -9,10 +10,13 @@ defineProps<{
   exceptions: Record<string, string>
 }>()
 
+const turnstileKey = import.meta.env.VITE_TURNSTILE_KEY
+
 const form = useForm({
   email: '',
   password: '',
   remember: false,
+  turnstile: '',
 })
 </script>
 
@@ -28,6 +32,8 @@ const form = useForm({
 
   <div class="grid gap-6">
     <form @submit.prevent="form.post('/login')">
+      <VueTurnstile :site-key="turnstileKey" v-model="form.turnstile" />
+
       <Alert v-if="exceptions.E_INVALID_CREDENTIALS" variant="destructive" class="mb-6">
         <AlertCircle class="w-4 h-4" />
         <AlertTitle>Error</AlertTitle>

@@ -1,15 +1,18 @@
 <script setup lang="ts">
 import { useForm, Link } from '@inertiajs/vue3'
-import { Info } from 'lucide-vue-next'
 import { Loader } from 'lucide-vue-next'
 import AuthLayout from '~/layouts/AuthLayout.vue'
+import VueTurnstile from 'vue-turnstile'
 
 defineOptions({ layout: AuthLayout })
+
+const turnstileKey = import.meta.env.VITE_TURNSTILE_KEY
 
 const form = useForm({
   fullName: '',
   email: '',
   password: '',
+  turnstile: '',
 })
 </script>
 
@@ -26,17 +29,10 @@ const form = useForm({
     </p>
   </div>
 
-  <!-- <Alert>
-    <Info class="h-4 w-4" />
-    <AlertTitle>Registration coming soon</AlertTitle>
-    <AlertDescription>
-      This application is still in development. Registration will be open soon, thanks for your
-      patience.
-    </AlertDescription>
-  </Alert> -->
-
   <div class="grid gap-6">
     <form @submit.prevent="form.post('/register')">
+      <VueTurnstile :site-key="turnstileKey" v-model="form.turnstile" />
+
       <div class="grid gap-3">
         <FormInput
           label="Full Name"
