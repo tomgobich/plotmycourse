@@ -90,7 +90,7 @@ function onSubmit() {
           </span>
 
           <Link
-            :href="`${urlPrefix}/lessons/${lesson.id}`"
+            :href="`/lessons/${lesson.id}`"
             class="hover:underline text-sm inline-block truncate"
           >
             {{ lesson.name }}
@@ -134,9 +134,7 @@ function onSubmit() {
               <EllipsisVertical class="w-4 h-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem :as="Link" :href="`${urlPrefix}/lessons/${lesson.id}`">
-                Open
-              </DropdownMenuItem>
+              <DropdownMenuItem :as="Link" :href="`/lessons/${lesson.id}`"> Open </DropdownMenuItem>
               <DropdownMenuItem @click="onEdit(lesson)">Edit</DropdownMenuItem>
               <DropdownMenuItem @click="destroy.open(lesson)">Delete</DropdownMenuItem>
             </DropdownMenuContent>

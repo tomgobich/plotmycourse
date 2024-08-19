@@ -93,7 +93,14 @@ router
 
     router
       .group(() => {
+        router.get('/', [LessonsController, 'index']).as('index')
         router.get('/:id', [LessonsController, 'show']).as('show')
+      })
+      .prefix('/lessons')
+      .as('lessons')
+
+    router
+      .group(() => {
         router.post('/', [LessonsController, 'store']).as('store')
         router.put('/:id', [LessonsController, 'update']).as('update')
         router.patch('/:id/tags', [LessonsController, 'tag']).as('tags')
