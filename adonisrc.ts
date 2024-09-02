@@ -15,7 +15,7 @@ export default defineConfig({
     () => import('@adonisjs/lucid/commands'),
     () => import('@adocasts.com/actions/commands'),
     () => import('@adocasts.com/dto/commands'),
-    () => import('@adonisjs/mail/commands')
+    () => import('@adonisjs/mail/commands'),
   ],
 
   /*
@@ -44,7 +44,7 @@ export default defineConfig({
     () => import('@adonisjs/lucid/database_provider'),
     () => import('@adonisjs/auth/auth_provider'),
     () => import('@adonisjs/inertia/inertia_provider'),
-    () => import('@adonisjs/mail/mail_provider')
+    () => import('@adonisjs/mail/mail_provider'),
   ],
 
   /*
@@ -57,6 +57,7 @@ export default defineConfig({
   */
   preloads: [
     () => import('#start/routes/auth'),
+    () => import('#start/routes/api'),
     () => import('#start/routes/web'),
     () => import('#start/kernel'),
   ],

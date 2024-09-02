@@ -10,22 +10,19 @@ const props = defineProps<{
 }>()
 
 const pendingMessages = ref({ ...props.messages })
-const exceptions = computed(() => pendingMessages.value?.errorsBag)
-const success = computed(() => pendingMessages.value?.success)
 
 nextTick(() =>
   runToasts({
-    exceptions: exceptions.value,
-    success: success.value,
+    exceptions: pendingMessages.value?.errorsBag,
+    success: pendingMessages.value?.success,
   })
 )
 
-watchEffect(() => (pendingMessages.value = { ...props.messages }))
-
 watchEffect(() => {
+  pendingMessages.value = { ...props.messages }
   runToasts({
-    exceptions: exceptions.value,
-    success: success.value,
+    exceptions: pendingMessages.value?.errorsBag,
+    success: pendingMessages.value?.success,
   })
 })
 
