@@ -1,20 +1,34 @@
 import Organization from '#models/organization'
+import { Infer } from '@vinejs/vine/types'
+import { accessLevelDestroyValidator } from '#validators/access_level'
+import db from '@adonisjs/lucid/services/db'
 
 type Params = {
   organization: Organization
   id: number
+  data: Infer<typeof accessLevelDestroyValidator>
 }
 
 export default class DestroyAccessLevel {
-  static async handle({ organization, id }: Params) {
-    const accessLevel = await organization
-      .related('accessLevels')
-      .query()
-      .where({ id })
-      .firstOrFail()
+  static async handle({ organization, id, data }: Params) {
+    await db.transaction(async (trx) => {
+      organization.useTransaction(trx)
 
-    await accessLevel.delete()
+      await organization.related('courses').query().where('accessLevelId', id).update({
+        accessLevelId: data.replacementId,
+      })
 
-    return accessLevel
+      await organization.related('lessons').query().where('accessLevelId', id).update({
+        accessLevelId: data.replacementId,
+      })
+
+      const accessLevel = await organization
+        .related('accessLevels')
+        .query()
+        .where({ id })
+        .firstOrFail()
+
+      await accessLevel.delete()
+    })
   }
 }

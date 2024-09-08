@@ -137,6 +137,10 @@ router
         router
           .delete('/user/:id', [SettingsOrganizationsController, 'removeUser'])
           .as('user.remove')
+
+        router
+          .post('/access-tokens', [SettingsOrganizationsController, 'storeAccessToken'])
+          .as('accessTokens.store')
       })
       .prefix('/settings/organization')
       .as('settings.organization')

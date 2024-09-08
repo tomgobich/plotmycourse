@@ -18,6 +18,7 @@ export default class StatusDto extends BaseModelDto {
   declare course: CourseDto[]
   declare module: ModuleDto[]
   declare lessons: LessonDto[]
+  declare meta: Record<string, any>
 
   constructor(status?: Status) {
     super()
@@ -35,5 +36,6 @@ export default class StatusDto extends BaseModelDto {
     this.course = CourseDto.fromArray(status.course)
     this.module = ModuleDto.fromArray(status.module)
     this.lessons = LessonDto.fromArray(status.lessons)
+    this.meta = status.$extras
   }
 }

@@ -1,7 +1,7 @@
 import vine from '@vinejs/vine'
-import { existsInOrganization, OrganizationMetData } from './helpers/organization.js'
+import { existsInOrganization, OrganizationMetaData } from './helpers/organization.js'
 
-export const courseValidator = vine.withMetaData<OrganizationMetData>().compile(
+export const courseValidator = vine.withMetaData<OrganizationMetaData>().compile(
   vine.object({
     name: vine.string().maxLength(150),
     statusId: vine.number().exists(existsInOrganization('statuses')),
@@ -11,7 +11,7 @@ export const courseValidator = vine.withMetaData<OrganizationMetData>().compile(
   })
 )
 
-export const coursePatchTagValidator = vine.withMetaData<OrganizationMetData>().compile(
+export const coursePatchTagValidator = vine.withMetaData<OrganizationMetaData>().compile(
   vine.object({
     statusId: vine
       .number()

@@ -8,6 +8,7 @@ const props = withDefaults(
     cancelText?: string
     actionText?: string
     actionHref: string
+    actionData?: Record<string, any>
   }>(),
   {
     cancelText: 'Cancel',
@@ -35,7 +36,7 @@ const internalOpen = computed({
       <AlertDialogFooter>
         <AlertDialogCancel>{{ cancelText }}</AlertDialogCancel>
         <AlertDialogAction as-child>
-          <Link v-if="actionHref" :href="actionHref" method="delete" as="button" preserve-scroll>
+          <Link v-if="actionHref" :href="actionHref" method="delete" :data="actionData" as="button" preserve-scroll>
             {{ actionText }}
           </Link>
           <Button v-else type="button" variant="destructive" @click="emits('confirm')">

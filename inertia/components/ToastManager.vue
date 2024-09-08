@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { unref, computed, watchEffect, nextTick, ref } from 'vue'
+import { unref, watchEffect, nextTick, ref } from 'vue'
 import { toast } from 'vue-sonner'
 import { Toaster } from '~/components/ui/sonner'
 

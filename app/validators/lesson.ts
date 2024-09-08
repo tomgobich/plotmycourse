@@ -1,8 +1,8 @@
 import vine from '@vinejs/vine'
-import { existsInOrganization, OrganizationMetData } from './helpers/organization.js'
+import { existsInOrganization, OrganizationMetaData } from './helpers/organization.js'
 import { DateTime } from 'luxon'
 
-export const lessonValidator = vine.withMetaData<OrganizationMetData>().compile(
+export const lessonValidator = vine.withMetaData<OrganizationMetaData>().compile(
   vine.object({
     name: vine.string().maxLength(150),
     publishAt: vine
@@ -15,7 +15,7 @@ export const lessonValidator = vine.withMetaData<OrganizationMetData>().compile(
   })
 )
 
-export const lessonPatchTagValidator = vine.withMetaData<OrganizationMetData>().compile(
+export const lessonPatchTagValidator = vine.withMetaData<OrganizationMetaData>().compile(
   vine.object({
     statusId: vine
       .number()

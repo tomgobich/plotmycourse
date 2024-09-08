@@ -2,17 +2,28 @@ import StoreAccessLevel from '#actions/access_levels/store_access_level'
 import DestroyAccessLevel from '#actions/access_levels/destroy_access_level'
 import UpdateAccessLevel from '#actions/access_levels/update_access_level'
 import UpdateAccessLevelOrder from '#actions/access_levels/update_access_level_order'
-import { accessLevelOrderValidate, accessLevelValidator } from '#validators/access_level'
+import {
+  accessLevelDestroyValidator,
+  accessLevelOrderValidate,
+  accessLevelValidator,
+} from '#validators/access_level'
 import type { HttpContext } from '@adonisjs/core/http'
+import AccessLevelDto from '#dtos/access_level'
+import { withOrganizationMetaData } from '#validators/helpers/organization'
 
 export default class AccessLevelsController {
   /**
    * Display a list of resource
    */
   async index({ inertia, organization }: HttpContext) {
-    const accessLevels = await organization.getAccessLevels()
+    const accessLevels = await organization
+      .getAccessLevels()
+      .withCount('courses')
+      .withCount('lessons')
 
-    return inertia.render('access_levels/index', { accessLevels })
+    return inertia.render('access_levels/index', {
+      accessLevels: AccessLevelDto.fromArray(accessLevels),
+    })
   }
 
   /**
@@ -61,10 +72,16 @@ export default class AccessLevelsController {
   /**
    * Delete record
    */
-  async destroy({ params, response, organization }: HttpContext) {
+  async destroy({ params, request, response, organization }: HttpContext) {
+    const data = await request.validateUsing(
+      accessLevelDestroyValidator,
+      withOrganizationMetaData(organization.id)
+    )
+
     await DestroyAccessLevel.handle({
       id: params.id,
       organization,
+      data,
     })
 
     return response.redirect().back()

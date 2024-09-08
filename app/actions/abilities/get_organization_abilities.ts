@@ -8,14 +8,16 @@ export type OrganizationAbilities = {
   edit: boolean
   destroy: boolean
   manageUsers: boolean
+  manageAccessTokens: boolean
 }
 
 export default class GetOrganizationAbilities {
-  static handle({ roleId }: Params) {
+  static handle({ roleId }: Params): OrganizationAbilities {
     return {
       edit: this.canEdit(roleId),
       destroy: this.canDestroy(roleId),
       manageUsers: this.canManageUsers(roleId),
+      manageAccessTokens: this.canManageAccessTokens(roleId),
     }
   }
 
@@ -28,6 +30,10 @@ export default class GetOrganizationAbilities {
   }
 
   static canManageUsers(roleId: number) {
+    return roleId === Roles.OrganizationAdmin
+  }
+
+  static canManageAccessTokens(roleId: number) {
     return roleId === Roles.OrganizationAdmin
   }
 }

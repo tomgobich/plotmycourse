@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Plus } from 'lucide-vue-next'
-import { watchEffect, ref } from 'vue'
+import { watchEffect, ref, computed } from 'vue'
 import { router } from '@inertiajs/vue3'
 import { useResourceActions } from '~/composables/resource_actions'
 import OrganizationDto from '../../../app/dtos/organization'
@@ -16,6 +16,10 @@ const { form, dialog, destroy, onSuccess } = useResourceActions<DifficultyDto>()
   name: '',
   color: '#818cf8',
 })
+
+const destroyReplacementOptions = computed(() =>
+  props.difficulties.filter((difficulty) => difficulty.id !== destroy.value.resource?.id)
+)
 
 watchEffect(() => {
   list.value = props.difficulties
@@ -36,6 +40,14 @@ function onSubmit() {
   }
 
   form.post('/difficulties', { onSuccess })
+}
+
+function onDestroyShow(resource: DifficultyDto) {
+  destroy.value.open(resource, {
+    replacementId: props.difficulties
+      .find((difficulty) => difficulty.id !== resource.id)
+      ?.id.toString(),
+  })
 }
 
 function onOrderUpdate() {
@@ -61,7 +73,7 @@ function onOrderUpdate() {
       v-model="list"
       @end="onOrderUpdate"
       @edit="onEdit"
-      @destroy="destroy.open"
+      @destroy="onDestroyShow"
     />
 
     <FormDialog
@@ -79,10 +91,31 @@ function onOrderUpdate() {
       v-model:open="destroy.isOpen"
       title="Delete Difficulty?"
       :action-href="`/difficulties/${destroy.resource?.id}`"
+      :action-data="destroy.data"
     >
-      Are you sure you'd like to delete your
-      <strong>{{ destroy.resource?.name }}</strong> difficulty? Any series using
-      {{ destroy.resource?.name }} will have their difficulty cleared.
+      <div v-if="destroy.resource?.meta.courses_count">
+        What difficulty would you like to assign the courses using
+        {{ destroy.resource?.name }}?
+
+        <FormInput
+          label="Difficulty"
+          type="select"
+          v-model="destroy.data.replacementId"
+          class="mt-4"
+        >
+          <SelectItem
+            v-for="difficulty in destroyReplacementOptions"
+            :key="difficulty.id"
+            :value="difficulty.id.toString()"
+          >
+            {{ difficulty.name }}
+          </SelectItem>
+        </FormInput>
+      </div>
+      <div v-else>
+        Are you sure you'd like to delete your
+        <strong>{{ destroy.resource?.name }}</strong> difficulty? No courses are currently using it.
+      </div>
     </ConfirmDestroyDialog>
   </div>
 </template>

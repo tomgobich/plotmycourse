@@ -9,8 +9,17 @@ import Status from './status.js'
 import User from './user.js'
 import type { ExtractModelRelations, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import OrganizationInvite from './organization_invite.js'
+import { AccessToken, DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
 
 export default class Organization extends BaseModel {
+  static accessTokens = DbAccessTokensProvider.forModel(Organization, {
+    table: 'api_access_tokens',
+    type: 'api_token',
+    prefix: 'api_',
+  })
+
+  declare currentAccessToken: AccessToken
+
   @column({ isPrimary: true })
   declare id: number
 
@@ -94,15 +103,15 @@ export default class Organization extends BaseModel {
     return (<Organization>this).related('lessons').query().where('id', lessonId).firstOrFail()
   }
 
-  async getDifficulties() {
+  getDifficulties() {
     return (<Organization>this).related('difficulties').query().orderBy('order')
   }
 
-  async getStatuses() {
+  getStatuses() {
     return (<Organization>this).related('statuses').query().orderBy('order')
   }
 
-  async getAccessLevels() {
+  getAccessLevels() {
     return (<Organization>this).related('accessLevels').query().orderBy('order')
   }
 }

@@ -9,8 +9,14 @@ import UserDto from '#dtos/user'
 import UnauthorizedException from '#exceptions/unauthorized_exception'
 import Role from '#models/role'
 import { withOrganizationMetaData } from '#validators/helpers/organization'
-import { organizationInviteValidator } from '#validators/organization'
+import {
+  organizationAccessTokenValidator,
+  organizationInviteValidator,
+} from '#validators/organization'
 import type { HttpContext } from '@adonisjs/core/http'
+import StoreApiAccessToken from '#actions/settings/store_api_access_token'
+import GetApiAccessTokens from '#actions/settings/get_api_access_tokens'
+import AccessTokenDto from '#dtos/access_token'
 
 export default class OrganizationsController {
   async index({ inertia, organization, can }: HttpContext) {
@@ -21,11 +27,13 @@ export default class OrganizationsController {
     const users = await GetOrganizationUsers.handle({ organization })
     const pendingInvites = await GetOrganizationPendingInvites.handle({ organization })
     const roles = await Role.query().orderBy('name')
+    const accessTokens = await GetApiAccessTokens.handle({ organization })
 
     return inertia.render('settings/organization', {
       users: UserDto.fromArray(users),
       invites: OrganizationInviteDto.fromArray(pendingInvites),
       roles: RoleDto.fromArray(roles),
+      accessTokens: AccessTokenDto.fromArray(accessTokens),
     })
   }
 
@@ -79,4 +87,21 @@ export default class OrganizationsController {
   }
 
   async updateUserRole({}: HttpContext) {}
+
+  async storeAccessToken({ request, response, organization, session, can }: HttpContext) {
+    if (!can.organization.manageAccessTokens) {
+      throw new UnauthorizedException(
+        'You are not authorized to create access tokens for this organization'
+      )
+    }
+
+    const data = await request.validateUsing(organizationAccessTokenValidator)
+    const token = await StoreApiAccessToken.handle({ organization, data })
+
+    session.flash('success', 'Your access token has been created')
+
+    return response.json({
+      accessToken: new AccessTokenDto(token),
+    })
+  }
 }

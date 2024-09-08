@@ -3,15 +3,21 @@ import DestroyStatus from '#actions/statuses/destroy_status'
 import UpdateStatus from '#actions/statuses/update_status'
 import UpdateStatusOrder from '#actions/statuses/update_status_order'
 import StatusDto from '#dtos/status'
-import { statusOrderValidator, statusValidator } from '#validators/status'
+import { statusDestroyValidator, statusOrderValidator, statusValidator } from '#validators/status'
 import type { HttpContext } from '@adonisjs/core/http'
+import { withOrganizationMetaData } from '#validators/helpers/organization'
 
 export default class StatusesController {
   /**
    * Display a list of resource
    */
   async index({ inertia, organization }: HttpContext) {
-    const statuses = await organization.getStatuses()
+    const statuses = await organization
+      .getStatuses()
+      .withCount('course')
+      .withCount('module')
+      .withCount('lessons')
+
     return inertia.render('statuses/index', {
       statuses: StatusDto.fromArray(statuses),
     })
@@ -63,10 +69,16 @@ export default class StatusesController {
   /**
    * Delete record
    */
-  async destroy({ params, response, organization }: HttpContext) {
+  async destroy({ params, request, response, organization }: HttpContext) {
+    const data = await request.validateUsing(
+      statusDestroyValidator,
+      withOrganizationMetaData(organization.id)
+    )
+
     await DestroyStatus.handle({
       id: params.id,
       organization,
+      data,
     })
 
     return response.redirect().back()

@@ -36,6 +36,7 @@ defineProps<{
         <OrganizationEditCard :organization="organization" />
         <OrganizationUsersCard :user="user" :users="users" :roles="roles" />
         <OrganizationUserInvitesCard :invites="invites" :roles="roles" />
+        <OrganizationAccessTokens />
       </div>
     </div>
   </main>

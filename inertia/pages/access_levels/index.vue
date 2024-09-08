@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AccessLevelDto from '#dtos/access_level'
 import { Plus } from 'lucide-vue-next'
-import { watchEffect, ref } from 'vue'
+import { watchEffect, ref, computed } from 'vue'
 import { router } from '@inertiajs/vue3'
 import { useResourceActions } from '~/composables/resource_actions'
 import OrganizationDto from '#dtos/organization'
@@ -16,6 +16,10 @@ const { form, dialog, destroy, onSuccess } = useResourceActions<AccessLevelDto>(
   name: '',
   color: '#818cf8',
 })
+
+const destroyReplacementOptions = computed(() =>
+  props.accessLevels.filter((level) => level.id !== destroy.value.resource?.id)
+)
 
 watchEffect(() => {
   list.value = props.accessLevels
@@ -36,6 +40,12 @@ function onSubmit() {
   }
 
   form.post('/access-levels', { onSuccess })
+}
+
+function onDestroyShow(resource: AccessLevelDto) {
+  destroy.value.open(resource, {
+    replacementId: props.accessLevels.find((level) => level.id !== resource.id)?.id.toString(),
+  })
 }
 
 function onOrderUpdate() {
@@ -64,7 +74,7 @@ function onOrderUpdate() {
       v-model="list"
       @end="onOrderUpdate"
       @edit="onEdit"
-      @destroy="destroy.open"
+      @destroy="onDestroyShow"
     />
 
     <FormDialog
@@ -82,10 +92,32 @@ function onOrderUpdate() {
       v-model:open="destroy.isOpen"
       title="Delete Access Level?"
       :action-href="`/access-levels/${destroy.resource?.id}`"
+      :action-data="destroy.data"
     >
-      Are you sure you'd like to delete your
-      <strong>{{ destroy.resource?.name }}</strong> access level? Any series using
-      {{ destroy.resource?.name }} will have their access level cleared.
+      <div v-if="destroy.resource?.meta.courses_count || destroy.resource?.meta.lessons_count">
+        What access level would you like to assign the courses &amp; lessons using
+        {{ destroy.resource?.name }}?
+
+        <FormInput
+          label="Access Level"
+          type="select"
+          v-model="destroy.data.replacementId"
+          class="mt-4"
+        >
+          <SelectItem
+            v-for="level in destroyReplacementOptions"
+            :key="level.id"
+            :value="level.id.toString()"
+          >
+            {{ level.name }}
+          </SelectItem>
+        </FormInput>
+      </div>
+      <div v-else>
+        Are you sure you'd like to delete your
+        <strong>{{ destroy.resource?.name }}</strong> access level? No courses or lessons are
+        currently using it.
+      </div>
     </ConfirmDestroyDialog>
   </div>
 </template>

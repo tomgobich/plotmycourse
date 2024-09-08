@@ -16,6 +16,7 @@ export default class AccessLevelDto extends BaseModelDto {
   declare organization: OrganizationDto | null
   declare courses: CourseDto[]
   declare lessons: LessonDto[]
+  declare meta: Record<string, any>
 
   constructor(accessLevel?: AccessLevel) {
     super()
@@ -32,5 +33,6 @@ export default class AccessLevelDto extends BaseModelDto {
     this.organization = accessLevel.organization && new OrganizationDto(accessLevel.organization)
     this.courses = CourseDto.fromArray(accessLevel.courses)
     this.lessons = LessonDto.fromArray(accessLevel.lessons)
+    this.meta = accessLevel.$extras
   }
 }

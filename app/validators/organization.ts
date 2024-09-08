@@ -38,3 +38,10 @@ export const organizationInviteValidator = vine.withMetaData<OrganizationMetData
     }),
   })
 )
+
+export const organizationAccessTokenValidator = vine.compile(
+  vine.object({
+    name: vine.string().maxLength(100),
+    permissions: vine.array(vine.string().maxLength(100)),
+  })
+)

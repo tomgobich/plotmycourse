@@ -15,7 +15,8 @@ export function useResourceActions<Resource>() {
     }
 
     interface Destroy extends Actionable {
-      open(resource: UnwrapRef<Resource>): void
+      data: Record<string, any>
+      open(resource: UnwrapRef<Resource>, data?: Record<string, any>): void
     }
 
     const form = useForm(defaultForm)
@@ -34,8 +35,10 @@ export function useResourceActions<Resource>() {
     const destroy = ref<Destroy>({
       isOpen: false,
       resource: undefined,
-      open(resource: UnwrapRef<Resource>) {
+      data: {},
+      open(resource: UnwrapRef<Resource>, data: Record<string, any> = {}) {
         destroy.value.resource = resource
+        destroy.value.data = { ...data }
         destroy.value.isOpen = true
       },
     })

@@ -1,4 +1,5 @@
 import vine from '@vinejs/vine'
+import { existsInOrganization, OrganizationMetaData } from '#validators/helpers/organization'
 
 export const accessLevelValidator = vine.compile(
   vine.object({
@@ -10,5 +11,11 @@ export const accessLevelValidator = vine.compile(
 export const accessLevelOrderValidate = vine.compile(
   vine.object({
     ids: vine.array(vine.number()),
+  })
+)
+
+export const accessLevelDestroyValidator = vine.withMetaData<OrganizationMetaData>().compile(
+  vine.object({
+    replacementId: vine.number().exists(existsInOrganization('access_levels')),
   })
 )
