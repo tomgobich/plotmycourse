@@ -4,6 +4,7 @@ import UserDto from '#dtos/user'
 import RoleDto from '#dtos/role'
 import { Abilities } from '#actions/abilities/get_abilities'
 import OrganizationInviteDto from '#dtos/organization_invite'
+import AccessTokenDto from '#dtos/access_token'
 
 defineProps<{
   organization: OrganizationDto
@@ -12,6 +13,7 @@ defineProps<{
   users: UserDto[]
   invites: OrganizationInviteDto[]
   roles: RoleDto[]
+  accessTokens: AccessTokenDto[]
 }>()
 </script>
 
@@ -36,7 +38,7 @@ defineProps<{
         <OrganizationEditCard :organization="organization" />
         <OrganizationUsersCard :user="user" :users="users" :roles="roles" />
         <OrganizationUserInvitesCard :invites="invites" :roles="roles" />
-        <OrganizationAccessTokens />
+        <OrganizationAccessTokens :tokens="accessTokens" />
       </div>
     </div>
   </main>

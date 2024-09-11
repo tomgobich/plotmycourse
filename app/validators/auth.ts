@@ -13,7 +13,10 @@ export const loginValidator = vine.compile(
 export const registerValidator = vine.compile(
   vine.object({
     fullName: vine.string().maxLength(254),
-    email: emailRule(),
+    email: emailRule().unique(async (db, value) => {
+      const exists = await db.from('users').where('email', value).select('id').first()
+      return !exists
+    }),
     password: vine.string().minLength(8),
   })
 )

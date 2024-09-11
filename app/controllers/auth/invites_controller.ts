@@ -12,7 +12,7 @@ export default class InvitesController {
 
     await auth.use('web').check()
 
-    if (!auth.user) {
+    if (!auth.use('web').user) {
       const invite = await OrganizationInvite.findOrFail(params.id)
       const isUser = await User.query().whereILike('email', invite.email).first()
 
@@ -25,7 +25,7 @@ export default class InvitesController {
 
     const result = await AcceptOrganizationInvite.handle({
       inviteId: params.id,
-      user: auth.user!,
+      user: auth.use('web').user!,
     })
 
     session.flash('success', result.message)

@@ -27,7 +27,7 @@ export default class OrganizationsController {
   async store({ request, response, auth }: HttpContext) {
     const data = await request.validateUsing(organizationValidator)
     const organization = await StoreOrganization.handle({
-      user: auth.user!,
+      user: auth.use('web').user!,
       data,
     })
 
@@ -48,7 +48,7 @@ export default class OrganizationsController {
   async update({ params, request, response, auth }: HttpContext) {
     const roleId = await GetOrganizationUserRoleId.handle({
       organizationId: params.id,
-      userId: auth.user!.id,
+      userId: auth.use('web').user!.id,
     })
 
     if (!GetOrganizationAbilities.canEdit(roleId)) {
@@ -58,7 +58,7 @@ export default class OrganizationsController {
     const data = await request.validateUsing(organizationValidator)
 
     await UpdateOrganization.handle({
-      user: auth.user!,
+      user: auth.use('web').user!,
       id: params.id,
       data,
     })
@@ -72,7 +72,7 @@ export default class OrganizationsController {
   async destroy(ctx: HttpContext) {
     const roleId = await GetOrganizationUserRoleId.handle({
       organizationId: ctx.params.id,
-      userId: ctx.auth.user!.id,
+      userId: ctx.auth.use('web').user!.id,
     })
 
     if (!GetOrganizationAbilities.canDestroy(roleId)) {
@@ -80,7 +80,7 @@ export default class OrganizationsController {
     }
 
     const destroyed = await DestroyOrganization.handle({
-      user: ctx.auth.user!,
+      user: ctx.auth.use('web').user!,
       id: ctx.params.id,
     })
 

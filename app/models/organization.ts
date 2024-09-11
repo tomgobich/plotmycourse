@@ -18,7 +18,7 @@ export default class Organization extends BaseModel {
     prefix: 'api_',
   })
 
-  declare currentAccessToken: AccessToken
+  declare currentAccessToken?: AccessToken
 
   @column({ isPrimary: true })
   declare id: number

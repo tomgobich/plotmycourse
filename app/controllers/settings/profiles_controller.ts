@@ -11,7 +11,7 @@ export default class ProfilesController {
     const data = await request.validateUsing(updateProfileValidator)
 
     await UpdateUserProfile.handle({
-      user: auth.user!,
+      user: auth.use('web').user!,
       data,
     })
 

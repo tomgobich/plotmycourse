@@ -13,6 +13,11 @@ export default class OrganizationMiddleware {
   constructor(protected getActiveOrganization: GetActiveOrganization) {}
 
   async handle(ctx: HttpContext, next: NextFn) {
+    if (ctx.auth.use('api').user) {
+      ctx.organization = ctx.auth.use('api').user!
+      return next()
+    }
+
     try {
       // get from cookie here, and set of CTX as source of truth so we can mutate it if needed
       ctx.organizationId = ctx.request.cookie(activeCookieName)
@@ -20,7 +25,7 @@ export default class OrganizationMiddleware {
       const organization = await this.getActiveOrganization.handle()
       const roleId = await GetOrganizationUserRoleId.handle({
         organizationId: organization.id,
-        userId: ctx.auth.user!.id,
+        userId: ctx.auth.use('web').user!.id,
       })
 
       ctx.organization = organization
@@ -36,7 +41,7 @@ export default class OrganizationMiddleware {
       return next()
     }
 
-    const organizations = await ctx.auth.user!.getOrganizations().orderBy('name')
+    const organizations = await ctx.auth.use('web').user!.getOrganizations().orderBy('name')
 
     ctx.inertia.share({
       organization: new OrganizationDto(ctx.organization),

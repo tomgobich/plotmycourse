@@ -17,6 +17,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import StoreApiAccessToken from '#actions/settings/store_api_access_token'
 import GetApiAccessTokens from '#actions/settings/get_api_access_tokens'
 import AccessTokenDto from '#dtos/access_token'
+import DestroyApiAccessToken from '#actions/settings/destroy_api_access_token'
 
 export default class OrganizationsController {
   async index({ inertia, organization, can }: HttpContext) {
@@ -24,16 +25,23 @@ export default class OrganizationsController {
       throw new UnauthorizedException('You are not authorized to edit this organization')
     }
 
-    const users = await GetOrganizationUsers.handle({ organization })
-    const pendingInvites = await GetOrganizationPendingInvites.handle({ organization })
-    const roles = await Role.query().orderBy('name')
-    const accessTokens = await GetApiAccessTokens.handle({ organization })
-
     return inertia.render('settings/organization', {
-      users: UserDto.fromArray(users),
-      invites: OrganizationInviteDto.fromArray(pendingInvites),
-      roles: RoleDto.fromArray(roles),
-      accessTokens: AccessTokenDto.fromArray(accessTokens),
+      users: async () => {
+        const users = await GetOrganizationUsers.handle({ organization })
+        return UserDto.fromArray(users)
+      },
+      invites: async () => {
+        const pendingInvites = await GetOrganizationPendingInvites.handle({ organization })
+        return OrganizationInviteDto.fromArray(pendingInvites)
+      },
+      roles: async () => {
+        const roles = await Role.query().orderBy('name')
+        return RoleDto.fromArray(roles)
+      },
+      accessTokens: async () => {
+        const accessTokens = await GetApiAccessTokens.handle({ organization })
+        return AccessTokenDto.fromArray(accessTokens)
+      },
     })
   }
 
@@ -49,7 +57,7 @@ export default class OrganizationsController {
 
     await SendOrganizationInvite.handle({
       organization,
-      invitedByUserId: auth.user!.id,
+      invitedByUserId: auth.use('web').user!.id,
       data,
     })
 
@@ -65,7 +73,7 @@ export default class OrganizationsController {
 
     await CancelOrganizationInvite.handle({
       organization,
-      canceledByUserId: await auth.user!.id,
+      canceledByUserId: await auth.use('web').user!.id,
       inviteId: params.id,
     })
 
@@ -98,10 +106,22 @@ export default class OrganizationsController {
     const data = await request.validateUsing(organizationAccessTokenValidator)
     const token = await StoreApiAccessToken.handle({ organization, data })
 
-    session.flash('success', 'Your access token has been created')
-
     return response.json({
       accessToken: new AccessTokenDto(token),
     })
+  }
+
+  async destroyAccessToken({ params, response, organization, session, can }: HttpContext) {
+    if (!can.organization.manageAccessTokens) {
+      throw new UnauthorizedException(
+        'You are not authorized to delete access tokens for this organization'
+      )
+    }
+
+    await DestroyApiAccessToken.handle({ organization, id: params.id })
+
+    session.flash('success', 'Access token was successfully deleted and can no longer be used')
+
+    return response.redirect().back()
   }
 }
