@@ -2,11 +2,12 @@ import env from '#start/env'
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
 import axios from 'axios'
+import app from '@adonisjs/core/services/app'
 
 export default class TurnstileMiddleware {
   async handle({ request, response, session, logger }: HttpContext, next: NextFn) {
-    if (session.get('TURNSTILE_STATUS') === 'true') {
-      return true
+    if (app.inDev || session.get('TURNSTILE_STATUS') === 'true') {
+      return next()
     }
 
     const token = request.input('turnstile')

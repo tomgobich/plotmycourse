@@ -1,20 +1,24 @@
 import GetCourses from '#actions/courses/get_courses'
-import CourseDto from '#dtos/course'
 import UnauthorizedException from '#exceptions/unauthorized_exception'
+import { courseFilterValidator } from '#validators/course'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class CoursesController {
   /**
    * Display a list of resource
    */
-  async index({ organization }: HttpContext) {
+  async index({ request, organization }: HttpContext) {
     if (!organization.currentAccessToken?.allows('read')) {
       throw new UnauthorizedException('You do not have permission to read from this organization')
     }
 
-    const courses = await GetCourses.handle({ organization })
+    const filters = await request.validateUsing(courseFilterValidator)
+    const courses = await GetCourses.handle({ organization, filters })
 
-    return CourseDto.fromArray(courses)
+    return {
+      filters,
+      courses,
+    }
   }
 
   /**
