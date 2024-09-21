@@ -86,6 +86,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "edge.js": "^6.0.2",
+    "knex-schema-inspector": "^3.1.0",
     "lucide-vue-next": "^0.424.0",
     "luxon": "^3.5.0",
     "pg": "^8.12.0",

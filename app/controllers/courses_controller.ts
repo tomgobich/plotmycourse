@@ -50,7 +50,7 @@ export default class CoursesController {
 
     return inertia.render('courses/show', {
       course: new CourseDto(course),
-      modules: ModuleDto.fromArray(modules),
+      modules: modules && ModuleDto.fromArray(modules),
     })
   }
 

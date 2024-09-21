@@ -9,6 +9,7 @@ const CoursesController = () => import('#controllers/api/courses_controller')
 router.group(() => {
 
   router.post('/courses', [CoursesController, 'index'])
+  router.post('/courses/:id', [CoursesController, 'show'])
 
 })
   .prefix('/api/v1')

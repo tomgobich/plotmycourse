@@ -1,6 +1,7 @@
+import GetCourse from '#actions/courses/get_course'
 import GetCourses from '#actions/courses/get_courses'
 import UnauthorizedException from '#exceptions/unauthorized_exception'
-import { courseFilterValidator } from '#validators/course'
+import { coursesFilterValidator, courseShowFilterValidator } from '#validators/course'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class CoursesController {
@@ -12,7 +13,7 @@ export default class CoursesController {
       throw new UnauthorizedException('You do not have permission to read from this organization')
     }
 
-    const filters = await request.validateUsing(courseFilterValidator)
+    const filters = await request.validateUsing(coursesFilterValidator)
     const courses = await GetCourses.handle({ organization, filters })
 
     return {
@@ -29,7 +30,19 @@ export default class CoursesController {
   /**
    * Show individual record
    */
-  async show({ params }: HttpContext) {}
+  async show({ params, request, organization }: HttpContext) {
+    if (!organization.currentAccessToken?.allows('read')) {
+      throw new UnauthorizedException('You do not have permission to read from this organization')
+    }
+
+    const filters = await request.validateUsing(courseShowFilterValidator)
+
+    return GetCourse.handle({
+      id: params.id,
+      organization,
+      filters,
+    })
+  }
 
   /**
    * Handle form submission for the edit action

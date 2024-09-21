@@ -1,6 +1,8 @@
 import vine from '@vinejs/vine'
 import { existsInOrganization, OrganizationMetaData } from './helpers/organization.js'
 import { DateTime } from 'luxon'
+import StringFilter from '#actions/filters/string_filter'
+import NumbersFilter from '#actions/filters/numbers_filter'
 
 export const lessonValidator = vine.withMetaData<OrganizationMetaData>().compile(
   vine.object({
@@ -46,3 +48,13 @@ export const lessonOrderValidator = vine.compile(
     ),
   })
 )
+
+export const lessonsFilterValidatorObject = vine
+  .object({
+    name: StringFilter.rule,
+    statusId: NumbersFilter.rule,
+    accessLevelId: NumbersFilter.rule,
+  })
+  .optional()
+
+export const lessonsFilterValidator = vine.compile(lessonsFilterValidatorObject)

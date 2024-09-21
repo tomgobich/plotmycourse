@@ -2,6 +2,8 @@ import vine from '@vinejs/vine'
 import { existsInOrganization, OrganizationMetaData } from './helpers/organization.js'
 import StringFilter from '#actions/filters/string_filter'
 import NumbersFilter from '#actions/filters/numbers_filter'
+import { modulesFilterValidatorObject } from './module.js'
+import { lessonsFilterValidatorObject } from './lesson.js'
 
 export const courseValidator = vine.withMetaData<OrganizationMetaData>().compile(
   vine.object({
@@ -33,11 +35,19 @@ export const coursePatchTagValidator = vine.withMetaData<OrganizationMetaData>()
   })
 )
 
-export const courseFilterValidator = vine.compile(
+export const coursesFilterValidator = vine.compile(
   vine.object({
     name: StringFilter.rule,
     statusId: NumbersFilter.rule,
     difficultyId: NumbersFilter.rule,
     accessLevelId: NumbersFilter.rule,
+  })
+)
+
+export const courseShowFilterValidator = vine.compile(
+  vine.object({
+    modules: modulesFilterValidatorObject,
+    lessons: lessonsFilterValidatorObject,
+    excludeModules: vine.boolean().optional(),
   })
 )
