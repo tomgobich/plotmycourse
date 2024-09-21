@@ -1,7 +1,6 @@
 import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
 import SetActiveOrganization from './set_active_organization.js'
-import Organization from '#models/organization'
 
 @inject()
 export default class GetActiveOrganization {

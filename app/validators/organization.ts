@@ -1,6 +1,6 @@
 import vine from '@vinejs/vine'
 import { emailRule } from './auth.js'
-import { OrganizationMetData } from './helpers/organization.js'
+import { OrganizationMetaData } from './helpers/organization.js'
 
 export const organizationValidator = vine.compile(
   vine.object({
@@ -8,7 +8,7 @@ export const organizationValidator = vine.compile(
   })
 )
 
-export const organizationInviteValidator = vine.withMetaData<OrganizationMetData>().compile(
+export const organizationInviteValidator = vine.withMetaData<OrganizationMetaData>().compile(
   vine.object({
     email: emailRule().unique(async (db, value, field) => {
       // make sure there isn't already a pending invite

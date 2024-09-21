@@ -96,7 +96,7 @@ export default class OrganizationsController {
 
   async updateUserRole({}: HttpContext) {}
 
-  async storeAccessToken({ request, response, organization, session, can }: HttpContext) {
+  async storeAccessToken({ request, response, organization, can }: HttpContext) {
     if (!can.organization.manageAccessTokens) {
       throw new UnauthorizedException(
         'You are not authorized to create access tokens for this organization'
