@@ -12,14 +12,13 @@ export default class LessonsController {
       throw new UnauthorizedException('You do not have permission to read from this organization')
     }
 
-    const data = await request.validateUsing(lessonsFilterValidator)
-    const { page, perPage, ...filters } = data || {}
+    const filters = await request.validateUsing(lessonsFilterValidator)
 
     return GetPaginatedLessons.handle({
       organization,
       filters,
-      page: page,
-      perPage: perPage,
+      page: filters?.page,
+      perPage: filters?.perPage,
     })
   }
 
