@@ -8,6 +8,7 @@ import AccessTokenDto from '#dtos/access_token'
 
 defineProps<{
   organization: OrganizationDto
+  inDev: boolean
   can: Abilities
   user: UserDto
   users: UserDto[]
@@ -38,7 +39,7 @@ defineProps<{
         <OrganizationEditCard :organization="organization" />
         <OrganizationUsersCard :user="user" :users="users" :roles="roles" />
         <OrganizationUserInvitesCard :invites="invites" :roles="roles" />
-        <!-- <OrganizationAccessTokens :tokens="accessTokens" /> -->
+        <OrganizationAccessTokens v-if="inDev" :tokens="accessTokens" />
       </div>
     </div>
   </main>

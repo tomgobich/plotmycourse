@@ -1,4 +1,5 @@
 import UserDto from '#dtos/user'
+import app from '@adonisjs/core/services/app'
 import { defineConfig } from '@adonisjs/inertia'
 import type { InferSharedProps } from '@adonisjs/inertia/types'
 
@@ -17,6 +18,7 @@ const inertiaConfig = defineConfig({
     exceptions: (ctx) => ctx.session.flashMessages.get('errorsBag') ?? {},
     messages: (ctx) => ctx.session.flashMessages.all() ?? {},
     qs: (ctx) => ctx.request.qs(),
+    inDev: () => app.inDev,
   },
 
   /**

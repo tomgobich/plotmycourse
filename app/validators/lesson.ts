@@ -51,9 +51,17 @@ export const lessonOrderValidator = vine.compile(
 
 export const lessonsFilterValidatorObject = vine
   .object({
+    page: vine.number().positive().optional(),
+    perPage: vine.number().positive().optional(),
     name: StringFilter.rule,
     statusId: NumbersFilter.rule,
     accessLevelId: NumbersFilter.rule,
+    publishAt: vine
+      .object({
+        before: vine.date({ formats: { utc: true } }).optional(),
+        after: vine.date({ formats: { utc: true } }).optional(),
+      })
+      .optional(),
   })
   .optional()
 
