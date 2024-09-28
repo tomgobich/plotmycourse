@@ -6,7 +6,7 @@ import { lessonsFilterValidator } from '#validators/lesson'
 import { HasManyQueryBuilderContract } from '@adonisjs/lucid/types/relations'
 import { Infer } from '@vinejs/vine/types'
 
-type Filters = Omit<Infer<typeof lessonsFilterValidator>, 'page' | 'perPage'>
+type Filters = Infer<typeof lessonsFilterValidator>
 type Query = HasManyQueryBuilderContract<typeof Lesson, Lesson>
 
 type Params = {
