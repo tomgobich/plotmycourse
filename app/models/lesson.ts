@@ -6,6 +6,7 @@ import Status from './status.js'
 import AccessLevel from './access_level.js'
 import { compose } from '@adonisjs/core/helpers'
 import { WithOrganization } from '#models/mixins/with_organization'
+import LessonType from './lesson_type.js'
 
 export default class Lesson extends compose(BaseModel, WithOrganization) {
   @column({ isPrimary: true })
@@ -19,6 +20,9 @@ export default class Lesson extends compose(BaseModel, WithOrganization) {
 
   @column()
   declare statusId: number
+
+  @column()
+  declare lessonTypeId: number
 
   @column()
   declare name: string
@@ -46,4 +50,7 @@ export default class Lesson extends compose(BaseModel, WithOrganization) {
 
   @belongsTo(() => AccessLevel)
   declare accessLevel: BelongsTo<typeof AccessLevel>
+
+  @belongsTo(() => LessonType)
+  declare lessonType: BelongsTo<typeof LessonType>
 }

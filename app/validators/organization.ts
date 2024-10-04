@@ -1,6 +1,7 @@
 import vine from '@vinejs/vine'
 import { emailRule } from './auth.js'
 import { OrganizationMetaData } from './helpers/organization.js'
+import TokenActions from '#enums/token_actions'
 
 export const organizationValidator = vine.compile(
   vine.object({
@@ -42,6 +43,6 @@ export const organizationInviteValidator = vine.withMetaData<OrganizationMetaDat
 export const organizationAccessTokenValidator = vine.compile(
   vine.object({
     name: vine.string().maxLength(100),
-    permissions: vine.array(vine.string().maxLength(100)),
+    permissions: vine.array(vine.enum(TokenActions)),
   })
 )

@@ -11,7 +11,7 @@ type Params = {
 export default class UpdateLessonTag {
   static async handle({ organization, id, data }: Params) {
     const lesson = await organization.findLesson(id)
-
+    console.log({ data })
     await lesson.merge(data).save()
 
     return lesson

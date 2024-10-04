@@ -39,7 +39,9 @@ defineProps<{
         <OrganizationEditCard :organization="organization" />
         <OrganizationUsersCard :user="user" :users="users" :roles="roles" />
         <OrganizationUserInvitesCard :invites="invites" :roles="roles" />
-        <OrganizationAccessTokens v-if="inDev" :tokens="accessTokens" />
+
+        <!-- working, but not documented -->
+        <OrganizationAccessTokens v-if="inDev || organization.id === 2" :tokens="accessTokens" />
       </div>
     </div>
   </main>

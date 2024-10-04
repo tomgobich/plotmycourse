@@ -2,21 +2,12 @@
 import Sortable from 'vuedraggable'
 import ModuleDto from '#dtos/module'
 import OrganizationDto from '#dtos/organization'
-import { computed, nextTick, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { Plus, Pencil, EllipsisVertical, CalendarClock } from 'lucide-vue-next'
-import { useResourceActions } from '~/composables/resource_actions'
-import LessonDto from '#dtos/lesson'
 import CourseDto from '#dtos/course'
 import { Link } from '@inertiajs/vue3'
-import SelectItem from './ui/select/SelectItem.vue'
 import { DateTime } from 'luxon'
-
-type LessonForm = {
-  name: string
-  publishAt: string | null
-  accessLevelId?: string
-  statusId?: string
-}
+import type { LessonForm } from '~/types/lesson_form'
 
 const props = defineProps<{
   organization: OrganizationDto
@@ -26,45 +17,19 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:modelValue', 'end'])
 
-const dialogFocusEl = ref()
-
+const actions = ref()
 const module = computed({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value),
 })
 
-const urlPrefix = computed(() => `/courses/${props.course.id}/modules/${module.value.id}`)
-
-const { form, dialog, destroy, onSuccess } = useResourceActions<LessonDto>()<LessonForm>({
+const defaultForm: LessonForm = {
   name: '',
+  moduleId: module.value.id,
   publishAt: '',
   accessLevelId: props.organization.accessLevels.at(0)?.id.toString(),
   statusId: props.organization.statuses.at(0)?.id.toString(),
-})
-
-function onCreate() {
-  dialog.value.open()
-  nextTick(() => dialogFocusEl.value.inputEl.$el.focus())
-}
-
-function onEdit(resource: LessonDto) {
-  dialog.value.open(resource, {
-    name: resource.name,
-    publishAt: resource.publishAt,
-    accessLevelId: resource.accessLevelId.toString(),
-    statusId: resource.statusId.toString(),
-  })
-  nextTick(() => dialogFocusEl.value.inputEl.$el.focus())
-}
-
-function onSubmit() {
-  const id = dialog.value.resource?.id
-
-  if (id) {
-    return form.put(`${urlPrefix.value}/lessons/${id}`, { onSuccess, preserveScroll: true })
-  }
-
-  form.post(`${urlPrefix.value}/lessons`, { onSuccess, preserveScroll: true })
+  lessonTypeId: props.organization.lessonTypes.at(0)?.id.toString(),
 }
 </script>
 
@@ -109,7 +74,7 @@ function onSubmit() {
               variant="ghost"
               size="icon"
               class="absolute left-0 top-1/2 -translate-y-1/2 w-7 h-7"
-              @click="onEdit(lesson)"
+              @click="actions.edit(lesson)"
             >
               <Pencil class="w-3.5 h-3.5" />
             </Button>
@@ -120,13 +85,13 @@ function onSubmit() {
           <TagSelector
             v-model="lesson.accessLevelId"
             :options="organization.accessLevels"
-            :patch="{ path: `${urlPrefix}/lessons/${lesson.id}/tags`, key: 'accessLevelId' }"
+            :patch="{ path: `/lessons/${lesson.id}/tags`, key: 'accessLevelId' }"
           />
 
           <TagSelector
             v-model="lesson.statusId"
             :options="organization.statuses"
-            :patch="{ path: `${urlPrefix}/lessons/${lesson.id}/tags`, key: 'statusId' }"
+            :patch="{ path: `/lessons/${lesson.id}/tags`, key: 'statusId' }"
           />
 
           <DropdownMenu>
@@ -135,8 +100,8 @@ function onSubmit() {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem :as="Link" :href="`/lessons/${lesson.id}`"> Open </DropdownMenuItem>
-              <DropdownMenuItem @click="onEdit(lesson)">Edit</DropdownMenuItem>
-              <DropdownMenuItem @click="destroy.open(lesson)">Delete</DropdownMenuItem>
+              <DropdownMenuItem @click="actions.edit(lesson)">Edit</DropdownMenuItem>
+              <DropdownMenuItem @click="actions.destroy(lesson)">Delete</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -146,65 +111,12 @@ function onSubmit() {
 
   <ul>
     <li class="px-2 ml-[3ch]">
-      <Button variant="ghost" size="sm" class="flex gap-2" @click="onCreate">
+      <Button variant="ghost" size="sm" class="flex gap-2" @click="actions.create()">
         <Plus class="w-4 h-4" />
         Add Lesson
       </Button>
     </li>
   </ul>
 
-  <FormDialog
-    resource="Lesson"
-    v-model:open="dialog.isOpen"
-    :editing="dialog.resource?.id"
-    :processing="form.processing"
-    @submit="onSubmit"
-  >
-    <FormInput
-      ref="dialogFocusEl"
-      label="Name"
-      v-model="form.name"
-      :errors="form.errors.name"
-      placeholder="My Cool Lesson"
-    />
-
-    <FormInput type="group" label="Publish At" :errors="form.errors.publishAt">
-      <DatePicker v-model="form.publishAt" />
-    </FormInput>
-
-    <FormInput
-      type="select"
-      label="Access Level"
-      v-model="form.accessLevelId"
-      :errors="form.errors.accessLevelId"
-    >
-      <SelectItem
-        v-for="level in props.organization.accessLevels"
-        :key="level.id"
-        :value="level.id.toString()"
-      >
-        {{ level.name }}
-      </SelectItem>
-    </FormInput>
-
-    <FormInput type="select" label="Status" v-model="form.statusId" :errors="form.errors.statusId">
-      <SelectItem
-        v-for="status in props.organization.statuses"
-        :key="status.id"
-        :value="status.id.toString()"
-      >
-        {{ status.name }}
-      </SelectItem>
-    </FormInput>
-  </FormDialog>
-
-  <ConfirmDestroyDialog
-    v-model:open="destroy.isOpen"
-    title="Delete Lesson?"
-    :action-href="`${urlPrefix}/lessons/${destroy.resource?.id}`"
-  >
-    Are you sure you'd like to delete your
-    <strong>{{ destroy.resource?.name }}</strong> lesson? All data associated with this lesson will
-    be gone forever.
-  </ConfirmDestroyDialog>
+  <LessonActions ref="actions" :default-form="defaultForm" :organization="organization" />
 </template>

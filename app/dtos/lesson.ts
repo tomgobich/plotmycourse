@@ -4,6 +4,7 @@ import ModuleDto from '#dtos/module'
 import StatusDto from '#dtos/status'
 import { BaseModelDto } from '@adocasts.com/dto/base'
 import AccessLevelDto from './access_level.js'
+import LessonTypeDto from './lesson_type.js'
 
 export default class LessonDto extends BaseModelDto {
   declare id: number
@@ -11,6 +12,7 @@ export default class LessonDto extends BaseModelDto {
   declare accessLevelId: number
   declare moduleId: number
   declare statusId: number
+  declare lessonTypeId: number
   declare name: string
   declare notes: string | null
   declare order: number
@@ -21,6 +23,7 @@ export default class LessonDto extends BaseModelDto {
   declare module: ModuleDto | null
   declare status: StatusDto | null
   declare accessLevel: AccessLevelDto | null
+  declare lessonType: LessonTypeDto | null
 
   constructor(lesson?: Lesson) {
     super()
@@ -31,6 +34,7 @@ export default class LessonDto extends BaseModelDto {
     this.accessLevelId = lesson.accessLevelId
     this.moduleId = lesson.moduleId
     this.statusId = lesson.statusId
+    this.lessonTypeId = lesson.lessonTypeId
     this.name = lesson.name
     this.notes = lesson.notes
     this.order = lesson.order
@@ -41,5 +45,6 @@ export default class LessonDto extends BaseModelDto {
     this.module = lesson.module && new ModuleDto(lesson.module)
     this.status = lesson.status && new StatusDto(lesson.status)
     this.accessLevel = lesson.accessLevel && new AccessLevelDto(lesson.accessLevel)
+    this.lessonType = lesson.lessonType && new LessonTypeDto(lesson.lessonType)
   }
 }

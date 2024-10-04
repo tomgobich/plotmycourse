@@ -66,4 +66,22 @@ export const defaults = {
       order: 4,
     },
   ],
+  lessonTypes: [
+    {
+      name: 'Lesson',
+      color: '#6ee7b7',
+      isDefault: true,
+      order: 0,
+    },
+    {
+      name: 'Blog',
+      color: '#a5b4fc',
+      order: 1,
+    },
+    {
+      name: 'News',
+      color: '#67e8f9',
+      order: 2,
+    },
+  ],
 }

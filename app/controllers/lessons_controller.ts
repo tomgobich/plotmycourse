@@ -12,6 +12,7 @@ import {
   lessonNotesValidator,
   lessonOrderValidator,
   lessonPatchTagValidator,
+  lessonsFilterValidator,
   lessonValidator,
 } from '#validators/lesson'
 import type { HttpContext } from '@adonisjs/core/http'
@@ -19,14 +20,22 @@ import router from '@adonisjs/core/services/router'
 
 export default class LessonsController {
   async index({ request, inertia, organization }: HttpContext) {
-    const page = request.input('page', 1)
-    const paginator = await GetPaginatedLessons.handle({ organization, page })
+    const filters = await request.validateUsing(lessonsFilterValidator)
+    const paginator = await GetPaginatedLessons.handle({
+      organization,
+      filters,
+      page: filters?.page,
+      perPage: filters?.perPage,
+    })
 
     paginator.baseUrl(router.makeUrl('lessons.index'))
     paginator.queryString(request.qs())
 
     return inertia.render('lessons/index', {
-      lessons: LessonDto.fromPaginator(paginator),
+      lessons: LessonDto.fromPaginator(paginator, {
+        start: paginator.firstPage,
+        end: paginator.lastPage,
+      }),
     })
   }
 
@@ -38,14 +47,13 @@ export default class LessonsController {
   /**
    * Handle form submission for the create action
    */
-  async store({ params, request, response, organization }: HttpContext) {
+  async store({ request, response, organization }: HttpContext) {
     const data = await request.validateUsing(
       lessonValidator,
       withOrganizationMetaData(organization.id)
     )
 
     await StoreLesson.handle({
-      moduleId: params.moduleId,
       organization,
       data,
     })
@@ -123,7 +131,6 @@ export default class LessonsController {
    */
   async destroy({ params, response, organization }: HttpContext) {
     await DestroyLesson.handle({
-      moduleId: params.moduleId,
       id: params.id,
       organization,
     })

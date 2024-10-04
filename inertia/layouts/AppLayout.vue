@@ -21,7 +21,7 @@ const props = defineProps<{
     >
       <Navigation v-bind="props" />
 
-      <div class="flex w-full items-center justify-end">
+      <div class="flex flex-1 items-center justify-end">
         <DropdownMenu>
           <DropdownMenuTrigger as-child>
             <Button variant="secondary" size="icon" class="rounded-full">

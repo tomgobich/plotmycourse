@@ -6,11 +6,12 @@ import { router } from '@inertiajs/vue3'
 import axios from 'axios'
 import AccessTokenDto from '#dtos/access_token'
 import { useResourceActions } from '../../composables/resource_actions'
+import TokenActions from '#enums/token_actions'
 
 defineProps<{ tokens: AccessTokenDto[] }>()
 
 const isDialogShown = ref(false)
-const permissionOptions = ['read', 'update', 'delete']
+const permissionOptions = Object.values(TokenActions)
 const form = ref({
   name: '',
   permissions: new Set(['read']),

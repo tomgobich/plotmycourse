@@ -7,6 +7,7 @@ import DifficultyDto from '#dtos/difficulty'
 import StatusDto from '#dtos/status'
 import UserDto from '#dtos/user'
 import { BaseModelDto } from '@adocasts.com/dto/base'
+import LessonTypeDto from './lesson_type.js'
 
 export default class OrganizationDto extends BaseModelDto {
   declare id: number
@@ -19,6 +20,7 @@ export default class OrganizationDto extends BaseModelDto {
   declare accessLevels: AccessLevelDto[]
   declare difficulties: DifficultyDto[]
   declare statuses: StatusDto[]
+  declare lessonTypes: LessonTypeDto[]
   declare users: UserDto[]
 
   constructor(organization?: Organization) {
@@ -35,6 +37,7 @@ export default class OrganizationDto extends BaseModelDto {
     this.accessLevels = AccessLevelDto.fromArray(organization.accessLevels)
     this.difficulties = DifficultyDto.fromArray(organization.difficulties)
     this.statuses = StatusDto.fromArray(organization.statuses)
+    this.lessonTypes = LessonTypeDto.fromArray(organization.lessonTypes)
     this.users = UserDto.fromArray(organization.users)
   }
 }

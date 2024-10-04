@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import OrganizationDto from '#dtos/organization'
 import { Pencil, Trash2 } from 'lucide-vue-next'
-import { watchEffect, computed } from 'vue'
+import { watchEffect, computed, ref } from 'vue'
 import LessonDto from '#dtos/lesson'
 import { useForm } from '@inertiajs/vue3'
 import { DateTime } from 'luxon'
+import type { LessonForm } from '~/types/lesson_form'
 
 const props = defineProps<{
   organization: OrganizationDto
@@ -12,22 +13,35 @@ const props = defineProps<{
 }>()
 
 const publishAt = computed(() => props.lesson.publishAt && DateTime.fromISO(props.lesson.publishAt))
-const module = computed(() => props.lesson.module!)
-const course = computed(() => module.value.course!)
-const breadcrumbs = computed(() => [
-  { name: course.value.name, href: `/courses/${course.value.id}` },
-  { name: module.value.name, href: `/courses/${course.value.id}?module=${module.value.id}` },
-  { name: `Lesson ${module.value.order}.${props.lesson.order}` },
-])
+const module = computed(() => props.lesson.module)
+const course = computed(() => module.value?.course)
+const breadcrumbs = computed(() => {
+  if (course.value && module.value) {
+    return [
+      { name: course.value.name, href: `/courses/${course.value.id}` },
+      { name: module.value.name, href: `/courses/${course.value.id}?module=${module.value.id}` },
+      { name: `Lesson ${module.value.order}.${props.lesson.order}` },
+    ]
+  }
 
-const pathPrefix = computed(
-  () => `/courses/${course.value.id}/modules/${module.value.id}/lessons/${props.lesson.id}`
-)
-const tagPath = computed(() => `${pathPrefix.value}/tags`)
+  return [{ name: 'Lessons', href: '/lessons' }, { name: props.lesson.name }]
+})
+
+const tagPath = computed(() => `/lessons/${props.lesson.id}/tags`)
 
 const form = useForm({
   notes: props.lesson.notes,
 })
+
+const actions = ref()
+const defaultLessonForm: LessonForm = {
+  name: '',
+  moduleId: module.value?.id,
+  publishAt: '',
+  accessLevelId: props.organization.accessLevels.at(0)?.id.toString(),
+  statusId: props.organization.statuses.at(0)?.id.toString(),
+  lessonTypeId: props.organization.lessonTypes.at(0)?.id.toString(),
+}
 
 watchEffect(() => (form.notes = props.lesson.notes))
 </script>
@@ -44,12 +58,17 @@ watchEffect(() => (form.notes = props.lesson.notes))
       </div>
 
       <div class="flex items-center justify-end gap-2">
-        <Button size="sm" variant="ghost">
+        <Button size="sm" variant="ghost" @click="actions.edit(lesson)">
           <Pencil class="w-3 h-3 mr-2" />
           Edit
         </Button>
 
-        <Button size="sm" variant="ghost" class="hover:text-red-500">
+        <Button
+          size="sm"
+          variant="ghost"
+          class="hover:text-red-500"
+          @click="actions.destroy(lesson)"
+        >
           <Trash2 class="w-3 h-3 mr-2" />
           Delete
         </Button>
@@ -67,6 +86,14 @@ watchEffect(() => (form.notes = props.lesson.notes))
         </div>
       </li>
       <li class="flex items-center gap-3">
+        <div class="w-24">Type</div>
+        <TagSelector
+          v-model="lesson.lessonTypeId"
+          :options="organization.lessonTypes"
+          :patch="{ path: tagPath, key: 'lessonTypeId' }"
+        />
+      </li>
+      <li class="flex items-center gap-3">
         <div class="w-24">Status</div>
         <TagSelector
           v-model="lesson.statusId"
@@ -77,7 +104,7 @@ watchEffect(() => (form.notes = props.lesson.notes))
       <li class="flex items-center gap-3">
         <div class="w-24">Access</div>
         <TagSelector
-          v-model="course.accessLevelId"
+          v-model="lesson.accessLevelId"
           :options="organization.accessLevels"
           :patch="{ path: tagPath, key: 'accessLevelId' }"
         />
@@ -87,7 +114,14 @@ watchEffect(() => (form.notes = props.lesson.notes))
     <LessonEditor
       v-model="form.notes"
       :proccessing="form.processing"
-      @blur="form.patch(`${pathPrefix}/notes`, { preserveState: true, preserveScroll: true })"
+      @blur="
+        form.patch(`/lessons/${props.lesson.id}/notes`, {
+          preserveState: true,
+          preserveScroll: true,
+        })
+      "
     />
+
+    <LessonActions ref="actions" :default-form="defaultLessonForm" :organization="organization" />
   </div>
 </template>

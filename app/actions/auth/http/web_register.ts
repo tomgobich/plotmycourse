@@ -32,7 +32,7 @@ export default class WebRegister {
     if (!inviteId) return
 
     const result = await AcceptOrganizationInvite.handle({
-      inviteId: parseInt(inviteId),
+      inviteId: Number(inviteId),
       user,
     })
 

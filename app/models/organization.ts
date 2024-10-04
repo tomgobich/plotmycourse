@@ -10,6 +10,7 @@ import User from './user.js'
 import type { ExtractModelRelations, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import OrganizationInvite from './organization_invite.js'
 import { AccessToken, DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
+import LessonType from './lesson_type.js'
 
 export default class Organization extends BaseModel {
   static accessTokens = DbAccessTokensProvider.forModel(Organization, {
@@ -49,6 +50,9 @@ export default class Organization extends BaseModel {
 
   @hasMany(() => Status)
   declare statuses: HasMany<typeof Status>
+
+  @hasMany(() => LessonType)
+  declare lessonTypes: HasMany<typeof LessonType>
 
   @manyToMany(() => User, {
     pivotColumns: ['role_id'],
@@ -113,5 +117,9 @@ export default class Organization extends BaseModel {
 
   getAccessLevels() {
     return (<Organization>this).related('accessLevels').query().orderBy('order')
+  }
+
+  getLessonTypes() {
+    return (<Organization>this).related('lessonTypes').query().orderBy('order')
   }
 }

@@ -31,6 +31,13 @@ const props = defineProps<{
       Courses
     </Link>
     <Link
+      href="/lessons"
+      class="desktop-link"
+      :class="{ active: $page.url.startsWith('/lessons') }"
+    >
+      Lessons
+    </Link>
+    <Link
       href="/difficulties"
       class="desktop-link"
       :class="{ active: $page.url.startsWith('/difficulties') }"
@@ -50,6 +57,13 @@ const props = defineProps<{
       :class="{ active: $page.url.startsWith('/access-levels') }"
     >
       Accesses
+    </Link>
+    <Link
+      href="/lesson-types"
+      class="desktop-link"
+      :class="{ active: $page.url.startsWith('/lesson-types') }"
+    >
+      Lesson Types
     </Link>
   </nav>
   <Sheet>
@@ -73,6 +87,13 @@ const props = defineProps<{
           Courses
         </a>
         <a
+          href="/lessons"
+          class="mobile-link"
+          :class="{ active: $page.url.startsWith('/lessons') }"
+        >
+          Lessons
+        </a>
+        <a
           href="/difficulties"
           class="mobile-link"
           :class="{ active: $page.url.startsWith('/difficulties') }"
@@ -92,6 +113,13 @@ const props = defineProps<{
           :class="{ active: $page.url.startsWith('/access-levels') }"
         >
           Access
+        </a>
+        <a
+          href="/lesson-types"
+          class="mobile-link"
+          :class="{ active: $page.url.startsWith('/lesson-types') }"
+        >
+          Lesson Types
         </a>
       </nav>
     </SheetContent>

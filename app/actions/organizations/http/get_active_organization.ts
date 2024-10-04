@@ -35,5 +35,6 @@ export default class GetActiveOrganization {
       .preload('accessLevels')
       .preload('difficulties')
       .preload('statuses')
+      .preload('lessonTypes')
   }
 }

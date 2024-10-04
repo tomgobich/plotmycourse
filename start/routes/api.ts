@@ -9,10 +9,25 @@ const CoursesController = () => import('#controllers/api/courses_controller')
 
 router.group(() => {
 
-  router.post('/courses', [CoursesController, 'index'])
+  router.get('/courses', [CoursesController, 'index'])
+  router.post('/courses/search', [CoursesController, 'index'])
   router.post('/courses/:id', [CoursesController, 'show'])
-  router.post('/lessons', [LessonsController, 'index'])
+  router.post('/courses', [CoursesController, 'store'])
+  router.put('/courses/:id', [CoursesController, 'update'])
+  router.patch('/courses/:id/tags', [CoursesController, 'tag'])
+  router.delete('/courses/:id', [CoursesController, 'destroy'])
+  
+  router.get('/lessons', [LessonsController, 'index'])
+  router.post('/lessons/search', [LessonsController, 'index'])
+  router.get('/lessons/:id', [LessonsController, 'show'])
+  router.post('/lessons', [LessonsController, 'store'])
+  router.put('/lessons/:id', [LessonsController, 'update'])
+  router.delete('/lessons/:id', [LessonsController, 'destroy'])
 
 })
   .prefix('/api/v1')
-  .use([middleware.auth({ guards: ['api'] }), middleware.organization()])
+  .use([
+    middleware.forceJsonResponse(),
+    middleware.auth({ guards: ['api'] }), 
+    middleware.organization()
+  ])

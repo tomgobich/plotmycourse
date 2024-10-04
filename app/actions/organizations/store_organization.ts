@@ -38,6 +38,7 @@ export default class StoreOrganization {
       organization.related('difficulties').createMany(defaults.difficulties),
       organization.related('statuses').createMany(defaults.statuses),
       organization.related('accessLevels').createMany(defaults.accessLevels),
+      organization.related('lessonTypes').createMany(defaults.lessonTypes),
     ]
   }
 }

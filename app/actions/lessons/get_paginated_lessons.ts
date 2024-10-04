@@ -24,6 +24,7 @@ export default class GetPaginatedLessons {
       .if(filters, (query) => this.#queryWithFilters(query, filters))
       .preload('status')
       .preload('accessLevel')
+      .preload('lessonType')
       .preload('module', (query) => query.preload('course'))
       .orderBy('updatedAt', 'desc')
       .paginate(page, perPage)
@@ -33,13 +34,18 @@ export default class GetPaginatedLessons {
     StringFilter.build(query, 'name', filters?.name)
     NumbersFilter.build(query, 'statusId', filters?.statusId)
     NumbersFilter.build(query, 'accessLevelId', filters?.accessLevelId)
+    NumbersFilter.build(query, 'lessonTypeId', filters?.lessonTypeId)
+
+    console.log({ filters })
 
     if (filters?.publishAt?.after && filters.publishAt.before) {
-      query.whereBetween('publishAt', [filters.publishAt.after, filters.publishAt.before])
+      query
+        .whereNotNull('publishAt')
+        .whereBetween('publishAt', [filters.publishAt.after, filters.publishAt.before])
     } else if (filters?.publishAt?.after) {
-      query.where('publishAt', '>', filters.publishAt.after)
+      query.whereNotNull('publishAt').where('publishAt', '>', filters.publishAt.after)
     } else if (filters?.publishAt?.before) {
-      query.where('publishAt', '<', filters.publishAt.before)
+      query.whereNotNull('publishAt').where('publishAt', '<', filters.publishAt.before)
     }
   }
 }

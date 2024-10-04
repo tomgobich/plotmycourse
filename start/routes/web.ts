@@ -1,3 +1,4 @@
+const LessonTypesController = () => import('#controllers/lesson_types_controller')
 import { middleware } from '#start/kernel'
 import app from '@adonisjs/core/services/app'
 import router from '@adonisjs/core/services/router'
@@ -55,6 +56,13 @@ router.group(() => {
   router.put('/access-levels/:id', [AccessLevelsController, 'update']).as('access-levels.update')
   router.delete('/access-levels/:id', [AccessLevelsController, 'destroy']).as('access-levels.destroy')
 
+  //* LESSON TYPES
+  router.get('/lesson-types', [LessonTypesController, 'index']).as('lesson-types.index')
+  router.post('/lesson-types', [LessonTypesController, 'store']).as('lesson-types.store')
+  router.put('/lesson-types/order', [LessonTypesController, 'order']).as('lesson-types.order')
+  router.put('/lesson-types/:id', [LessonTypesController, 'update']).as('lesson-types.update')
+  router.delete('/lesson-types/:id', [LessonTypesController, 'destroy']).as('lesson-types.destroy')
+
   //* COURSES
   router.get('/courses', [CoursesController, 'index']).as('courses.index')
   router.get('/courses/:id', [CoursesController, 'show']).as('courses.show')
@@ -73,12 +81,12 @@ router.group(() => {
   //* LESSONS
   router.get('/lessons', [LessonsController, 'index']).as('lessons.index')
   router.get('/lessons/:id', [LessonsController, 'show']).as('lessons.show')
+  router.post('/lessons', [LessonsController, 'store']).as('lessons.store')
+  router.put('/lessons/:id', [LessonsController, 'update']).as('lessons.update')
+  router.patch('/lessons/:id/tags', [LessonsController, 'tag']).as('lessons.tags')
+  router.patch('/lessons/:id/notes', [LessonsController, 'notes']).as('lessons.notes')
+  router.delete('/lessons/:id', [LessonsController, 'destroy']).as('lessons.destroy')
   router.patch('/courses/:courseId/lessons/order', [LessonsController, 'order']).as('courses.lessons.order')
-  router.post('/courses/:courseId/modules/:moduleId/lessons', [LessonsController, 'store']).as('lessons.store')
-  router.put('/courses/:courseId/modules/:moduleId/lessons/:id', [LessonsController, 'update']).as('lessons.update')
-  router.patch('/courses/:courseId/modules/:moduleId/lessons/:id/tags', [LessonsController, 'tag']).as('lessons.tags')
-  router.patch('/courses/:courseId/modules/:moduleId/lessons/:id/notes', [LessonsController, 'notes']).as('lessons.notes')
-  router.delete('/courses/:courseId/modules/:moduleId/lessons/:id', [LessonsController, 'destroy']).as('lessons.destroy')
 
   //* SETTINGS.ACCOUNT
   router.get('/settings/account', [SettingsAccountsController, 'index']).as('settings.account.index')
@@ -89,15 +97,13 @@ router.group(() => {
   router.get('/settings/profile', [SettingsProfilesController, 'index']).as('settings.profile.index')
   router.put('/settings/profile', [SettingsProfilesController, 'update']).as('settings.profile.update')
 
-  //* SETTINGS.ORGANIZATIOn
+  //* SETTINGS.ORGANIZATION
   router.get('/settings/organization/', [SettingsOrganizationsController, 'index']).as('settings.organization.index')
   router.post('/settings/organization/invite', [SettingsOrganizationsController, 'inviteUser']).as('settings.organization.invite')
   router.delete('/settings/organization/invite/:id', [SettingsOrganizationsController, 'cancelInvite']).as('settings.organization.invite.cancel')
   router.delete('/settings/organization/user/:id', [SettingsOrganizationsController, 'removeUser']).as('settings.organization.user.remove')
   
-  if (app.inDev) {
-    router.post('/settings/organization/access-tokens', [SettingsOrganizationsController, 'storeAccessToken']).as('settings.organization.accessTokens.store')
-    router.delete('/settings/organization/access-tokens/:id', [SettingsOrganizationsController, 'destroyAccessToken']).as('settings.organization.accessTokens.destroy')
-  }
+  router.post('/settings/organization/access-tokens', [SettingsOrganizationsController, 'storeAccessToken']).as('settings.organization.accessTokens.store')
+  router.delete('/settings/organization/access-tokens/:id', [SettingsOrganizationsController, 'destroyAccessToken']).as('settings.organization.accessTokens.destroy')
 
 }).use([middleware.auth({ guards: ['web'] }), middleware.organization()])

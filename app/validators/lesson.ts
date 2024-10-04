@@ -12,8 +12,10 @@ export const lessonValidator = vine.withMetaData<OrganizationMetaData>().compile
       .nullable()
       .optional()
       .transform((value) => (value ? DateTime.fromJSDate(value) : null)),
+    moduleId: vine.number().exists(existsInOrganization('modules')).optional(),
     accessLevelId: vine.number().exists(existsInOrganization('access_levels')),
     statusId: vine.number().exists(existsInOrganization('statuses')),
+    lessonTypeId: vine.number().exists(existsInOrganization('lesson_types')),
   })
 )
 
@@ -23,12 +25,17 @@ export const lessonPatchTagValidator = vine.withMetaData<OrganizationMetaData>()
       .number()
       .exists(existsInOrganization('statuses'))
       .optional()
-      .requiredIfMissing(['accessLevelId']),
+      .requiredIfMissing(['accessLevelId', 'lessonTypeId']),
     accessLevelId: vine
       .number()
       .exists(existsInOrganization('access_levels'))
       .optional()
-      .requiredIfMissing(['statusId']),
+      .requiredIfMissing(['statusId', 'lessonTypeId']),
+    lessonTypeId: vine
+      .number()
+      .exists(existsInOrganization('lesson_types'))
+      .optional()
+      .requiredIfMissing(['statusId', 'accessLevelId']),
   })
 )
 
@@ -52,10 +59,11 @@ export const lessonOrderValidator = vine.compile(
 export const lessonsFilterValidatorObject = vine
   .object({
     page: vine.number().positive().optional(),
-    perPage: vine.number().positive().optional(),
+    perPage: vine.number().positive().max(1000).optional(),
     name: StringFilter.rule,
     statusId: NumbersFilter.rule,
     accessLevelId: NumbersFilter.rule,
+    lessonTypeId: NumbersFilter.rule,
     publishAt: vine
       .object({
         before: vine.date({ formats: { utc: true } }).optional(),

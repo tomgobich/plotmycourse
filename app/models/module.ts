@@ -42,14 +42,18 @@ export default class Module extends compose(BaseModel, WithOrganization) {
   declare lessons: HasMany<typeof Lesson>
 
   async findNextSort() {
-    const lastCourse = await (<Module>this)
-      .related('lessons')
-      .query()
+    return Module.findNextSort(this.id)
+  }
+
+  static async findNextSort(moduleId: number) {
+    const lastLesson = await Lesson.query()
+      .where({ moduleId })
+      .select('order')
       .orderBy('order', 'desc')
       .first()
 
     // start lessons at 0
-    return lastCourse ? lastCourse.order + 1 : 0
+    return lastLesson ? lastLesson.order + 1 : 0
   }
 
   async findLesson(lessonId: number) {
