@@ -90,11 +90,11 @@ function onOrderUpdate() {
     <ConfirmDestroyDialog
       v-model:open="destroy.isOpen"
       title="Delete Lesson Type?"
-      :action-href="`/lessonTypes/${destroy.resource?.id}`"
+      :action-href="`/lesson-types/${destroy.resource?.id}`"
       :action-data="destroy.data"
     >
-      <div v-if="destroy.resource?.meta.courses_count">
-        What lessonType would you like to assign the courses using
+      <div v-if="destroy.resource?.meta.lessons_count">
+        What lesson type would you like to assign the lessons using
         {{ destroy.resource?.name }}?
 
         <FormInput
@@ -114,7 +114,8 @@ function onOrderUpdate() {
       </div>
       <div v-else>
         Are you sure you'd like to delete your
-        <strong>{{ destroy.resource?.name }}</strong> lessonType? No courses are currently using it.
+        <strong>{{ destroy.resource?.name }}</strong> lesson type? No lessons are currently using
+        it.
       </div>
     </ConfirmDestroyDialog>
   </div>

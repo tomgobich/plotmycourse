@@ -3,6 +3,7 @@ import StoreLessonType from '#actions/lesson_types/store_lesson_type'
 import UpdateLessonType from '#actions/lesson_types/update_lesson_type'
 import UpdateLessonTypeOrder from '#actions/lesson_types/update_lesson_type_order'
 import LessonTypeDto from '#dtos/lesson_type'
+import { withOrganizationMetaData } from '#validators/helpers/organization'
 import {
   lessonTypeDestroyValidator,
   lessonTypeOrderValidator,

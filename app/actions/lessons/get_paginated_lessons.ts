@@ -36,8 +36,6 @@ export default class GetPaginatedLessons {
     NumbersFilter.build(query, 'accessLevelId', filters?.accessLevelId)
     NumbersFilter.build(query, 'lessonTypeId', filters?.lessonTypeId)
 
-    console.log({ filters })
-
     if (filters?.publishAt?.after && filters.publishAt.before) {
       query
         .whereNotNull('publishAt')

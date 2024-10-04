@@ -34,7 +34,7 @@ export default class LessonsController {
   /**
    * Handle form submission for the create action
    */
-  async store({ request, params, organization }: HttpContext) {
+  async store({ request, organization }: HttpContext) {
     AuthorizeToken.action({ organization, action: TokenActions.CREATE })
 
     const data = await request.validateUsing(
@@ -43,7 +43,6 @@ export default class LessonsController {
     )
 
     return StoreLesson.handle({
-      moduleId: params.moduleId,
       organization,
       data,
     })
@@ -101,7 +100,6 @@ export default class LessonsController {
     AuthorizeToken.action({ organization, action: TokenActions.DELETE })
 
     return DestroyLesson.handle({
-      moduleId: params.moduleId,
       id: params.id,
       organization,
     })

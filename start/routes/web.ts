@@ -1,6 +1,5 @@
 const LessonTypesController = () => import('#controllers/lesson_types_controller')
 import { middleware } from '#start/kernel'
-import app from '@adonisjs/core/services/app'
 import router from '@adonisjs/core/services/router'
 const LessonsController = () => import('#controllers/lessons_controller')
 const ModulesController = () => import('#controllers/modules_controller')
