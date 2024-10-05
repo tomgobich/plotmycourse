@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import LessonDto from '#dtos/lesson'
 import OrganizationDto from '#dtos/organization'
 import { nextTick, ref } from 'vue'
 import { useResourceActions } from '~/composables/resource_actions'
-import type { LessonForm } from '~/types/lesson_form'
+import LessonFormDto from '#dtos/lesson_form'
+import LessonDto from '#dtos/lesson'
+import { DateTime } from 'luxon'
 
 const props = defineProps<{
-  defaultForm: LessonForm
+  defaultForm: LessonFormDto
   organization: OrganizationDto
 }>()
 
 const dialogFocusEl = ref()
-const { form, dialog, destroy, onSuccess } = useResourceActions<LessonDto>()<LessonForm>(
+const { form, dialog, destroy, onSuccess } = useResourceActions<LessonDto>()<LessonFormDto>(
   props.defaultForm
 )
 
@@ -21,24 +22,25 @@ function onCreate() {
 }
 
 function onEdit(resource: LessonDto) {
-  dialog.value.open(resource, {
-    name: resource.name,
-    moduleId: resource.moduleId,
-    publishAt: resource.publishAt,
-    accessLevelId: resource.accessLevelId.toString(),
-    statusId: resource.statusId.toString(),
-  })
+  dialog.value.open(resource, new LessonFormDto(resource))
   nextTick(() => dialogFocusEl.value.inputEl.$el.focus())
 }
 
 function onSubmit() {
   const id = dialog.value.resource?.id
+  const action = form.transform(({ publishAtDate, publishAtTime, ...data }) => ({
+    ...data,
+    publishAt:
+      publishAtDate && publishAtTime
+        ? DateTime.fromISO(`${publishAtDate}T${publishAtTime}`).toUTC()
+        : null,
+  }))
 
   if (id) {
-    return form.put(`/lessons/${id}`, { onSuccess, preserveScroll: true })
+    return action.put(`/lessons/${id}`, { onSuccess, preserveScroll: true })
   }
 
-  form.post(`/lessons`, { onSuccess, preserveScroll: true })
+  action.post(`/lessons`, { onSuccess, preserveScroll: true })
 }
 
 defineExpose({
@@ -64,8 +66,12 @@ defineExpose({
       placeholder="My Cool Lesson"
     />
 
-    <FormInput type="group" label="Publish At" :errors="form.errors.publishAt">
-      <DatePicker v-model="form.publishAt" />
+    <FormInput
+      type="group"
+      label="Publish At"
+      :errors="form.errors.publishAtDate || form.errors.publishAtTime"
+    >
+      <DatePicker v-model:date="form.publishAtDate" v-model:time="form.publishAtTime" />
     </FormInput>
 
     <FormInput

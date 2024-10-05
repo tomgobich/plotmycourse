@@ -7,7 +7,7 @@ import { Plus, Pencil, EllipsisVertical, CalendarClock } from 'lucide-vue-next'
 import CourseDto from '#dtos/course'
 import { Link } from '@inertiajs/vue3'
 import { DateTime } from 'luxon'
-import type { LessonForm } from '~/types/lesson_form'
+import LessonFormDto from '#dtos/lesson_form'
 
 const props = defineProps<{
   organization: OrganizationDto
@@ -23,10 +23,11 @@ const module = computed({
   set: (value) => emit('update:modelValue', value),
 })
 
-const defaultForm: LessonForm = {
+const defaultForm: LessonFormDto = {
   name: '',
   moduleId: module.value.id,
-  publishAt: '',
+  publishAtDate: null,
+  publishAtTime: null,
   accessLevelId: props.organization.accessLevels.at(0)?.id.toString(),
   statusId: props.organization.statuses.at(0)?.id.toString(),
   lessonTypeId: props.organization.lessonTypes.at(0)?.id.toString(),

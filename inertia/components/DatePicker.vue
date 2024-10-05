@@ -1,47 +1,32 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { DateTime } from 'luxon'
-import { Calendar as CalendarIcon } from 'lucide-vue-next'
 
 const props = defineProps<{
-  modelValue: string
+  date: string
+  time: string
 }>()
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:date', 'update:time'])
 
 const date = computed({
-  get: () => {
-    if (!props.modelValue) return null
-    return DateTime.fromISO(props.modelValue).toJSDate()
-  },
-  set: (value) => {
-    const date = value ? DateTime.fromJSDate(value).toISO() : null
-    emit('update:modelValue', date)
-  },
+  get: () => props.date,
+  set: (value) => emit('update:date', value),
+})
+
+const time = computed({
+  get: () => props.time,
+  set: (value) => emit('update:time', value),
 })
 </script>
 
 <template>
-  <Popover>
-    <PopoverTrigger as-child>
-      <Button
-        variant="outline"
-        :class="['w-full justify-start text-left font-normal', { 'text-muted-foreground': !date }]"
-      >
-        <CalendarIcon class="mr-2 h-4 w-4" />
-        <span>
+  <div class="flex w-full max-w-sm items-center gap-1.5">
+    <Input type="date" v-model="date" placeholder="Got a publish date in mind?" />
+    <Input type="time" v-model="time" />
+    <!-- <span>
           {{
             date ? DateTime.fromJSDate(date).toLocaleString(DateTime.DATETIME_FULL) : 'Pick a date'
           }}
-        </span>
-      </Button>
-    </PopoverTrigger>
-    <PopoverContent class="w-auto p-0">
-      <Calendar v-model="date" mode="datetime">
-        <template #footer>
-          <Button variant="ghost" size="sm" class="w-full" @click="date = null">Clear</Button>
-        </template>
-      </Calendar>
-    </PopoverContent>
-  </Popover>
+        </span> -->
+  </div>
 </template>

@@ -5,7 +5,7 @@ import { watchEffect, computed, ref } from 'vue'
 import LessonDto from '#dtos/lesson'
 import { useForm } from '@inertiajs/vue3'
 import { DateTime } from 'luxon'
-import type { LessonForm } from '~/types/lesson_form'
+import LessonFormDto from '#dtos/lesson_form'
 
 const props = defineProps<{
   organization: OrganizationDto
@@ -34,10 +34,11 @@ const form = useForm({
 })
 
 const actions = ref()
-const defaultLessonForm: LessonForm = {
+const defaultLessonForm: LessonFormDto = {
   name: '',
   moduleId: module.value?.id,
-  publishAt: '',
+  publishAtDate: null,
+  publishAtTime: null,
   accessLevelId: props.organization.accessLevels.at(0)?.id.toString(),
   statusId: props.organization.statuses.at(0)?.id.toString(),
   lessonTypeId: props.organization.lessonTypes.at(0)?.id.toString(),
