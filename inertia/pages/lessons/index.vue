@@ -5,8 +5,8 @@ import { Link } from '@inertiajs/vue3'
 import OrganizationDto from '#dtos/organization'
 import LessonDto from '#dtos/lesson'
 import type { SimplePaginatorDtoContract } from '@adocasts.com/dto/types'
-import { LessonForm } from '~/types/lesson_form'
 import { Pagination, PaginationList, PaginationListItem } from '~/components/ui/pagination'
+import LessonFormDto from '#dtos/lesson_form'
 
 const props = defineProps<{
   organization: OrganizationDto
@@ -15,9 +15,10 @@ const props = defineProps<{
 
 const actions = ref()
 const lessons = ref(props.lessons)
-const defaultForm: LessonForm = {
+const defaultForm: LessonFormDto = {
   name: '',
-  publishAt: '',
+  publishAtDate: null,
+  publishAtTime: null,
   accessLevelId: props.organization.accessLevels.at(0)?.id.toString(),
   statusId: props.organization.statuses.at(0)?.id.toString(),
   lessonTypeId: props.organization.lessonTypes.at(0)?.id.toString(),
