@@ -93,9 +93,9 @@ function onOrderUpdate() {
       :action-href="`/lesson-types/${destroy.resource?.id}`"
       :action-data="destroy.data"
     >
-      <div v-if="destroy.resource?.meta.lessons_count">
-        What lesson type would you like to assign the lessons using
-        {{ destroy.resource?.name }}?
+      <div v-if="destroy.resource?.meta.lessons_count != 0">
+        What lesson type would you like to assign the
+        {{ destroy.resource?.meta.lessons_count }} lessons using {{ destroy.resource?.name }}?
 
         <FormInput
           label="Lesson Type"

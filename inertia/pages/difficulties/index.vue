@@ -93,9 +93,9 @@ function onOrderUpdate() {
       :action-href="`/difficulties/${destroy.resource?.id}`"
       :action-data="destroy.data"
     >
-      <div v-if="destroy.resource?.meta.courses_count">
-        What difficulty would you like to assign the courses using
-        {{ destroy.resource?.name }}?
+      <div v-if="destroy.resource?.meta.courses_count != 0">
+        What difficulty would you like to assign the
+        {{ destroy.resource?.meta.courses_count }} courses using {{ destroy.resource?.name }}?
 
         <FormInput
           label="Difficulty"

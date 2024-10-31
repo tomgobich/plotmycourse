@@ -15,6 +15,12 @@ export const courseValidator = vine.withMetaData<OrganizationMetaData>().compile
   })
 )
 
+export const courseOrderValidator = vine.compile(
+  vine.object({
+    ids: vine.array(vine.number()),
+  })
+)
+
 export const coursePatchTagValidator = vine.withMetaData<OrganizationMetaData>().compile(
   vine.object({
     statusId: vine
@@ -37,6 +43,8 @@ export const coursePatchTagValidator = vine.withMetaData<OrganizationMetaData>()
 
 export const coursesFilterValidator = vine.compile(
   vine.object({
+    page: vine.number().positive().optional(),
+    perPage: vine.number().positive().max(500).optional(),
     name: StringFilter.rule,
     statusId: NumbersFilter.rule,
     difficultyId: NumbersFilter.rule,

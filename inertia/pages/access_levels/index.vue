@@ -94,9 +94,14 @@ function onOrderUpdate() {
       :action-href="`/access-levels/${destroy.resource?.id}`"
       :action-data="destroy.data"
     >
-      <div v-if="destroy.resource?.meta.courses_count || destroy.resource?.meta.lessons_count">
-        What access level would you like to assign the courses &amp; lessons using
-        {{ destroy.resource?.name }}?
+      <div
+        v-if="
+          destroy.resource?.meta.courses_count != 0 || destroy.resource?.meta.lessons_count != 0
+        "
+      >
+        What access level would you like to assign the
+        {{ destroy.resource?.meta.courses_count }} courses &amp;
+        {{ destroy.resource?.meta.lessons_count }} lessons using {{ destroy.resource?.name }}?
 
         <FormInput
           label="Access Level"

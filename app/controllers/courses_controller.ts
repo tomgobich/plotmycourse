@@ -3,10 +3,11 @@ import GetCourse from '#actions/courses/get_course'
 import GetCourses from '#actions/courses/get_courses'
 import StoreCourse from '#actions/courses/store_course'
 import UpdateCourse from '#actions/courses/update_course'
+import UpdateCourseOrder from '#actions/courses/update_course_order'
 import UpdateCourseTag from '#actions/courses/update_course_tag'
 import CourseDto from '#dtos/course'
 import ModuleDto from '#dtos/module'
-import { coursePatchTagValidator, courseValidator } from '#validators/course'
+import { courseOrderValidator, coursePatchTagValidator, courseValidator } from '#validators/course'
 import { withOrganizationMetaData } from '#validators/helpers/organization'
 import type { HttpContext } from '@adonisjs/core/http'
 
@@ -52,6 +53,20 @@ export default class CoursesController {
       course: new CourseDto(course),
       modules: modules && ModuleDto.fromArray(modules),
     })
+  }
+
+  /**
+   * Handle reordering of difficulties
+   */
+  async order({ request, response, organization }: HttpContext) {
+    const { ids } = await request.validateUsing(courseOrderValidator)
+
+    await UpdateCourseOrder.handle({
+      organization,
+      ids,
+    })
+
+    return response.redirect().back()
   }
 
   /**

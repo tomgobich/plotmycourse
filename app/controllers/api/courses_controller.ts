@@ -1,7 +1,7 @@
 import AuthorizeToken from '#actions/abilities/authorize_token'
 import DestroyCourse from '#actions/courses/destroy_course'
 import GetCourse from '#actions/courses/get_course'
-import GetCourses from '#actions/courses/get_courses'
+import GetPaginatedCourses from '#actions/courses/get_paginated_courses'
 import StoreCourse from '#actions/courses/store_course'
 import UpdateCourse from '#actions/courses/update_course'
 import UpdateCourseTag from '#actions/courses/update_course_tag'
@@ -23,12 +23,13 @@ export default class CoursesController {
     AuthorizeToken.action({ organization, action: TokenActions.READ })
 
     const filters = await request.validateUsing(coursesFilterValidator)
-    const courses = await GetCourses.handle({ organization, filters })
 
-    return {
+    return GetPaginatedCourses.handle({
+      organization,
       filters,
-      courses,
-    }
+      page: filters.page,
+      perPage: filters.perPage,
+    })
   }
 
   /**

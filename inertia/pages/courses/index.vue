@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { EllipsisVertical, Plus } from 'lucide-vue-next'
+import { EllipsisVertical, GripVertical, Plus } from 'lucide-vue-next'
 import { ref, watchEffect } from 'vue'
-import { Link } from '@inertiajs/vue3'
+import { Link, router } from '@inertiajs/vue3'
 import CourseDto from '#dtos/course'
 import OrganizationDto from '#dtos/organization'
+import Sortable from 'vuedraggable'
 
 const props = defineProps<{
   organization: OrganizationDto
@@ -14,6 +15,11 @@ const courses = ref(props.courses)
 const actions = ref()
 
 watchEffect(() => (courses.value = props.courses))
+
+function onOrderUpdate() {
+  const ids = courses.value.map((course) => course.id)
+  router.put('/courses/order', { ids }, { preserveScroll: true })
+}
 </script>
 
 <template>
@@ -39,33 +45,51 @@ watchEffect(() => (courses.value = props.courses))
           <TableHead></TableHead>
         </TableRow>
       </TableHeader>
-      <TableBody>
-        <TableRow v-for="course in courses" :key="course.id">
-          <TableCell>
-            <Link :href="`/courses/${course.id}`" class="hover:underline">
-              {{ course.name }}
-            </Link>
-          </TableCell>
-          <TableCell> {{ course.status!.name }} </TableCell>
-          <TableCell> {{ course.difficulty!.name }} </TableCell>
-          <TableCell> {{ course.accessLevel?.name }} </TableCell>
-          <TableCell>
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <EllipsisVertical class="w-4 h-4" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem :as="Link" :href="`/courses/${course.id}`">
-                  Open
-                </DropdownMenuItem>
-                <DropdownMenuItem @click="actions.edit(course)">Edit</DropdownMenuItem>
-                <DropdownMenuItem @click="actions.destroy(course)">Delete</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </TableCell>
-        </TableRow>
-
-        <TableRow v-if="!courses?.length">
+      <Sortable
+        v-if="courses?.length"
+        v-model="courses"
+        item-key="id"
+        handle=".handle"
+        tag="tbody"
+        class="[&_tr:last-child]:border-0"
+        @end="onOrderUpdate"
+      >
+        <template #item="{ element: course }">
+          <TableRow class="group">
+            <TableCell>
+              <div class="flex items-center gap-3">
+                <div
+                  class="text-slate-300 group-hover:text-slate-950 duration-300 handle cursor-move"
+                >
+                  <GripVertical class="w-4 h-4" />
+                </div>
+                <Link :href="`/courses/${course.id}`" class="hover:underline">
+                  {{ course.name }}
+                </Link>
+              </div>
+            </TableCell>
+            <TableCell> {{ course.status!.name }} </TableCell>
+            <TableCell> {{ course.difficulty!.name }} </TableCell>
+            <TableCell> {{ course.accessLevel?.name }} </TableCell>
+            <TableCell>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <EllipsisVertical class="w-4 h-4" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem :as="Link" :href="`/courses/${course.id}`">
+                    Open
+                  </DropdownMenuItem>
+                  <DropdownMenuItem @click="actions.edit(course)">Edit</DropdownMenuItem>
+                  <DropdownMenuItem @click="actions.destroy(course)">Delete</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </TableCell>
+          </TableRow>
+        </template>
+      </Sortable>
+      <TableBody v-else>
+        <TableRow>
           <TableCell class="text-center" colspan="5"> You don't have any courses yet. </TableCell>
         </TableRow>
       </TableBody>

@@ -93,13 +93,14 @@ function onOrderUpdate() {
     >
       <div
         v-if="
-          destroy.resource?.meta.courses_count ||
-          destroy.resource?.meta.modules_count ||
-          destroy.resource?.meta.lessons_count
+          destroy.resource?.meta.course_count != 0 ||
+          destroy.resource?.meta.module_count != 0 ||
+          destroy.resource?.meta.lessons_count != 0
         "
       >
-        What status would you like to assign the courses, modules, and lessons using
-        {{ destroy.resource?.name }}?
+        What status would you like to assign the {{ destroy.resource?.meta.course_count }} courses,
+        {{ destroy.resource?.meta.module_count }} modules, and
+        {{ destroy.resource?.meta.lessons_count }} lessons using {{ destroy.resource?.name }}?
 
         <FormInput label="Status" type="select" v-model="destroy.data.replacementId" class="mt-4">
           <SelectItem
