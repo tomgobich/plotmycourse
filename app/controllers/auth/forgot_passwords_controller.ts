@@ -23,8 +23,11 @@ export default class ForgotPasswordsController {
     return response.redirect().back()
   }
 
-  async reset({ params, inertia }: HttpContext) {
+  async reset({ params, inertia, response }: HttpContext) {
     const { isValid, user } = await VerifyPasswordResetToken.handle({ encryptedHash: params.hash })
+
+    response.header('Referrer-Policy', 'no-referrer')
+
     return inertia.render('auth/forgot_password/reset', {
       hash: params.hash,
       email: user?.email,
