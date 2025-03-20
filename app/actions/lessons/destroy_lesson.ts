@@ -11,6 +11,7 @@ export default class DestroyLesson {
     const lesson = await organization.findLesson(id)
 
     await db.transaction(async (trx) => {
+      organization.useTransaction(trx)
       lesson.useTransaction(trx)
 
       await lesson.delete()
