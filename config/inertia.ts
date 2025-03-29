@@ -14,8 +14,8 @@ const inertiaConfig = defineConfig({
    */
   sharedData: {
     user: (ctx) => ctx.auth.use('web').user && new UserDto(ctx.auth.use('web').user),
-    errors: (ctx) => ctx.session.flashMessages.get('errors') ?? {},
-    exceptions: (ctx) => ctx.session.flashMessages.get('errorsBag') ?? {},
+    // errors: (ctx) => ctx.session.flashMessages.get('errors') ?? {},
+    // exceptions: (ctx) => ctx.session.flashMessages.get('errorsBag') ?? {},
     messages: (ctx) => ctx.session.flashMessages.all() ?? {},
     qs: (ctx) => ctx.request.qs(),
     inDev: () => app.inDev,

@@ -7,7 +7,7 @@ import { Loader, AlertCircle } from 'lucide-vue-next'
 defineOptions({ layout: AuthLayout })
 
 defineProps<{
-  exceptions: Record<string, string>
+  errors: Record<string, string>
 }>()
 
 const form = useForm({
@@ -32,16 +32,16 @@ const form = useForm({
     <form @submit.prevent="form.post('/login')">
       <VueTurnstile site-key="0x4AAAAAAAhP2XDR6i3L_eau" v-model="form.turnstile" />
 
-      <Alert v-if="exceptions.E_INVALID_CREDENTIALS" variant="destructive" class="mb-6">
+      <Alert v-if="errors?.E_INVALID_CREDENTIALS" variant="destructive" class="mb-6">
         <AlertCircle class="w-4 h-4" />
         <AlertTitle>Error</AlertTitle>
-        <AlertDescription>{{ exceptions.E_INVALID_CREDENTIALS }}</AlertDescription>
+        <AlertDescription>{{ errors.E_INVALID_CREDENTIALS }}</AlertDescription>
       </Alert>
 
       <div class="grid gap-3">
         <FormInput
           label="Email"
-          type="email"
+          type="text"
           v-model="form.email"
           :errors="form.errors.email"
           :disabled="form.processing"

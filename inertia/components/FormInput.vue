@@ -7,7 +7,7 @@ const props = withDefaults(
     modelValue: string | number
     placeholder?: string
     label: string
-    errors?: string[]
+    errors?: string
     disabled?: boolean
     required?: boolean
   }>(),
@@ -76,7 +76,7 @@ defineExpose({ inputEl })
       />
     </Label>
     <div v-show="errors" class="text-red-500 text-sm">
-      {{ errors?.join(',') }}
+      {{ errors }}
     </div>
   </div>
 </template>

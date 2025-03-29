@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { CircleUser } from 'lucide-vue-next'
-import { Link } from '@inertiajs/vue3'
+import { Link, router } from '@inertiajs/vue3'
 import OrganizationDto from '#dtos/organization'
 import UserDto from '#dtos/user'
 import type { Abilities } from '#actions/abilities/get_abilities'
+import { onMounted, onUnmounted } from 'vue'
 
 const props = defineProps<{
   organization: OrganizationDto
@@ -12,6 +13,13 @@ const props = defineProps<{
   user: UserDto
   messages: Record<string, any>
 }>()
+
+onMounted(() => window.addEventListener('focus', onFocus))
+onUnmounted(() => window.removeEventListener('focus', onFocus))
+
+function onFocus() {
+  router.get(`/organizations/${props.organization.id}`)
+}
 </script>
 
 <template>

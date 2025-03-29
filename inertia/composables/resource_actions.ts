@@ -1,10 +1,11 @@
 import { useForm } from '@inertiajs/vue3'
 import { ref, UnwrapRef } from 'vue'
+import type { FormDataConvertible } from '@inertiajs/core'
 
 export function useResourceActions<Resource>() {
   // using currying as there currently isn't a way to specify one generic
   // while inferring the second
-  return <Form extends object>(defaultForm: Form) => {
+  return <Form extends Record<string, FormDataConvertible>>(defaultForm: Form) => {
     interface Actionable {
       isOpen: boolean
       resource?: Resource
