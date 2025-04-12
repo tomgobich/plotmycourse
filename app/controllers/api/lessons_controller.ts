@@ -5,7 +5,6 @@ import GetPaginatedLessons from '#actions/lessons/get_paginated_lessons'
 import StoreLesson from '#actions/lessons/store_lesson'
 import UpdateLesson from '#actions/lessons/update_lesson'
 import UpdateLessonTag from '#actions/lessons/update_lesson_tag'
-import TokenActions from '#enums/token_actions'
 import { withOrganizationMetaData } from '#validators/helpers/organization'
 import {
   lessonPatchTagValidator,
@@ -19,7 +18,7 @@ export default class LessonsController {
    * Display a list of resource
    */
   async index({ request, organization }: HttpContext) {
-    AuthorizeToken.action({ organization, action: TokenActions.READ })
+    AuthorizeToken.read(organization)
 
     const filters = await request.validateUsing(lessonsFilterValidator)
 
@@ -35,7 +34,7 @@ export default class LessonsController {
    * Handle form submission for the create action
    */
   async store({ request, organization }: HttpContext) {
-    AuthorizeToken.action({ organization, action: TokenActions.CREATE })
+    AuthorizeToken.create(organization)
 
     const data = await request.validateUsing(
       lessonValidator,
@@ -52,7 +51,7 @@ export default class LessonsController {
    * Show individual record
    */
   async show({ params, organization }: HttpContext) {
-    AuthorizeToken.action({ organization, action: TokenActions.READ })
+    AuthorizeToken.read(organization)
 
     return GetLesson.handle({
       organization,
@@ -64,7 +63,7 @@ export default class LessonsController {
    * Handle form submission for the edit action
    */
   async update({ request, params, organization }: HttpContext) {
-    AuthorizeToken.action({ organization, action: TokenActions.UPDATE })
+    AuthorizeToken.update(organization)
 
     const data = await request.validateUsing(
       lessonValidator,
@@ -79,7 +78,7 @@ export default class LessonsController {
   }
 
   async tag({ request, params, organization }: HttpContext) {
-    AuthorizeToken.action({ organization, action: TokenActions.UPDATE })
+    AuthorizeToken.update(organization)
 
     const data = await request.validateUsing(
       lessonPatchTagValidator,
@@ -97,7 +96,7 @@ export default class LessonsController {
    * Delete record
    */
   async destroy({ params, organization }: HttpContext) {
-    AuthorizeToken.action({ organization, action: TokenActions.DELETE })
+    AuthorizeToken.delete(organization)
 
     return DestroyLesson.handle({
       id: params.id,

@@ -1,14 +1,13 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import LessonTypeDto from '#dtos/lesson_type'
 import AuthorizeToken from '#actions/abilities/authorize_token'
-import TokenActions from '#enums/token_actions'
 
 export default class LessonTypesController {
   /**
    * Display a list of resource
    */
   async index({ organization }: HttpContext) {
-    AuthorizeToken.action({ organization, action: TokenActions.READ })
+    AuthorizeToken.read(organization)
 
     const lessonTypes = await organization.getLessonTypes().withCount('lessons')
 

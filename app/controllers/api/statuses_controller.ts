@@ -1,14 +1,13 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import StatusDto from '#dtos/status'
 import AuthorizeToken from '#actions/abilities/authorize_token'
-import TokenActions from '#enums/token_actions'
 
 export default class StatusesController {
   /**
    * Display a list of resource
    */
   async index({ organization }: HttpContext) {
-    AuthorizeToken.action({ organization, action: TokenActions.READ })
+    AuthorizeToken.read(organization)
 
     const statuses = await organization
       .getStatuses()

@@ -5,7 +5,6 @@ import GetPaginatedCourses from '#actions/courses/get_paginated_courses'
 import StoreCourse from '#actions/courses/store_course'
 import UpdateCourse from '#actions/courses/update_course'
 import UpdateCourseTag from '#actions/courses/update_course_tag'
-import TokenActions from '#enums/token_actions'
 import {
   coursePatchTagValidator,
   coursesFilterValidator,
@@ -20,7 +19,7 @@ export default class CoursesController {
    * Display a list of resource
    */
   async index({ request, organization }: HttpContext) {
-    AuthorizeToken.action({ organization, action: TokenActions.READ })
+    AuthorizeToken.read(organization)
 
     const filters = await request.validateUsing(coursesFilterValidator)
 
@@ -36,7 +35,7 @@ export default class CoursesController {
    * Handle form submission for the create action
    */
   async store({ request, organization }: HttpContext) {
-    AuthorizeToken.action({ organization, action: TokenActions.CREATE })
+    AuthorizeToken.create(organization)
 
     const data = await request.validateUsing(
       courseValidator,
@@ -50,7 +49,7 @@ export default class CoursesController {
    * Show individual record
    */
   async show({ params, request, organization }: HttpContext) {
-    AuthorizeToken.action({ organization, action: TokenActions.READ })
+    AuthorizeToken.read(organization)
 
     const filters = await request.validateUsing(courseShowFilterValidator)
 
@@ -65,7 +64,7 @@ export default class CoursesController {
    * Handle form submission for the edit action
    */
   async update({ request, params, organization }: HttpContext) {
-    AuthorizeToken.action({ organization, action: TokenActions.UPDATE })
+    AuthorizeToken.update(organization)
 
     const data = await request.validateUsing(
       courseValidator,
@@ -80,7 +79,7 @@ export default class CoursesController {
   }
 
   async tag({ request, params, organization }: HttpContext) {
-    AuthorizeToken.action({ organization, action: TokenActions.UPDATE })
+    AuthorizeToken.update(organization)
 
     const data = await request.validateUsing(
       coursePatchTagValidator,
@@ -98,7 +97,7 @@ export default class CoursesController {
    * Delete record
    */
   async destroy({ params, organization }: HttpContext) {
-    AuthorizeToken.action({ organization, action: TokenActions.DELETE })
+    AuthorizeToken.delete(organization)
 
     return DestroyCourse.handle({
       id: params.id,

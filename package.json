@@ -71,6 +71,7 @@
     "@adonisjs/shield": "^8.1.2",
     "@adonisjs/static": "^1.1.1",
     "@adonisjs/vite": "^4.0.0",
+    "@foadonis/openapi": "^0.3.4",
     "@inertiajs/vue3": "^2.0.3",
     "@tailwindcss/typography": "^0.5.13",
     "@tiptap/extension-placeholder": "^2.11.5",

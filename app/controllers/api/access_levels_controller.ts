@@ -1,14 +1,16 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import AccessLevelDto from '#dtos/access_level'
 import AuthorizeToken from '#actions/abilities/authorize_token'
-import TokenActions from '#enums/token_actions'
+import { ApiOperation, ApiResponse } from '@foadonis/openapi/decorators'
 
 export default class AccessLevelsController {
   /**
    * Display a list of resource
    */
+  @ApiOperation({ summary: 'Get all access levels' })
+  @ApiResponse({ type: [AccessLevelDto] })
   async index({ organization }: HttpContext) {
-    AuthorizeToken.action({ organization, action: TokenActions.READ })
+    AuthorizeToken.read(organization)
 
     const accessLevels = await organization
       .getAccessLevels()

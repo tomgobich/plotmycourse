@@ -5,14 +5,17 @@ const DifficultiesController = () => import('#controllers/api/difficulties_contr
 const AccessLevelsController = () => import('#controllers/api/access_levels_controller')
 
 const LessonsController = () => import('#controllers/api/lessons_controller')
-import { middleware } from '#start/kernel'
-import router from '@adonisjs/core/services/router'
 const LessonTypesController = () => import('#controllers/api/lesson_types_controller')
 const CoursesController = () => import('#controllers/api/courses_controller')
+import { middleware } from '#start/kernel'
+import router from '@adonisjs/core/services/router'
+import openapi from '@foadonis/openapi/services/main'
 
 // ignore formatting, easier to visually scan single-line routes
 /* prettier-ignore-start */
 /* eslint-disable */
+
+openapi.registerRoutes()
 
 router.group(() => {
 

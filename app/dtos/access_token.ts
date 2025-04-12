@@ -1,15 +1,34 @@
 import { BaseDto } from '@adocasts.com/dto/base'
 import { AccessToken } from '@adonisjs/auth/access_tokens'
+import { ApiProperty, ApiPropertyOptional } from '@foadonis/openapi/decorators'
 
 export default class AccessTokenDto extends BaseDto {
+  
+  @ApiProperty()
   id: number | string | BigInt
+  
+  @ApiProperty()
   type: string
+  
+  @ApiPropertyOptional()
   name: string | null
+  
+  @ApiPropertyOptional()
   token: string | undefined
+  
+  @ApiProperty()
   abilities: string[]
+  
+  @ApiPropertyOptional()
   lastUsedAt?: string
+  
+  @ApiPropertyOptional()
   expiresAt?: string
+  
+  @ApiProperty()
   createdAt: string
+  
+  @ApiProperty()
   updatedAt: string
 
   constructor(accessToken: AccessToken) {
